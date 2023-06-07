@@ -42,15 +42,22 @@ struct UserView: View
                         VStack(alignment: .leading, spacing: 5) {
                             if let displayName = user.displayName
                             {
-                                Text(displayName)
+                                VStack{
+                                    Text(displayName)
+                                    Text("@"+user.name)
+                                }
                             }
                             else
                             {
-                                Text(user.name)
+                                Text("@"+user.name)
                             }
                             
                             Text(user.actorID.absoluteString.replacingOccurrences(of: "https://", with: "").replacingOccurrences(of: "www.", with: ""))
                         }
+                    }
+                    if let userBio = user.bio
+                    {
+                        Text(userBio)
                     }
                 }
                 .padding()
