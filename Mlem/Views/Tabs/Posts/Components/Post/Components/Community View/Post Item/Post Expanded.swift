@@ -133,7 +133,7 @@ struct PostExpanded: View
                 
                 HStack(alignment: .center, spacing: 10)
                 {
-                    TextField("Reply to post", text: $textFieldContents, prompt: Text("\(account.username):"), axis: .vertical)
+                    TextField("Reply to post", text: $textFieldContents, prompt: Text("Commenting as \(account.username):"), axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                         .focused($isReplyFieldFocused)
 
