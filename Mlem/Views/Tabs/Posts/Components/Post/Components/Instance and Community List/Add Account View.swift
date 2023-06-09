@@ -28,111 +28,107 @@ struct AddSavedInstanceView: View
 
     @FocusState var isFocused
 
-    var body: some View
-    {
-        VStack(alignment: .leading, spacing: 0)
-        {
-            if isShowingEndpointDiscoverySpinner
-            {
-                if !errorOccuredWhileConnectingToEndpoint
-                {
-                    if !hasSuccessfulyConnectedToEndpoint
-                    {
-                        VStack(alignment: .center)
-                        {
-                            HStack(alignment: .center, spacing: 10)
-                            {
-                                ProgressView()
-                                Text("Connecting to \(instanceLink)")
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color(uiColor: .secondarySystemBackground))
-                    }
-                    else
-                    {
-                        VStack(alignment: .center)
-                        {
-                            HStack(alignment: .center, spacing: 10)
-                            {
-                                Image(systemName: "checkmark.shield.fill")
-                                Text("Logged in to \(instanceLink) as \(usernameOrEmail)")
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.cyan)
-                        .foregroundColor(.black)
-                    }
-                }
-                else
-                {
-                    VStack(alignment: .center)
-                    {
-                        HStack(alignment: .center, spacing: 10)
-                        {
-                            Image(systemName: "xmark.circle.fill")
-                            Text(errorText)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(.pink)
-                    .foregroundColor(.black)
-                }
-            }
+    var body: some View {
+        ZStack {
+            Color(.systemBackground)
+                .edgesIgnoringSafeArea(.all)
 
-            Form
-            {
-                Section("Homepage")
-                {
-                    TextField("Homepage:", text: $instanceLink, prompt: Text("lemmy.ml"))
-                        .autocorrectionDisabled()
-                        .focused($isFocused)
-                        .keyboardType(.URL)
-                        .textInputAutocapitalization(.never)
-                        .onAppear
-                        {
-                            isFocused = true
+            VStack {
+                VStack(alignment: .center){
+                    HStack{
+                        if let icon = UIApplication.shared.icon {
+                            Image(uiImage: icon)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
+                                .cornerRadius(50)
+                                .padding(5)
                         }
+                    }
                 }
 
-                Section("Credentials")
-                {
-                    HStack
-                    {
-                        Text("Username")
-                        Spacer()
-                        TextField("Username", text: $usernameOrEmail, prompt: Text("Salmoon"))
+                VStack {
+                    Text("Login Details")
+                }
+                Form {
+                    Section("Homepage") {
+                        
+                        TextField("Homepage:", text: $instanceLink, prompt: Text("lemmy.ml"))
+                            .autocorrectionDisabled()
+                            .focused($isFocused)
+                            .keyboardType(.URL)
+                            .textInputAutocapitalization(.never)
+                            .onAppear {
+                                isFocused = true
+                            }
+                    }
+
+                    Section("Credentials") {
+                        TextField("Username", text: $usernameOrEmail, prompt: Text("Username"))
                             .autocorrectionDisabled()
                             .keyboardType(.default)
                             .textInputAutocapitalization(.never)
-                    }
-
-                    HStack
-                    {
-                        Text("Password")
-                        Spacer()
-                        SecureField("Password", text: $password, prompt: Text("VeryStrongPassword"))
+                        
+                        SecureField("Password", text: $password, prompt: Text("Password"))
                             .submitLabel(.go)
                     }
-                }
-
-                Button
-                {
-                    Task
-                    {
-                        await tryToAddAccount()
+                    
+                    Section {
+                        Button(action: {
+                            Task {
+                                await tryToAddAccount()
+                            }
+                        }) {
+                            Text("Log In")
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    (instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty)
+                                    ? Color.gray
+                                    : Color.blue
+                                )
+                                .cornerRadius(10)
+                        }
+                        .disabled(instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty)
                     }
-                } label: {
-                    Text("Log In")
                 }
-                .disabled(instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty)
+                .disabled(isShowingEndpointDiscoverySpinner)
             }
-            .disabled(isShowingEndpointDiscoverySpinner)
+            
+            if isShowingEndpointDiscoverySpinner {
+                VStack(alignment: .center) {
+                    Spacer()
+
+                    HStack(alignment: .center, spacing: 10) {
+                        if !errorOccuredWhileConnectingToEndpoint {
+                            if !hasSuccessfulyConnectedToEndpoint {
+                                ProgressView()
+                                Text("Connecting to:\n \(instanceLink)")
+                                    .padding()
+                                    .background(Color.secondary.opacity(0.1))
+                                    .cornerRadius(10)
+                                    .multilineTextAlignment(.center)
+                            } else {
+                                Text("Success!")
+                            }
+                        } else {
+                            Text(errorText)
+                        }
+                    }
+                    .padding()
+                    Spacer()
+                }
+                .background(Color.black.opacity(0.4))
+            }
         }
     }
+
+
+
+
+
+
 
     func tryToAddAccount() async
     {
@@ -302,5 +298,18 @@ struct AddSavedInstanceView: View
             
             throw UserIDRetrievalError.couldNotFetchUserInformation
         }
+    }
+}
+
+extension UIApplication {
+    var icon: UIImage? {
+        guard let iconsDictionary = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
+              let primaryIconsDictionary = iconsDictionary["CFBundlePrimaryIcon"] as? [String: Any],
+              let iconFiles = primaryIconsDictionary["CFBundleIconFiles"] as? [String],
+              let lastIcon = iconFiles.last else {
+            return nil
+        }
+        
+        return UIImage(named: lastIcon)
     }
 }
