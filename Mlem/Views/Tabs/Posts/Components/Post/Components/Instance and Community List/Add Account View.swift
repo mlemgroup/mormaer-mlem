@@ -46,13 +46,12 @@ struct AddSavedInstanceView: View
                         }
                     }
                 }
-
                 VStack {
-                    Text("Login Details")
+                    Text("Account Details")
                 }
+
                 Form {
                     Section("Homepage") {
-                        
                         TextField("Homepage:", text: $instanceLink, prompt: Text("lemmy.ml"))
                             .autocorrectionDisabled()
                             .focused($isFocused)
@@ -100,14 +99,11 @@ struct AddSavedInstanceView: View
                 VStack(alignment: .center) {
                     Spacer()
 
-                    HStack(alignment: .center, spacing: 10) {
+                    VStack(alignment: .center, spacing: 10) {
                         if !errorOccuredWhileConnectingToEndpoint {
                             if !hasSuccessfulyConnectedToEndpoint {
                                 ProgressView()
                                 Text("Connecting to:\n \(instanceLink)")
-                                    .padding()
-                                    .background(Color.secondary.opacity(0.1))
-                                    .cornerRadius(10)
                                     .multilineTextAlignment(.center)
                             } else {
                                 Text("Success!")
@@ -117,17 +113,15 @@ struct AddSavedInstanceView: View
                         }
                     }
                     .padding()
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .shadow(color: .gray, radius: 10, x: 0, y: 0)
+
                     Spacer()
                 }
-                .background(Color.black.opacity(0.4))
             }
         }
     }
-
-
-
-
-
 
 
     func tryToAddAccount() async
