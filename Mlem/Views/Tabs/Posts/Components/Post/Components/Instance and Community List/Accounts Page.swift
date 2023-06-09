@@ -59,7 +59,7 @@ struct AccountsPage: View
                 {
                     VStack(alignment: .center, spacing: 15)
                     {
-                        Text("You have no accounts added")
+                        Text("Add an account above to get started!")
                     }
                     .foregroundColor(.secondary)
                 }

@@ -93,6 +93,11 @@ struct AddSavedInstanceView: View
                     }
                 }
                 .disabled(isShowingEndpointDiscoverySpinner)
+                .onSubmit {
+                    Task {
+                        await tryToAddAccount()
+                    }
+                }
             }
             
             if isShowingEndpointDiscoverySpinner {
@@ -103,12 +108,18 @@ struct AddSavedInstanceView: View
                         if !errorOccuredWhileConnectingToEndpoint {
                             if !hasSuccessfulyConnectedToEndpoint {
                                 ProgressView()
-                                Text("Connecting to:\n \(instanceLink)")
+                                Text("Connecting")
                                     .multilineTextAlignment(.center)
                             } else {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 50))
                                 Text("Success!")
                             }
                         } else {
+                            Image(systemName: "xmark.square.fill")
+                                .foregroundColor(.red)
+                                .font(.system(size: 50))
                             Text(errorText)
                         }
                     }
