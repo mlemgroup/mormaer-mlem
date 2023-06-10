@@ -38,10 +38,7 @@ struct PostItem: View
     @State var dragBackground: Color = .systemBackground
 
     let iconToTextSpacing: CGFloat = 2
-    
-    let downvoteDragMin: CGFloat = 200;
-    let upvoteDragMin: CGFloat = 50;
-    let collapseDragMax: CGFloat = -50;
+
     
     func upvotePost() async -> Bool {
         do {
@@ -311,11 +308,11 @@ struct PostItem: View
                     .onChanged {
                         ignoreDragPosition = false
                         let w = $0.translation.width
-                        if w > downvoteDragMin {
+                        if w > AppConstants.downvoteDragMin {
                             dragBackground = .red
-                        } else if w > upvoteDragMin {
+                        } else if w > AppConstants.upvoteDragMin {
                             dragBackground = .green
-                        } else if $0.translation.width < collapseDragMax {
+                        } else if $0.translation.width < AppConstants.collapseDragMax {
                             if let postBody = post.body
                             {
                                 if !postBody.isEmpty {
@@ -334,15 +331,15 @@ struct PostItem: View
                         dragPosition = $0.translation
                     }
                     .onEnded {
-                        if $0.translation.width > downvoteDragMin {
+                        if $0.translation.width > AppConstants.downvoteDragMin {
                             Task(priority: .userInitiated) {
                                 await downvotePost()
                             }
-                        } else if $0.translation.width > upvoteDragMin {
+                        } else if $0.translation.width > AppConstants.upvoteDragMin {
                             Task(priority: .userInitiated) {
                                 await upvotePost()
                             }
-                        } else if $0.translation.width < collapseDragMax {
+                        } else if $0.translation.width < AppConstants.collapseDragMax {
                             if let postBody = post.body
                             {
                                 if !postBody.isEmpty {
