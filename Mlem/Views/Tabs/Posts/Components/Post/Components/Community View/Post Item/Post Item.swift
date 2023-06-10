@@ -34,7 +34,6 @@ struct PostItem: View
     @State var isPostCollapsed: Bool = false
     
     @State var dragPosition: CGSize = .zero
-    @State var ignoreDragPosition: Bool = false
     @State var dragBackground: Color = .systemBackground
 
     let iconToTextSpacing: CGFloat = 2
@@ -302,33 +301,33 @@ struct PostItem: View
                 }
             }
             .background(Color(uiColor: .systemBackground))
-            .offset(x: ignoreDragPosition ? 0 : dragPosition.width)
+            .offset(x: dragPosition.width)
             .gesture(
-                DragGesture()
+                DragGesture(minimumDistance: 20)
                     .onChanged {
-                        ignoreDragPosition = false
                         let w = $0.translation.width
                         if w > AppConstants.downvoteDragMin {
                             dragBackground = .red
+                            dragPosition = $0.translation
                         } else if w > AppConstants.upvoteDragMin {
                             dragBackground = .green
+                            dragPosition = $0.translation
                         } else if $0.translation.width < AppConstants.collapseDragMax {
                             if let postBody = post.body
                             {
                                 if !postBody.isEmpty {
                                     dragBackground = .blue
+                                    dragPosition = $0.translation
                                 } else {
                                     dragBackground = .secondarySystemBackground
-                                    ignoreDragPosition = true
                                 }
                             } else {
                                 dragBackground = .secondarySystemBackground
-                                ignoreDragPosition = true
                             }
                         } else {
                             dragBackground = .secondarySystemBackground
                         }
-                        dragPosition = $0.translation
+                        
                     }
                     .onEnded {
                         if $0.translation.width > AppConstants.downvoteDragMin {
