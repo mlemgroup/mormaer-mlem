@@ -193,19 +193,28 @@ struct PostItem: View
                         {
                             if !postBody.isEmpty
                             {
-                                if !isPostCollapsed
+                                if !isExpanded
                                 {
-                                    MarkdownView(text: postBody)
-                                        .onTapGesture
-                                        {
-                                            if (isExpanded) {
+                                    if !isPostCollapsed {
+                                        MarkdownView(text: postBody)
+                                            .font(.subheadline)
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                    if !isPostCollapsed
+                                    {
+                                        MarkdownView(text: postBody)
+                                            .onTapGesture
+                                            {
+                                                print("Tapped")
                                                 withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
                                                 {
                                                     isPostCollapsed.toggle()
                                                 }
                                             }
-                                            print("Tapped")
-                                        }
+                                    }
                                 }
                             }
                         }
@@ -302,7 +311,7 @@ struct PostItem: View
             }
             .background(Color(uiColor: .systemBackground))
             .offset(x: dragPosition.width)
-            .gesture(
+            .simultaneousGesture(
                 DragGesture(minimumDistance: 20)
                     .onChanged {
                         let w = $0.translation.width
@@ -344,6 +353,7 @@ struct PostItem: View
                                 if !postBody.isEmpty {
                                     withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
                                     {
+                                        print("Attempting to collapse")
                                         isPostCollapsed.toggle()
                                     }
                                 }
