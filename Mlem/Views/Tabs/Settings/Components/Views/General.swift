@@ -16,16 +16,19 @@ struct GeneralSettingsView: View
 {
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortTypes = .top
     
+    @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
+    
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState
 
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
+    @State private var isShowingResetDefaultsConfirmation: Bool = false
     
     var body: some View
     {
         List
         {
-            Section("Default Sorting")
+            Section("Defaults")
             {
                 Picker(selection: $defaultCommentSorting)
                 {
@@ -40,6 +43,48 @@ struct GeneralSettingsView: View
                         Text("Comment sorting")
                     }
                 }
+                
+                Picker(selection: $defaultFeed)
+                {
+                    ForEach(FeedType.allCases)
+                    { feedType in
+                        Text(String(describing: feedType))
+                    }
+                } label: {
+                    HStack(alignment: .center) {
+                        Image(systemName: "arrow.up.arrow.down.square.fill")
+                            .foregroundColor(.gray)
+                        Text("Feed")
+                    }
+                }
+                
+                Button(role: .destructive) {
+                    isShowingResetDefaultsConfirmation.toggle()
+                } label: {
+                    Label("Reset Defaults", systemImage: "trash")
+                        .foregroundColor(.red)
+                }
+                .confirmationDialog(
+                    "Reset default options?",
+                    isPresented: $isShowingResetDefaultsConfirmation,
+                    titleVisibility: .visible) {
+                        Button(role: .destructive) {
+                            defaultFeed = .subscribed
+                            defaultCommentSorting = .top
+                        } label: {
+                            Text("Reset defaults")
+                        }
+
+                        Button(role: .cancel) {
+                            isShowingResetDefaultsConfirmation.toggle()
+                        } label: {
+                            Text("Cancel")
+                        }
+
+                } message: {
+                    Text("Would you like to delete all your favorited communities for all accounts?\nYou cannot undo this action.")
+                }
+                
             }
             
             Section

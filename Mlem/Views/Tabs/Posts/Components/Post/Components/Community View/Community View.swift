@@ -7,15 +7,19 @@
 
 import SwiftUI
 
-internal enum FeedType: String
+internal enum FeedType: String, Codable, CaseIterable, Identifiable
 {
     case all = "All"
     case subscribed = "Subscribed"
+    
+    var id: Self { self }
 }
 
 struct CommunityView: View
 {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    
+    @AppStorage("defaultFeed") var defaultFeed: FeedType = .subscribed
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -484,5 +488,9 @@ struct CommunityView: View
                 }
             }
         }
+        .onAppear {
+            feedType = defaultFeed
+        }
     }
+    
 }
