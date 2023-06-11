@@ -129,6 +129,9 @@ struct PostItem: View
                                         {
                                             isShowingEnlargedImage.toggle()
                                         }
+                                        .onLongPressGesture {
+                                            showShareSheet(URLtoShare: postURL)
+                                        }
                                 } placeholder: {
                                     ProgressView()
                                 }
