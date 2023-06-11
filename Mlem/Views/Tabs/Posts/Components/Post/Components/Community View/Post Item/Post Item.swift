@@ -244,9 +244,9 @@ struct PostItem: View
                             }
                         }
 
-                    if let postURL = post.url
+                    if let url = URL(string: post.apID)
                     {
-                        ShareButton(urlToShare: postURL, isShowingButtonText: false)
+                        ShareButton(urlToShare: url, isShowingButtonText: false)
                     }
                 }
 
