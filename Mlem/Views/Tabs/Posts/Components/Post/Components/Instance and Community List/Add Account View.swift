@@ -33,77 +33,9 @@ struct AddSavedInstanceView: View
             Color(.systemBackground)
                 .edgesIgnoringSafeArea(.all)
 
-            VStack {
-                VStack(alignment: .center){
-                    HStack{
-                        if let icon = UIApplication.shared.icon {
-                            Image(uiImage: icon)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 100)
-                                .cornerRadius(50)
-                                .padding(5)
-                        }
-                    }
-                }
-                VStack {
-                    Text("Account Details")
-                }
-
-                Form {
-                    Section("Homepage") {
-                        TextField("Homepage:", text: $instanceLink, prompt: Text("lemmy.ml"))
-                            .autocorrectionDisabled()
-                            .focused($isFocused)
-                            .keyboardType(.URL)
-                            .textInputAutocapitalization(.never)
-                            .onAppear {
-                                isFocused = true
-                            }
-                    }
-
-                    Section("Credentials") {
-                        TextField("Username", text: $usernameOrEmail, prompt: Text("Username"))
-                            .autocorrectionDisabled()
-                            .keyboardType(.default)
-                            .textInputAutocapitalization(.never)
-                        
-                        SecureField("Password", text: $password, prompt: Text("Password"))
-                            .submitLabel(.go)
-                    }
-                    
-                    Section {
-                        Button(action: {
-                            Task {
-                                await tryToAddAccount()
-                            }
-                        }) {
-                            Text("Log In")
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    (instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty)
-                                    ? Color.gray
-                                    : Color.blue
-                                )
-                                .cornerRadius(10)
-                        }
-                        .disabled(instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty)
-                    }
-                }
-                .disabled(isShowingEndpointDiscoverySpinner)
-                .onSubmit {
-                    Task {
-                        await tryToAddAccount()
-                    }
-                }
-            }
-            
-            if isShowingEndpointDiscoverySpinner {
-                VStack(alignment: .center) {
-                    Spacer()
-
+            VStack(alignment: .center) { // Spinner and Form in a VStack
+                // Spinner
+                if isShowingEndpointDiscoverySpinner {
                     VStack(alignment: .center, spacing: 10) {
                         if !errorOccuredWhileConnectingToEndpoint {
                             if !hasSuccessfulyConnectedToEndpoint {
@@ -125,11 +57,66 @@ struct AddSavedInstanceView: View
                     }
                     .padding()
                     .background(Color.white)
-                    .cornerRadius(10)
-                    .shadow(color: .gray, radius: 10, x: 0, y: 0)
-
-                    Spacer()
                 }
+
+                // Form
+                VStack {
+                    
+                    Form {
+                        Section(header: Text("Homepage")) {
+                            HStack {
+                                Text("URL")
+                                TextField("lemmy.ml", text: $instanceLink)
+                                    .autocorrectionDisabled()
+                                    .focused($isFocused)
+                                    .keyboardType(.URL)
+                                    .textInputAutocapitalization(.never)
+                                    .onAppear {
+                                        isFocused = true
+                                    }
+                            }
+                        }
+                        
+                        Section(header: Text("Credentials")) {
+                            HStack {
+                                Text("Username")
+                                TextField("Salmoon", text: $usernameOrEmail)
+                                    .autocorrectionDisabled()
+                                    .keyboardType(.default)
+                                    .textInputAutocapitalization(.never)
+                            }
+                            
+                            HStack {
+                                Text("Password")
+                                SecureField("VeryStrongPassword", text: $password)
+                                    .submitLabel(.go)
+                            }
+                        }
+                        
+                        Section {
+                            Button(action: {
+                                Task {
+                                    await tryToAddAccount()
+                                }
+                            }) {
+                                Text("Log In")
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        (instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty)
+                                        ? Color.gray
+                                        : Color.blue
+                                    )
+                                    .cornerRadius(10)
+                            }
+                            .buttonStyle(PlainButtonStyle()) // Use plain button style to remove default appearance
+                            .listRowInsets(EdgeInsets()) // Remove default padding around the button
+                            .disabled(instanceLink.isEmpty || usernameOrEmail.isEmpty || password.isEmpty || isShowingEndpointDiscoverySpinner)
+                        }
+                    }
+                }
+                .disabled(isShowingEndpointDiscoverySpinner)
             }
         }
     }
