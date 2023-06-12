@@ -21,7 +21,7 @@ struct GetPostsRequest: APIGetRequest {
         communityId: Int?,
         page: Int,
         sort: SortingOptions?,
-        type: FeedType = .all,
+        type: FeedType,
         limit: Int? = nil,
         savedOnly: Bool? = nil,
         communityName: String? = nil
