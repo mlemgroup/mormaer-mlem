@@ -8,13 +8,15 @@
 import Foundation
 
 struct GetCommentsRequest: APIGetRequest {
-    
+
     typealias Response = GetCommentsResponse
-    
+
     let instanceURL: URL
     let path = "comment/list"
     let queryItems: [URLQueryItem]
-    
+
+    // lemmy_api_common::comment::GetComments
+    // TODO add other fields
     init(
         account: SavedAccount,
         postId: Int,
@@ -28,9 +30,12 @@ struct GetCommentsRequest: APIGetRequest {
             .init(name: "max_depth", value: "\(maxDepth)"),
             .init(name: "type_", value: type.rawValue)
         ]
+
+
     }
 }
 
+// lemmy_api_common::comment::GetCommentsResponse
 struct GetCommentsResponse: Decodable {
     let comments: [APICommentView]
 }
