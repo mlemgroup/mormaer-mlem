@@ -52,13 +52,13 @@ struct AppearanceSettingsView: View {
                 
                 .padding(.horizontal)
                 
-                SettingsItem(
+                SwitchableSettingsItem(
                     settingPictureSystemName: "photo.circle.fill",
                     settingPictureColor: .pink,
                     settingName: "Show website image",
                     isTicked: $shouldShowWebsitePreviews
                 )
-                SettingsItem(
+                SwitchableSettingsItem(
                     settingPictureSystemName: "globe",
                     settingPictureColor: .pink,
                     settingName: "Show website icons",
@@ -74,7 +74,7 @@ struct AppearanceSettingsView: View {
                         shouldShowWebsiteFavicons = true
                     }
                 }
-                SettingsItem(
+                SwitchableSettingsItem(
                     settingPictureSystemName: "network",
                     settingPictureColor: .pink,
                     settingName: "Show website address",
@@ -83,7 +83,7 @@ struct AppearanceSettingsView: View {
             }
             Section("Posts")
             {
-                SettingsItem(
+                SwitchableSettingsItem(
                     settingPictureSystemName: "wifi.circle.fill",
                     settingPictureColor: .pink,
                     settingName: "Show dynamic website icons",
@@ -94,7 +94,7 @@ struct AppearanceSettingsView: View {
             
             Section("Communities")
             {
-                SettingsItem(
+                SwitchableSettingsItem(
                     settingPictureSystemName: "rectangle.grid.1x2",
                     settingPictureColor: .pink,
                     settingName: "Show community headers",
@@ -104,14 +104,14 @@ struct AppearanceSettingsView: View {
             
             Section("Icons")
             {
-                SettingsItem(
+                SwitchableSettingsItem(
                     settingPictureSystemName: "person.circle.fill",
                     settingPictureColor: .pink,
                     settingName: "Show user avatars",
                     isTicked: $shouldShowUserAvatars
                 )
                 
-                SettingsItem(
+                SwitchableSettingsItem(
                     settingPictureSystemName: "person.2.circle.fill",
                     settingPictureColor: .pink,
                     settingName: "Show community icons",

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsItem: View
+struct SwitchableSettingsItem: View
 {
     @State var settingPictureSystemName: String
     @State var settingPictureColor: Color
@@ -24,6 +24,43 @@ struct SettingsItem: View
                 .foregroundColor(settingPictureColor)
 
             Toggle(settingName, isOn: $isTicked)
+        }
+    }
+}
+
+struct SelectableSettingsItem<T: SettingsOptions>: View
+{
+    @State var settingPictureSystemName: String
+    @State var settingPictureColor: Color
+
+    @State var settingName: String
+
+    @Binding var currentValue: T?
+    @State var options: [T]
+
+    var body: some View
+    {
+        NavigationLink {
+            List(options, selection: $currentValue) { option in
+                HStack {
+                    Text(option.label)
+                    if option == currentValue {
+                        Spacer()
+                        Image(systemName: "checkmark")
+                    }
+                }
+            }
+        } label: {
+            HStack
+            {
+                Image(systemName: settingPictureSystemName)
+                    .foregroundColor(settingPictureColor)
+
+                Text(settingName)
+                Spacer()
+                Text(currentValue?.label ?? "-")
+                    .foregroundColor(.secondary)
+            }
         }
     }
 }
