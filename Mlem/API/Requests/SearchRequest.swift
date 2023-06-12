@@ -43,38 +43,13 @@ struct SearchRequest: APIGetRequest {
             .init(name: "type_", value: searchType.rawValue),
             .init(name: "sort", value: sortOption.rawValue),
             .init(name: "listing_type", value: listingType.rawValue),
-            .init(name: "q", value: query)
+            .init(name: "q", value: query),
+            .init(name: "page", value: page.map(String.init)),
+            .init(name: "community_id", value: communityId.map(String.init)),
+            .init(name: "community_name", value: communityName),
+            .init(name: "creator_id", value: creatorId.map(String.init)),
+            .init(name: "limit", value: limit.map(String.init))
         ]
-
-        if let page {
-            queryItems.append(
-                .init(name: "page", value: "\(page)")
-            )
-        }
-
-        if let communityId {
-            queryItems.append(
-                .init(name: "community_id", value: "\(communityId)")
-            )
-        }
-
-        if let communityName {
-            queryItems.append(
-                .init(name: "community_name", value: "\(communityName)")
-            )
-        }
-
-        if let creatorId {
-            queryItems.append(
-                .init(name: "creator_id", value: "\(creatorId)")
-            )
-        }
-
-        if let limit {
-            queryItems.append(
-                .init(name: "limit", value: "\(limit)")
-            )
-        }
 
         self.queryItems = queryItems
     }
