@@ -13,6 +13,7 @@ struct PostItem: View
 {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+    @AppStorage("postFormat") var postFormat: PostFormat = .regular
 
     @EnvironmentObject var appState: AppState
 
@@ -140,21 +141,28 @@ struct PostItem: View
                         }
                     }
 
-                    if let postBody = post.post.body
-                    {
-                        if !postBody.isEmpty
+                    if postFormat != .small || isExpanded {
+                        if let postBody = post.post.body
                         {
-                            if !isExpanded
+                            if !postBody.isEmpty
                             {
-                                MarkdownView(text: postBody)
-                                    .font(.subheadline)
-                            }
-                            else
-                            {
-                                if !isPostCollapsed
+                                if !isExpanded
                                 {
-                                    MarkdownView(text: postBody)
-                                        .onTapGesture
+                                    if postFormat == .compact {
+                                        MarkdownView(text: postBody.components(separatedBy: .newlines).first ?? "")
+                                            .lineLimit(2)
+                                            .font(.subheadline)
+                                    } else {
+                                        MarkdownView(text: postBody)
+                                            .font(.subheadline)
+                                    }
+                                }
+                                else
+                                {
+                                    if !isPostCollapsed
+                                    {
+                                        MarkdownView(text: postBody)
+                                            .onTapGesture
                                         {
                                             print("Tapped")
                                             withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
@@ -162,6 +170,7 @@ struct PostItem: View
                                                 isPostCollapsed.toggle()
                                             }
                                         }
+                                    }
                                 }
                             }
                         }

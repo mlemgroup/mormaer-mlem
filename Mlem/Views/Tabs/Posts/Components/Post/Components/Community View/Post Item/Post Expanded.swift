@@ -49,7 +49,14 @@ struct PostExpanded: View
     {
         ScrollView
         {
-            PostItem(postTracker: postTracker, post: post, isExpanded: true, isInSpecificCommunity: true, account: account, feedType: $feedType)
+            PostItem(
+                postTracker: postTracker,
+                post: post,
+                isExpanded: true,
+                isInSpecificCommunity: true,
+                account: account,
+                feedType: $feedType
+            )
 
             if commentTracker.isLoading
             {

@@ -11,6 +11,7 @@ struct AppearanceSettingsView: View {
     
     @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
+    @AppStorage("postFormat") var postFormat: PostFormat = .regular
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
@@ -79,6 +80,16 @@ struct AppearanceSettingsView: View {
                     settingPictureColor: .pink,
                     settingName: "Show website address",
                     isTicked: $shouldShowWebsiteHost
+                )
+            }
+            Section("Feed")
+            {
+                SelectableSettingsItem(
+                    settingPictureSystemName: "arrow.up.and.down.text.horizontal",
+                    settingPictureColor: .pink,
+                    settingName: "Post format",
+                    currentValue: .init($postFormat),
+                    options: PostFormat.allCases
                 )
             }
             Section("Posts")
