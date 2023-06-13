@@ -20,6 +20,7 @@ struct CommunityView: View
 
     @StateObject var postTracker: PostTracker = .init()
 
+    @State private var showTabBarAndNavigationBar = true
     @State var account: SavedAccount
     @State var community: APICommunity?
     @State var communityDetails: GetCommunityResponse?
@@ -366,6 +367,13 @@ struct CommunityView: View
                 }
             }
         }
+        .toolbar(showTabBarAndNavigationBar ? .visible : .hidden, for: .tabBar)
+        .toolbar(showTabBarAndNavigationBar ? .visible : .hidden, for: .navigationBar)
+        .simultaneousGesture(DragGesture().onChanged { value in
+            withAnimation {
+                showTabBarAndNavigationBar.toggle()
+            }
+        })
     }
 
     private var searchResultsView: some View {
