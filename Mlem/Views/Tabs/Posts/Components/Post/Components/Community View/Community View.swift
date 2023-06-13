@@ -20,7 +20,7 @@ struct CommunityView: View
 
     @StateObject var postTracker: PostTracker = .init()
 
-    @State private var showTabBarAndNavigationBar = true
+    @State private var isScrollViewDragging = true
     @State var account: SavedAccount
     @State var community: APICommunity?
     @State var communityDetails: GetCommunityResponse?
@@ -367,13 +367,21 @@ struct CommunityView: View
                 }
             }
         }
-        .toolbar(showTabBarAndNavigationBar ? .visible : .hidden, for: .tabBar)
-        .toolbar(showTabBarAndNavigationBar ? .visible : .hidden, for: .navigationBar)
-        .simultaneousGesture(DragGesture().onChanged { value in
+        .toolbar(isScrollViewDragging ? .visible : .hidden, for: .tabBar)
+        .toolbar(isScrollViewDragging ? .visible : .hidden, for: .navigationBar)
+        .simultaneousGesture(dragGesture)
+    }
+
+    private var dragGesture: some Gesture {
+        DragGesture().onChanged { value in
             withAnimation {
-                showTabBarAndNavigationBar.toggle()
+                isScrollViewDragging.toggle()
             }
-        })
+        }.onEnded { _ in
+            withAnimation {
+                isScrollViewDragging.toggle()
+            }
+        }
     }
 
     private var searchResultsView: some View {
