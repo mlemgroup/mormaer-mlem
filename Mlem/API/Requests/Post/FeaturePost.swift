@@ -17,9 +17,9 @@ struct FeaturePostRequest: APIPostRequest {
 
     // lemmy_api_common::post::FeaturePost
     struct Body: Encodable {
-        let postId: Int
+        let post_id: Int
         let featured: Bool
-        let featureType: APIPostFeatureType
+        let feature_type: APIPostFeatureType
 
         let auth: String
     }
@@ -33,9 +33,9 @@ struct FeaturePostRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            postId: postId,
+            post_id: postId,
             featured: featured,
-            featureType: featureType,
+            feature_type: featureType,
 
             auth: account.accessToken
         )

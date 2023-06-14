@@ -17,7 +17,7 @@ struct RemovePostRequest: APIPostRequest {
 
     // lemmy_api_common::post::RemovePost
     struct Body: Encodable {
-        let postId: Int
+        let post_id: Int
         let removed: Bool
         let reason: String?
 
@@ -33,7 +33,7 @@ struct RemovePostRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            postId: postId,
+            post_id: postId,
             removed: removed,
             reason: reason,
 

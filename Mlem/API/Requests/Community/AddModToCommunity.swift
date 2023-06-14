@@ -17,8 +17,8 @@ struct AddModToCommunityRequest: APIPostRequest {
 
     // lemmy_api_common::community::AddModToCommunity
     struct Body: Encodable {
-        let communityId: Int
-        let personId: Int
+        let community_id: Int
+        let person_id: Int
         let added: Bool
 
         let auth: String
@@ -33,8 +33,8 @@ struct AddModToCommunityRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            communityId: communityId,
-            personId: personId,
+            community_id: communityId,
+            person_id: personId,
             added: added,
 
             auth: account.accessToken

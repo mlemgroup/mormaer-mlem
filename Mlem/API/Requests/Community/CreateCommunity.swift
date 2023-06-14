@@ -23,8 +23,8 @@ struct CreateCommunityRequest: APIPostRequest {
         let icon: URL?
         let banner: URL?
         let nsfw: Bool?
-        let postingRestrictedToMods: Bool?
-        let discussionLanguages: [Int]?
+        let posting_restricted_to_mods: Bool?
+        let discussion_languages: [Int]?
 
         let auth: String
     }
@@ -50,8 +50,8 @@ struct CreateCommunityRequest: APIPostRequest {
             icon: icon,
             banner: banner,
             nsfw: nsfw,
-            postingRestrictedToMods: postingRestrictedToMods,
-            discussionLanguages: discussionLanguages,
+            posting_restricted_to_mods: postingRestrictedToMods,
+            discussion_languages: discussionLanguages,
 
             auth: account.accessToken
         )

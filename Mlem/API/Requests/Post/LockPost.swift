@@ -17,7 +17,7 @@ struct LockPostRequest: APIPostRequest {
 
     // lemmy_api_common::post::LockPost
     struct Body: Encodable {
-        let postId: Int
+        let post_id: Int
         let locked: Bool
 
         let auth: String
@@ -31,7 +31,7 @@ struct LockPostRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            postId: postId,
+            post_id: postId,
             locked: locked,
 
             auth: account.accessToken

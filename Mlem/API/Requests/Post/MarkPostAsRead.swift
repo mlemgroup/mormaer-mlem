@@ -17,7 +17,7 @@ struct MarkPostAsReadRequest: APIPostRequest {
 
     // lemmy_api_common::post::MarkPostAsRead
     struct Body: Encodable {
-        let postId: Int
+        let post_id: Int
         let read: Bool
 
         let auth: String
@@ -31,7 +31,7 @@ struct MarkPostAsReadRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            postId: postId,
+            post_id: postId,
             read: read,
 
             auth: account.accessToken

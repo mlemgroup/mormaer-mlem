@@ -17,7 +17,7 @@ struct MarkCommentReplyAsReadRequest: APIPostRequest {
 
     // lemmy_api_common::person::MarkCommentReplyAsRead
     struct Body: Encodable {
-        let commentReplyId: Int
+        let comment_reply_id: Int
         let read: Bool
 
         let auth: String
@@ -31,7 +31,7 @@ struct MarkCommentReplyAsReadRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            commentReplyId: commentReplyId,
+            comment_reply_id: commentReplyId,
             read: read,
 
             auth: account.accessToken

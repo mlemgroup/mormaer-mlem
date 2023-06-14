@@ -17,10 +17,10 @@ struct BanFromCommunityRequest: APIPostRequest {
 
     // lemmy_api_common::community::BanFromCommunity
     struct Body: Encodable {
-        let communityId: Int
-        let personId: Int
+        let community_id: Int
+        let person_id: Int
         let ban: Bool
-        let removeData: Bool?
+        let remove_data: Bool?
         let reason: String?
         let expires: Int?
 
@@ -39,10 +39,10 @@ struct BanFromCommunityRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            communityId: communityId,
-            personId: personId,
+            community_id: communityId,
+            person_id: personId,
             ban: ban,
-            removeData: removeData,
+            remove_data: removeData,
             reason: reason,
             expires: expires,
 

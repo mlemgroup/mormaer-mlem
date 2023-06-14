@@ -17,7 +17,7 @@ struct RemoveCommentRequest: APIPostRequest {
 
     // lemmy_api_common::comment::RemoveComment
     struct Body: Encodable {
-        let commentId: Int
+        let comment_id: Int
         let removed: Bool
         let reason: String?
         let auth: String
@@ -31,7 +31,7 @@ struct RemoveCommentRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            commentId: commentId,
+            comment_id: commentId,
             removed: removed,
             reason: reason,
             auth: account.accessToken

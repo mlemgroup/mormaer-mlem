@@ -17,7 +17,7 @@ struct RemoveCommunityRequest: APIPostRequest {
 
     // lemmy_api_common::community::RemoveCommunity
     struct Body: Encodable {
-        let communityId: Int
+        let community_id: Int
         let removed: Bool
         let reason: String?
         let expires: Int?
@@ -35,7 +35,7 @@ struct RemoveCommunityRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            communityId: communityId,
+            community_id: communityId,
             removed: removed,
             reason: reason,
             expires: expires,

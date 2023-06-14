@@ -17,8 +17,8 @@ struct TransferCommunityRequest: APIPostRequest {
 
     // lemmy_api_common::community::TransferCommunity
     struct Body: Encodable {
-        let communityId: Int
-        let personId: Int
+        let community_id: Int
+        let person_id: Int
 
         let auth: String
     }
@@ -31,8 +31,8 @@ struct TransferCommunityRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            communityId: communityId,
-            personId: personId,
+            community_id: communityId,
+            person_id: personId,
 
             auth: account.accessToken
         )

@@ -22,45 +22,45 @@ struct EditSiteRequest: APIPutRequest {
         let description: String?
         let icon: URL?
         let banner: URL?
-        let enableDownvotes: Bool?
-        let enableNsfw: Bool?
-        let communityCreationAdminOnly: Bool?
-        let requireEmailVerification: Bool?
-        let applicationQuestion: String?
-        let privateInstance: Bool?
-        let defaultTheme: String?
-        let defaultPostListingType: String?
-        let legalInformation: String?
-        let applicationEmailAdmins: String?
-        let hideModlogModNames: Bool?
-        let discussionLanguages: [Int]?
-        let slurFilterRegex: String?
-        let actorMaxNameLength: Int?
+        let enable_downvotes: Bool?
+        let enable_nsfw: Bool?
+        let community_creation_admin_only: Bool?
+        let require_email_verification: Bool?
+        let application_question: String?
+        let private_instance: Bool?
+        let default_theme: String?
+        let default_post_listing_type: String?
+        let legal_information: String?
+        let application_email_admins: String?
+        let hide_modlog_mod_names: Bool?
+        let discussion_languages: [Int]?
+        let slur_filter_regex: String?
+        let actor_name_max_length: Int?
 
-        let rateLimitMessage: Int?
-        let rateLimitMessagePerSecond: Int?
-        let rateLimitPost: Int?
-        let rateLimitPostPerSecond: Int?
-        let rateLimitRegister: Int?
-        let rateLimitRegisterPerSecond: Int?
-        let rateLimitImage: Int?
-        let rateLimitImagePerSecond: Int?
-        let rateLimitComment: Int?
-        let rateLimitCommentPerSecond: Int?
-        let rateLimitSearch: Int?
-        let rateLimitSearchPerSecond: Int?
+        let rate_limit_message: Int?
+        let rate_limit_message_per_second: Int?
+        let rate_limit_post: Int?
+        let rate_limit_post_per_second: Int?
+        let rate_limit_register: Int?
+        let rate_limit_register_per_second: Int?
+        let rate_limit_image: Int?
+        let rate_limit_image_per_second: Int?
+        let rate_limit_comment: Int?
+        let rate_limit_comment_per_second: Int?
+        let rate_limit_search: Int?
+        let rate_limit_search_per_second: Int?
 
-        let federationEnabled: Int?
-        let federationDebug: Int?
-        let federationWorkerCount: Int?
-        let captchaEnabled: Int?
-        let captchaDifficulty: String?
+        let federation_enabled: Bool?
+        let federation_debug: Bool?
+        let federation_worker_count: Int?
+        let captcha_enabled: Bool?
+        let captcha_difficulty: String?
 
-        let allowedInstances: Int?
-        let blockedInstances: Int?
+        let allowed_instances: [String]?
+        let blocked_instances: [String]?
         let taglines: [String]?
-        let registrationMode: APIRegistrationMode?
-        let reportsEmailAdmins: Bool?
+        let registration_mode: APIRegistrationMode?
+        let reports_email_admins: Bool?
 
         let auth: String
     }
@@ -100,14 +100,14 @@ struct EditSiteRequest: APIPutRequest {
         rateLimitSearch: Int? = nil,
         rateLimitSearchPerSecond: Int? = nil,
 
-        federationEnabled: Int? = nil,
-        federationDebug: Int? = nil,
+        federationEnabled: Bool? = nil,
+        federationDebug: Bool? = nil,
         federationWorkerCount: Int? = nil,
-        captchaEnabled: Int? = nil,
+        captchaEnabled: Bool? = nil,
         captchaDifficulty: String? = nil,
 
-        allowedInstances: Int? = nil,
-        blockedInstances: Int? = nil,
+        allowedInstances: [String]? = nil,
+        blockedInstances: [String]? = nil,
         taglines: [String]? = nil,
         registrationMode: APIRegistrationMode? = nil,
         reportsEmailAdmins: Bool? = nil
@@ -120,45 +120,45 @@ struct EditSiteRequest: APIPutRequest {
             description: description,
             icon: icon,
             banner: banner,
-            enableDownvotes: enableDownvotes,
-            enableNsfw: enableNsfw,
-            communityCreationAdminOnly: communityCreationAdminOnly,
-            requireEmailVerification: requireEmailVerification,
-            applicationQuestion: applicationQuestion,
-            privateInstance: privateInstance,
-            defaultTheme: defaultTheme,
-            defaultPostListingType: defaultPostListingType,
-            legalInformation: legalInformation,
-            applicationEmailAdmins: applicationEmailAdmins,
-            hideModlogModNames: hideModlogModNames,
-            discussionLanguages: discussionLanguages,
-            slurFilterRegex: slurFilterRegex,
-            actorMaxNameLength: actorMaxNameLength,
+            enable_downvotes: enableDownvotes,
+            enable_nsfw: enableNsfw,
+            community_creation_admin_only: communityCreationAdminOnly,
+            require_email_verification: requireEmailVerification,
+            application_question: applicationQuestion,
+            private_instance: privateInstance,
+            default_theme: defaultTheme,
+            default_post_listing_type: defaultPostListingType,
+            legal_information: legalInformation,
+            application_email_admins: applicationEmailAdmins,
+            hide_modlog_mod_names: hideModlogModNames,
+            discussion_languages: discussionLanguages,
+            slur_filter_regex: slurFilterRegex,
+            actor_name_max_length: actorMaxNameLength,
 
-            rateLimitMessage: rateLimitMessage,
-            rateLimitMessagePerSecond: rateLimitMessagePerSecond,
-            rateLimitPost: rateLimitPost,
-            rateLimitPostPerSecond: rateLimitPostPerSecond,
-            rateLimitRegister: rateLimitRegister,
-            rateLimitRegisterPerSecond: rateLimitRegisterPerSecond,
-            rateLimitImage: rateLimitImage,
-            rateLimitImagePerSecond: rateLimitImagePerSecond,
-            rateLimitComment: rateLimitComment,
-            rateLimitCommentPerSecond: rateLimitCommentPerSecond,
-            rateLimitSearch: rateLimitSearch,
-            rateLimitSearchPerSecond: rateLimitSearchPerSecond,
+            rate_limit_message: rateLimitMessage,
+            rate_limit_message_per_second: rateLimitMessagePerSecond,
+            rate_limit_post: rateLimitPost,
+            rate_limit_post_per_second: rateLimitPostPerSecond,
+            rate_limit_register: rateLimitRegister,
+            rate_limit_register_per_second: rateLimitRegisterPerSecond,
+            rate_limit_image: rateLimitImage,
+            rate_limit_image_per_second: rateLimitImagePerSecond,
+            rate_limit_comment: rateLimitComment,
+            rate_limit_comment_per_second: rateLimitCommentPerSecond,
+            rate_limit_search: rateLimitSearch,
+            rate_limit_search_per_second: rateLimitSearchPerSecond,
 
-            federationEnabled: federationEnabled,
-            federationDebug: federationDebug,
-            federationWorkerCount: federationWorkerCount,
-            captchaEnabled: captchaEnabled,
-            captchaDifficulty: captchaDifficulty,
+            federation_enabled: federationEnabled,
+            federation_debug: federationDebug,
+            federation_worker_count: federationWorkerCount,
+            captcha_enabled: captchaEnabled,
+            captcha_difficulty: captchaDifficulty,
 
-            allowedInstances: allowedInstances,
-            blockedInstances: blockedInstances,
+            allowed_instances: allowedInstances,
+            blocked_instances: blockedInstances,
             taglines: taglines,
-            registrationMode: registrationMode,
-            reportsEmailAdmins: reportsEmailAdmins,
+            registration_mode: registrationMode,
+            reports_email_admins: reportsEmailAdmins,
             auth: account.accessToken
         )
     }

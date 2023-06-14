@@ -17,7 +17,7 @@ struct ResolvePostReportRequest: APIPutRequest {
 
     // lemmy_api_common::post::ResolvePostReport
     struct Body: Encodable {
-        let reportId: Int
+        let report_id: Int
         let resolved: Bool
 
         let auth: String
@@ -31,7 +31,7 @@ struct ResolvePostReportRequest: APIPutRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            reportId: reportId,
+            report_id: reportId,
             resolved: resolved,
 
             auth: account.accessToken

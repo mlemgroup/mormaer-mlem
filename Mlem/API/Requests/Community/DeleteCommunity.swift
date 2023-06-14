@@ -17,7 +17,7 @@ struct DeleteCommunityRequest: APIPostRequest {
 
     // lemmy_api_common::community::DeleteCommunity
     struct Body: Encodable {
-        let communityId: Int
+        let community_id: Int
         let deleted: Bool
 
         let auth: String
@@ -31,7 +31,7 @@ struct DeleteCommunityRequest: APIPostRequest {
     ) {
         self.instanceURL = account.instanceLink
         self.body = .init(
-            communityId: communityId,
+            community_id: communityId,
             deleted: deleted,
 
             auth: account.accessToken
