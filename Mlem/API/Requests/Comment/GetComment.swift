@@ -1,5 +1,5 @@
 //
-//  X.swift
+//  GetComment.swift
 //  Mlem
 //
 //  Created by Jonathan de Jong on 13.06.2023.
