@@ -10,6 +10,7 @@ import SwiftUI
 struct CommunityView: View
 {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    @AppStorage("hideTopBarAndNavBarWhenScrolling") var hideTopBarAndNavBarWhenScrolling: Bool = false
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -367,8 +368,7 @@ struct CommunityView: View
                 }
             }
         }
-        .toolbar(isScrollViewDragging ? .visible : .hidden, for: .tabBar)
-        .toolbar(isScrollViewDragging ? .visible : .hidden, for: .navigationBar)
+        .hideNavBarAndTopBar(isScrollViewDragging, hideTopBarAndNavBarWhenScrolling)
         .simultaneousGesture(dragGesture)
     }
 
@@ -506,5 +506,29 @@ struct CommunityView: View
             errorAlert = .unexpected
         }
 
+    }
+}
+
+struct HideNavBarAndTopBarModifier: ViewModifier {
+    var isScrollViewDragging: Bool
+    var hideTopBarAndNavBarWhenScrolling: Bool
+
+    func body(content: Content) -> some View {
+        if hideTopBarAndNavBarWhenScrolling {
+            Spacer()
+                .frame(height: 1)
+                .ignoresSafeArea()
+            content
+                .toolbar(isScrollViewDragging ? .visible : .hidden, for: .tabBar)
+                .toolbar(isScrollViewDragging ? .visible : .hidden, for: .navigationBar)
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    func hideNavBarAndTopBar(_ isScrollViewDragging: Bool, _ hideTopBarAndNavBarWhenScrolling: Bool) -> some View {
+        self.modifier(HideNavBarAndTopBarModifier(isScrollViewDragging: isScrollViewDragging, hideTopBarAndNavBarWhenScrolling: hideTopBarAndNavBarWhenScrolling))
     }
 }
