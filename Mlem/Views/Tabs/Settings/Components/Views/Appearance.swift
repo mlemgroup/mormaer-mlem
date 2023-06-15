@@ -18,6 +18,7 @@ struct AppearanceSettingsView: View {
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    @AppStorage("hideTopBarAndNavBarWhenScrolling") var hideTopBarAndNavBarWhenScrolling: Bool = false
     
     var body: some View {
         List
@@ -116,6 +117,15 @@ struct AppearanceSettingsView: View {
                     settingPictureColor: .pink,
                     settingName: "Show community icons",
                     isTicked: $shouldShowCommunityIcons
+                )
+            }
+            Section("Navigation")
+            {
+                SettingsItem(
+                    settingPictureSystemName: "scroll.fill",
+                    settingPictureColor: .pink,
+                    settingName: "Hide TopBar and NavBar when scrolling",
+                    isTicked: $hideTopBarAndNavBarWhenScrolling
                 )
             }
         }
