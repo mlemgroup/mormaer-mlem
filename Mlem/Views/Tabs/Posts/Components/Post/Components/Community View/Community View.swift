@@ -521,6 +521,9 @@ struct HideNavBarAndTopBarModifier: ViewModifier {
             content
                 .toolbar(isScrollViewDragging ? .visible : .hidden, for: .tabBar)
                 .toolbar(isScrollViewDragging ? .visible : .hidden, for: .navigationBar)
+            Spacer()
+                .frame(height: 1)
+                .ignoresSafeArea()
         } else {
             content
         }
