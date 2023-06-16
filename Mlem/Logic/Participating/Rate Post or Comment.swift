@@ -19,29 +19,28 @@ enum RatingFailure: Error {
 
 @MainActor
 func ratePost(
-    post: APIPost,
+    postId: Int,
     operation: ScoringOperation,
     account: SavedAccount,
     postTracker: PostTracker,
     appState: AppState
 ) async throws {
     do {
-        
         let request = CreatePostLikeRequest(
             account: account,
-            postId: post.id,
+            postId: postId,
             score: operation
         )
         
+        AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         
-        guard let indexToReplace = postTracker.posts.firstIndex(where: { $0.post.id == post.id }) else {
+        guard let indexToReplace = postTracker.posts.firstIndex(where: { $0.post.id == postId }) else {
             // shouldn't happen, but safer than force unwrapping
             return
         }
         
         postTracker.posts[indexToReplace] = response.postView
-        AppConstants.hapticManager.notificationOccurred(.success)
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
         throw RatingFailure.failedToPostScore
@@ -63,9 +62,9 @@ func rateComment(
             score: operation
         )
         
+        AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         let updatedComment = commentTracker.comments.update(with: response.commentView)
-        AppConstants.hapticManager.notificationOccurred(.success)
         return updatedComment
     } catch let ratingOperationError {
         AppConstants.hapticManager.notificationOccurred(.error)
