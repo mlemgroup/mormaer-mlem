@@ -10,7 +10,7 @@ import SwiftUI
 
 struct VoteComplex: View {
     // whether to display default or symmetric score
-    @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
+    @AppStorage(\.voteComplexStyle) var voteComplexStyle
     
     let vote: ScoringOperation
     let score: Int

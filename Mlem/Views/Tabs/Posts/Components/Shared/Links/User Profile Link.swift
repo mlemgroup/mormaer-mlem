@@ -10,7 +10,7 @@ import CachedAsyncImage
 
 struct UserProfileLink: View
 {
-    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
+    @AppStorage(\.shouldShowUserAvatars) var shouldShowUserAvatars
     
     @State var account: SavedAccount
     @State var user: APIPerson

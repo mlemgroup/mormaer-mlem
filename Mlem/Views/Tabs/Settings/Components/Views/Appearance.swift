@@ -9,18 +9,18 @@ import SwiftUI
 
 struct AppearanceSettingsView: View {
     
-    @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
-    @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
-    @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
+    @AppStorage(\.shouldShowWebsitePreviews) var shouldShowWebsitePreviews
+    @AppStorage(\.shouldShowWebsiteFaviconAtAll) var shouldShowWebsiteFaviconAtAll
+    @AppStorage(\.shouldShowWebsiteHost) var shouldShowWebsiteHost
     
-    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
-    @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
-    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
-    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
+    @AppStorage(\.shouldShowCompactPosts) var shouldShowCompactPosts
+    @AppStorage(\.shouldShowWebsiteFavicons) var shouldShowWebsiteFavicons
+    @AppStorage(\.shouldShowUserAvatars) var shouldShowUserAvatars
+    @AppStorage(\.shouldShowCommunityIcons) var shouldShowCommunityIcons
     
-    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+    @AppStorage(\.shouldShowCommunityHeaders) var shouldShowCommunityHeaders
     
-    @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
+    @AppStorage(\.voteComplexStyle) var voteComplexStyle
     
     var body: some View {
         List

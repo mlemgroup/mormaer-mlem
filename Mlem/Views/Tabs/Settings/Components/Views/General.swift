@@ -14,7 +14,7 @@ internal enum FavoritesPurgingError
 
 struct GeneralSettingsView: View
 {
-    @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortTypes = .top
+    @AppStorage(\.defaultCommentSorting) var defaultCommentSorting
     
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
     @EnvironmentObject var appState: AppState

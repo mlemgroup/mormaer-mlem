@@ -14,9 +14,9 @@ import SwiftUI
  */
 struct FeedPost: View
 {
-    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
-    @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-    @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
+    @AppStorage(\.shouldShowUserAvatars) var shouldShowUserAvatars
+    @AppStorage(\.shouldShowCommunityIcons) var shouldShowCommunityIcons
+    @AppStorage(\.shouldShowCompactPosts) var shouldShowCompactPosts
     
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
