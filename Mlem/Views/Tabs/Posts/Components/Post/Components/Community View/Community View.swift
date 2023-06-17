@@ -166,8 +166,7 @@ struct CommunityView: View
                 Task(priority: .userInitiated) {
                     isRefreshing = true
 
-                    postTracker.page = 1 /// Reset the page so it doesn't load some page in the middle of the feed
-                    postTracker.posts = .init()
+                    postTracker.reset()
 
                     await loadFeed()
 
@@ -213,9 +212,7 @@ struct CommunityView: View
             }
             .onChange(of: feedType, perform: { newValue in
                 Task(priority: .userInitiated) {
-                    postTracker.page = 1
-
-                    postTracker.posts = .init()
+                    postTracker.reset()
                     postTracker.isLoading = true
 
                     await loadFeed()
@@ -278,13 +275,9 @@ struct CommunityView: View
                             Task {
                                 print("Selected sorting option: \(newValue), \(newValue.rawValue)")
 
-                                postTracker.posts = .init()
-                                postTracker.page = 1
+                                postTracker.reset()
 
-
-                                if postTracker.posts.isEmpty {
-                                    postTracker.isLoading = true
-                                }
+                                postTracker.isLoading = true
 
                                 await loadFeed()
                                 postTracker.isLoading = false
