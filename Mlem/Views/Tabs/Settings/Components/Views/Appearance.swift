@@ -9,18 +9,18 @@ import SwiftUI
 
 struct AppearanceSettingsView: View {
     
-    @AppStorage(\.shouldShowWebsitePreviews) var shouldShowWebsitePreviews
-    @AppStorage(\.shouldShowWebsiteFaviconAtAll) var shouldShowWebsiteFaviconAtAll
-    @AppStorage(\.shouldShowWebsiteHost) var shouldShowWebsiteHost
+    @Preference(\.shouldShowWebsitePreviews) var shouldShowWebsitePreviews
+    @Preference(\.shouldShowWebsiteFaviconAtAll) var shouldShowWebsiteFaviconAtAll
+    @Preference(\.shouldShowWebsiteHost) var shouldShowWebsiteHost
     
-    @AppStorage(\.shouldShowCompactPosts) var shouldShowCompactPosts
-    @AppStorage(\.shouldShowWebsiteFavicons) var shouldShowWebsiteFavicons
-    @AppStorage(\.shouldShowUserAvatars) var shouldShowUserAvatars
-    @AppStorage(\.shouldShowCommunityIcons) var shouldShowCommunityIcons
+    @Preference(\.shouldShowCompactPosts) var shouldShowCompactPosts
+    @Preference(\.shouldShowWebsiteFavicons) var shouldShowWebsiteFavicons
+    @Preference(\.shouldShowUserAvatars) var shouldShowUserAvatars
+    @Preference(\.shouldShowCommunityIcons) var shouldShowCommunityIcons
     
-    @AppStorage(\.shouldShowCommunityHeaders) var shouldShowCommunityHeaders
+    @Preference(\.shouldShowCommunityHeaders) var shouldShowCommunityHeaders
     
-    @AppStorage(\.voteComplexStyle) var voteComplexStyle
+    @Preference(\.voteComplexStyle) var voteComplexStyle
     
     var body: some View {
         List

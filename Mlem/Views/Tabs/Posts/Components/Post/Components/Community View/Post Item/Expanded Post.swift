@@ -14,7 +14,7 @@ internal enum PossibleStyling
 
 struct ExpandedPost: View
 {
-    @AppStorage(\.defaultCommentSorting) var defaultCommentSorting
+    @Preference(\.defaultCommentSorting) var defaultCommentSorting
 
     @EnvironmentObject var appState: AppState
 

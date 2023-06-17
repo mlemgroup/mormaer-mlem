@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CommunityView: View
 {
-    @AppStorage(\.shouldShowCommunityHeaders) var shouldShowCommunityHeaders
-    @AppStorage(\.shouldShowCompactPosts) var shouldShowCompactPosts
+    @Preference(\.shouldShowCommunityHeaders) var shouldShowCommunityHeaders
+    @Preference(\.shouldShowCompactPosts) var shouldShowCompactPosts
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker

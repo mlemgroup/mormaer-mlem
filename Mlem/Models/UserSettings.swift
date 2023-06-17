@@ -3,447 +3,175 @@
 //  Mlem
 //
 //  Created by Taylor Geisse on 6/16/23.
+//  Source and credit: https://www.avanderlee.com/swift/appstorage-explained/
+//  Adapted by Taylor to support Enums, Optionals, and constraints to only property list supported types.
 //
 
 import Foundation
+import Combine
 import SwiftUI
 
-struct UserSettings {
-    let shouldShowWebsitePreviews = Setting(key: "shouldShowWebsitePreviews", defaultValue: true)
-    let shouldShowWebsiteFaviconAtAll = Setting(key: "shouldShowWebsiteFaviconAtAll", defaultValue: true)
-    let shouldShowWebsiteHost = Setting(key: "shouldShowWebsiteHost", defaultValue: true)
-    let shouldShowWebsiteFavicons = Setting(key: "shouldShowWebsiteFavicons", defaultValue: true)
+final class Preferences {
+    static let standard = Preferences(userDefaults: .standard)
+    fileprivate let userDefaults: UserDefaults
     
-    let shouldShowCompactPosts = Setting(key: "shouldShowCompactPosts", defaultValue: false)
+    /// Sends through the changed key path whenever a change occurs.
+    var preferencesChangedSubject = PassthroughSubject<AnyKeyPath, Never>()
     
-    let shouldShowUserAvatars = Setting(key: "shouldShowUserAvatars", defaultValue: true)
-    let shouldShowCommunityIcons = Setting(key: "shouldShowCommunityIcons", defaultValue: true)
-    let shouldShowCommunityHeaders = Setting(key: "shouldShowCommunityHeaders", defaultValue: false)
+    init(userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
+    }
     
-    let voteComplexStyle = Setting(key: "voteComplexStyle", defaultValue: VoteComplexStyle.standard)
+    // MARK: - Defined UserDefaults Preferences
+    @UserDefault("shouldShowWebsitePreviews") var shouldShowWebsitePreviews = true
+    @UserDefault("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll = true
+    @UserDefault("shouldShowWebsiteHost") var shouldShowWebsiteHost = true
+    @UserDefault("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons = true
     
-    let defaultCommentSorting = Setting(key: "defaultCommentSorting", defaultValue: CommentSortTypes.top)
+    @UserDefault("shouldShowCompactPosts") var shouldShowCompactPosts = false
     
-    let hasUndergoneLegacyAccountDeletion_debug_3 = Setting(key: "hasUndergoneLegacyAccountDeletion_debug_3", defaultValue: false)
+    @UserDefault("shouldShowUserAvatars") var shouldShowUserAvatars = true
+    @UserDefault("shouldShowCommunityIcons") var shouldShowCommunityIcons = true
+    @UserDefault("shouldShowCommunityHeaders") var shouldShowCommunityHeaders = false
     
-    static let shared = UserSettings()
-    private init() {}
+    @UserDefault("voteComplexStyle") var voteComplexStyle = VoteComplexStyle.standard
+    @UserDefault("defaultCommentSorting") var defaultCommentSorting = CommentSortTypes.top
     
-    struct Setting<Value> {
-        let key: String
-        let defaultValue: Value
-        
-        init(key: String, defaultValue: Value) {
-            self.key = key
-            self.defaultValue = defaultValue
-        }
-        
-        init(key: String) where Value: ExpressibleByNilLiteral {
-            self.key = key
-            self.defaultValue = nil
-        }
-    }
+    @UserDefault("hasUndergoneLegacyAccountDeletion_debug_3") var hasUndergoneLegacyAccountDeletion_debug_3 = false
 }
 
-
-// MARK: - AppStorage Extension for Non-Optionals
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == String {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(wrappedValue: setting.defaultValue,
-                  setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value: RawRepresentable, Value.RawValue == Int {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(wrappedValue: setting.defaultValue,
-                  setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == Data {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(wrappedValue: setting.defaultValue,
-                  setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == Int {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(wrappedValue: setting.defaultValue,
-                  setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value: RawRepresentable, Value.RawValue == String {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(wrappedValue: setting.defaultValue,
-                  setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == URL {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(wrappedValue: setting.defaultValue,
-                  setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == Double {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(wrappedValue: setting.defaultValue,
-                  setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == Bool {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(wrappedValue: setting.defaultValue,
-                  setting.key,
-                  store: store)
-    }
-}
-
-// MARK: - AppStorage Extension for ExpressibleByNilLiteral
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == Int? {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == String? {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == Double? {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 15, macOS 12, macCatalyst 15, tvOS 15, watchOS 8, *)
-extension AppStorage {
-    init<R>(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil)
-    where Value == R?, R: RawRepresentable, R.RawValue == Int
-    {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 15, macOS 12, macCatalyst 15, tvOS 15, watchOS 8, *)
-extension AppStorage {
-    init<R>(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil)
-    where Value == R?, R: RawRepresentable, R.RawValue == String
-    {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == Data? {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == Bool? {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 14, macOS 11, macCatalyst 14, tvOS 14, watchOS 7, *)
-extension AppStorage where Value == URL? {
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil) {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(setting.key,
-                  store: store)
-    }
-}
-
-@available(iOS 17, macOS 14, macCatalyst 17, *)
-@available(tvOS, unavailable)
-@available(watchOS, unavailable)
-extension AppStorage {
-    init<RowValue>(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults? = nil)
-    where Value == TableColumnCustomization<RowValue>, RowValue: Identifiable
-    {
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.init(wrappedValue: setting.defaultValue,
-                  setting.key,
-                  store: store)
-    }
-}
-
-// MARK: - UserDefault property wrapper for use in non-SwiftUI code
 @propertyWrapper
-class UserDefault<Value> {
-    private var defaultValue: Value
-    private var key: String
-    private var container: UserDefaults
+struct Preference<Value>: DynamicProperty {
+    @ObservedObject private var preferenceObserver: PublisherObservableObject
+    private let keyPath: ReferenceWritableKeyPath<Preferences, Value>
+    private let preferences: Preferences
     
-    private var getter: () -> Value = {
-        fatalError("UserDefault getter was not replaced during initialization")
-        // return UserDefaults.standard.object(forKey: "willBeOverriden") as! Value
-    }
-    private var setter: (Value) -> Void = { _ in
-        fatalError("UserDefault setter was not replaced during initialization")
+    init(_ keyPath: ReferenceWritableKeyPath<Preferences, Value>, preferences: Preferences = .standard) {
+        self.keyPath = keyPath
+        self.preferences = preferences
+        
+        let publisher = preferences
+                            .preferencesChangedSubject
+                            .filter { $0 == keyPath }
+                            .map { _ in () }
+                            .eraseToAnyPublisher()
+        
+        self.preferenceObserver = .init(publisher: publisher)
     }
     
     var wrappedValue: Value {
-        get { getter() }
-        set { setter(newValue) }
+        get { preferences[keyPath: keyPath] }
+        nonmutating set { preferences[keyPath: keyPath] = newValue }
     }
     
-    // MARK: - Non-optional inits for supported types
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == String {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.string(forKey: self.key) ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
+    var projectedValue: Binding<Value> {
+        Binding(
+            get: { wrappedValue },
+            set: { wrappedValue = $0 }
+        )
     }
     
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value: RawRepresentable {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = {
-            guard let rawValue = self.container.object(forKey: self.key) as? Value.RawValue else { return self.defaultValue }
-            return Value(rawValue: rawValue) ?? self.defaultValue
+    var publisher: ObservableObjectPublisher { preferenceObserver.objectWillChange }
+}
+
+final class PublisherObservableObject: ObservableObject {
+    var subscriber: AnyCancellable?
+    
+    init(publisher: AnyPublisher<Void, Never>) {
+        subscriber = publisher.sink { [weak self] _ in
+            self?.objectWillChange.send()
         }
-        setter = { self.container.set($0.rawValue, forKey: self.key) }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == Data {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.data(forKey: self.key) ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == Int {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.object(forKey: self.key) as? Int ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == URL {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.url(forKey: self.key) ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == Double {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.object(forKey: self.key) as? Double ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == Bool {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.object(forKey: self.key) as? Bool ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    // MARK: - Optional (ExpressibleByNilLiteral) initiatilzers
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == Int? {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.object(forKey: self.key) as? Value ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == String? {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.object(forKey: self.key) as? Value ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == Double? {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.object(forKey: self.key) as? Value ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    init<R>(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == R?, R: RawRepresentable {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = {
-            guard let rawVal = self.container.object(forKey: self.key) as? R.RawValue else { return self.defaultValue }
-            return R(rawValue: rawVal) ?? self.defaultValue
-        }
-        setter = {
-            self.container.set($0?.rawValue, forKey: self.key)
-        }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == Data? {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.object(forKey: self.key) as? Value ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == Bool? {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.object(forKey: self.key) as? Value ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
-    }
-    
-    init(_ settingKeyPath: KeyPath<UserSettings, UserSettings.Setting<Value>>, store: UserDefaults = .standard)
-    where Value == URL? {
-        
-        let setting = UserSettings.shared[keyPath: settingKeyPath]
-        
-        self.defaultValue = setting.defaultValue
-        self.key = setting.key
-        self.container = store
-        
-        getter = { self.container.object(forKey: self.key) as? Value ?? self.defaultValue }
-        setter = { self.container.set($0, forKey: self.key) }
     }
 }
+
+@available(iOS 2.0, OSX 10.0, tvOS 9.0, watchOS 2.0, *)
+@propertyWrapper
+struct UserDefault<Value> {
+    private var getter: (UserDefaults) -> Value
+    private var setter: (UserDefaults, Value) -> Void
+    
+    @available(*, unavailable)
+    var wrappedValue: Value {
+        get { fatalError("Wrapped value should not be used.") }
+        set { fatalError("Wrapped value should not be used.") }
+    }
+    
+    // MARK: - Enum support for UserDefault
+    init(wrappedValue defaultValue: Value, _ key: String) where Value: RawRepresentable {
+        getter = {
+            guard let rawValue = $0.object(forKey: key) as? Value.RawValue else { return defaultValue }
+            return Value(rawValue: rawValue) ?? defaultValue
+        }
+        
+        setter = { $0.set($1.rawValue, forKey: key) }
+    }
+    
+    init<R>(wrappedValue defaultValue: Value = nil, _ key: String) where Value == R?, R: RawRepresentable {
+        getter = {
+            guard let rawValue = $0.object(forKey: key) as? R.RawValue else { return defaultValue }
+            return R(rawValue: rawValue) ?? defaultValue
+        }
+        
+        setter = { $0.set($1?.rawValue, forKey: key) }
+    }
+    
+    // MARK: - Initializers for supported types
+    init(wrappedValue defaultValue: Value, _ key: String) where Value: PropertyListValue {
+        getter = { $0.object(forKey: key) as? Value ?? defaultValue }
+        setter = { $0.set($1, forKey: key) }
+    }
+    
+    init<R>(wrappedValue defaultValue: Value = nil, _ key: String) where Value == R?, R: PropertyListValue {
+        getter = { $0.object(forKey: key) as? R ?? defaultValue }
+        setter = { $0.set($1, forKey: key) }
+    }
+    
+    public static subscript(
+        _enclosingInstance instance: Preferences,
+        wrapped wrappedKeyPath: ReferenceWritableKeyPath<Preferences, Value>,
+        storage storageKeyPath: ReferenceWritableKeyPath<Preferences, Self>
+    ) -> Value {
+        get {
+            instance[keyPath: storageKeyPath].getter(instance.userDefaults)
+        }
+        set {
+            instance[keyPath: storageKeyPath].setter(instance.userDefaults, newValue)
+            instance.preferencesChangedSubject.send(wrappedKeyPath)
+        }
+    }
+}
+
+public protocol PropertyListValue {}
+
+extension NSData: PropertyListValue {}
+extension Data: PropertyListValue {}
+
+extension NSString: PropertyListValue {}
+extension String: PropertyListValue {}
+
+extension NSURL: PropertyListValue {}
+extension URL: PropertyListValue {}
+
+extension NSDate: PropertyListValue {}
+extension Date: PropertyListValue {}
+
+extension NSNumber: PropertyListValue {}
+extension Bool: PropertyListValue {}
+extension Int: PropertyListValue {}
+extension Int8: PropertyListValue {}
+extension Int16: PropertyListValue {}
+extension Int32: PropertyListValue {}
+extension Int64: PropertyListValue {}
+extension UInt: PropertyListValue {}
+extension UInt8: PropertyListValue {}
+extension UInt16: PropertyListValue {}
+extension UInt32: PropertyListValue {}
+extension UInt64: PropertyListValue {}
+extension Double: PropertyListValue {}
+extension Float: PropertyListValue {}
+#if os(macOS)
+extension Float80: PropertyListValue {}
+#endif
+
+extension Array: PropertyListValue where Element: PropertyListValue {}
+extension Dictionary: PropertyListValue where Key == String, Value: PropertyListValue {}

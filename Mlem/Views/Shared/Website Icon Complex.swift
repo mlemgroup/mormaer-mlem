@@ -11,11 +11,11 @@ import SwiftUI
 
 struct WebsiteIconComplex: View
 {
-    @AppStorage(\.shouldShowWebsitePreviews) var shouldShowWebsitePreviews
-    @AppStorage(\.shouldShowWebsiteFaviconAtAll) var shouldShowWebsiteFaviconAtAll
-    @AppStorage(\.shouldShowWebsiteHost) var shouldShowWebsiteHost
+    @Preference(\.shouldShowWebsitePreviews) var shouldShowWebsitePreviews
+    @Preference(\.shouldShowWebsiteFaviconAtAll) var shouldShowWebsiteFaviconAtAll
+    @Preference(\.shouldShowWebsiteHost) var shouldShowWebsiteHost
 
-    @AppStorage(\.shouldShowWebsiteFavicons) var shouldShowWebsiteFavicons
+    @Preference(\.shouldShowWebsiteFavicons) var shouldShowWebsiteFavicons
 
     @State var post: APIPost
 

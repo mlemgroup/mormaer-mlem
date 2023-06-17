@@ -14,9 +14,9 @@ import SwiftUI
  */
 struct FeedPost: View
 {
-    @AppStorage(\.shouldShowUserAvatars) var shouldShowUserAvatars
-    @AppStorage(\.shouldShowCommunityIcons) var shouldShowCommunityIcons
-    @AppStorage(\.shouldShowCompactPosts) var shouldShowCompactPosts
+    @Preference(\.shouldShowUserAvatars) var shouldShowUserAvatars
+    @Preference(\.shouldShowCommunityIcons) var shouldShowCommunityIcons
+    @Preference(\.shouldShowCompactPosts) var shouldShowCompactPosts
     
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState

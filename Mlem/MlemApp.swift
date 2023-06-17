@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct MlemApp: App
 {
-    @AppStorage(\.hasUndergoneLegacyAccountDeletion_debug_3) var hasUndergoneLegaryAccountDeletion_debug
+    @Preference(\.hasUndergoneLegacyAccountDeletion_debug_3) var hasUndergoneLegaryAccountDeletion_debug
 
     @StateObject var appState: AppState = .init()
     @StateObject var accountsTracker: SavedAccountTracker = .init()
