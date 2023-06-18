@@ -61,7 +61,7 @@ class PostTracker: ObservableObject {
         posts.prepend(newPost)
     }
     
-    /// A method to supplly an updated post to the tracker
+    /// A method to supply an updated post to the tracker
     ///  - Note: If the `id` of the post is not already in the tracker the `updatedPost` will be discarded
     /// - Parameter updatedPost: An updated `APIPostView`
     func update(with updatedPost: APIPostView) {
