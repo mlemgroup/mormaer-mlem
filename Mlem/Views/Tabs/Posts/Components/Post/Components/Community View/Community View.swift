@@ -178,15 +178,7 @@ struct CommunityView: View
                 if postTracker.posts.isEmpty
                 {
                     print("Post tracker is empty")
-
-                    if postTracker.posts.isEmpty
-                    {
-                        postTracker.isLoading = true
-                    }
-
                     await loadFeed()
-
-                    postTracker.isLoading = false
                 }
                 else
                 {
@@ -213,11 +205,7 @@ struct CommunityView: View
             .onChange(of: feedType, perform: { newValue in
                 Task(priority: .userInitiated) {
                     postTracker.reset()
-                    postTracker.isLoading = true
-
                     await loadFeed()
-
-                    postTracker.isLoading = false
                 }
             })
         }
@@ -276,12 +264,7 @@ struct CommunityView: View
                                 print("Selected sorting option: \(newValue), \(newValue.rawValue)")
 
                                 postTracker.reset()
-
-                                postTracker.isLoading = true
-
                                 await loadFeed()
-                                postTracker.isLoading = false
-
                             }
                         }
                     ))
@@ -458,12 +441,7 @@ struct CommunityView: View
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .task {
                 if post == postTracker.posts.last {
-                    if postTracker.posts.isEmpty {
-                        postTracker.isLoading = true
-                    }
-
                     await loadFeed()
-                    postTracker.isLoading = false
                 }
             }
         }

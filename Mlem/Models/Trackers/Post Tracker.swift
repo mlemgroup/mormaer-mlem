@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class PostTracker: ObservableObject {
     
-    @Published var isLoading: Bool = true
+    @Published private(set) var isLoading: Bool = true
     @Published private(set) var posts: [APIPostView] = .init()
     
     private var page: Int = 1
@@ -23,6 +23,9 @@ class PostTracker: ObservableObject {
     ///   - sort: The sorting type for the feed
     ///   - type: The type of feed the tracker should load
     func loadNextPage(account: SavedAccount, communityId: Int?, sort: SortingOptions?, type: FeedType) async throws {
+        defer { isLoading = false }
+        isLoading = true
+        
         let request = GetPostsRequest(
             account: account,
             communityId: communityId,
