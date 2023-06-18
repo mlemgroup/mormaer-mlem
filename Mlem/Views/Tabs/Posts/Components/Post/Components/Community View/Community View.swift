@@ -10,11 +10,8 @@ import SwiftUI
 struct CommunityView: View
 {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
-<<<<<<< HEAD
     @AppStorage("hideTopBarAndNavBarWhenScrolling") var hideTopBarAndNavBarWhenScrolling: Bool = false
-=======
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
->>>>>>> master
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -374,7 +371,6 @@ struct CommunityView: View
                 }
             }
         }
-<<<<<<< HEAD
         .hideNavBarAndTopBar(isScrollViewDragging, hideTopBarAndNavBarWhenScrolling)
         .simultaneousGesture(dragGesture)
     }
@@ -389,9 +385,6 @@ struct CommunityView: View
                 isScrollViewDragging.toggle()
             }
         }
-=======
-        .environmentObject(postTracker)
->>>>>>> master
     }
 
     private var searchResultsView: some View {
