@@ -460,6 +460,7 @@ struct CommunityView: View
             .frame(maxWidth: .infinity)
             .foregroundColor(.secondary)
             .background(Color.systemBackground)
+            .accessibilityElement(children: .combine)
         }
     }
 
