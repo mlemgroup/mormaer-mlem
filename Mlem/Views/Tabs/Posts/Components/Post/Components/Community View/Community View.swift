@@ -471,13 +471,11 @@ struct CommunityView: View
 
     func loadFeed() async {
         do {
-            try await loadInfiniteFeed(
-                postTracker: postTracker,
-                appState: appState,
+            try await postTracker.loadNextPage(
+                account: account,
                 communityId: community?.id,
-                feedType: feedType,
-                sortingType: selectedSortingOption,
-                account: account
+                sort: selectedSortingOption,
+                type: feedType
             )
         } catch APIClientError.networking {
             errorAlert = .init(
