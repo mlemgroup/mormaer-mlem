@@ -74,6 +74,7 @@ struct CommunityView: View
                     LazyVStack(spacing: 0) {
                         bannerView
                         postListView
+                        loadingMorePostsView
                     }
                 }
             }
@@ -444,6 +445,21 @@ struct CommunityView: View
                     await loadFeed()
                 }
             }
+        }
+    }
+    
+    @ViewBuilder
+    private var loadingMorePostsView: some View {
+        if postTracker.isLoading {
+            VStack(alignment: .center) {
+                ProgressView()
+                    .frame(width: 16, height: 16)
+                Text("Loading more posts...")
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .foregroundColor(.secondary)
+            .background(Color.systemBackground)
         }
     }
 
