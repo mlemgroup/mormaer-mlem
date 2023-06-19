@@ -8,6 +8,7 @@
 import CachedAsyncImage
 import QuickLook
 import SwiftUI
+import AlertToast
 
 /**
  Displays a single post in the feed
@@ -17,19 +18,21 @@ struct FeedPost: View
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
-    
+
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
-    
+
+    @Environment(\.displayToast) var displayToast
+
     // arguments
     let post: APIPostView
-    let account: SavedAccount
-    
+    let account: SavedAccount?
+
     @Binding var feedType: FeedType
-    
+
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
-    
+
     var body: some View {
         VStack(spacing: 0) {
             postItem
@@ -40,7 +43,7 @@ struct FeedPost: View
 //                        } label: {
 //                            Label("Do things", systemImage: "heart")
 //                        }
-                    
+
                     // only display share if URL is valid
                     if let postUrl: URL = URL(string: post.post.apId) {
                         ShareButton(urlToShare: postUrl, isShowingButtonText: true)
@@ -53,7 +56,7 @@ struct FeedPost: View
         }
             .background(Color.systemBackground)
     }
-    
+
     @ViewBuilder
     var postItem: some View {
         if (shouldShowCompactPosts){
@@ -63,12 +66,13 @@ struct FeedPost: View
             LargePost(post: post, account: account, isExpanded: false, voteOnPost: voteOnPost)
         }
     }
-    
+
     /**
      Votes on a post
      NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
      */
     func voteOnPost(inputOp: ScoringOperation) async -> Void {
+        guard let account = account else { return displayToast(AlertToast(displayMode: .banner(.pop), type: .regular, title: "Only registered accounts can rate posts")) }
         do {
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             try await ratePost(postId: post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)

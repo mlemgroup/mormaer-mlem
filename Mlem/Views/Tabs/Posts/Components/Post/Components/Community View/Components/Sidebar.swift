@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CommunitySidebarView: View {
 
-    @State var account: SavedAccount
+    @State var account: SavedAccount?
     @Binding var communityDetails: GetCommunityResponse?
     @Binding var isActive: Bool
 

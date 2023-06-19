@@ -22,8 +22,8 @@ struct GetPersonDetailsRequest: APIGetRequest {
 
     // lemmy_api_common::person::GetPersonDetails
     init(
-        accessToken: String,
-        instanceURL: URL,
+        accessToken: String?,
+        instanceURL: URL?,
         sort: SortingOptions? = nil,
         page: Int? = nil,
         limit: Int? = nil,
@@ -37,7 +37,7 @@ struct GetPersonDetailsRequest: APIGetRequest {
             throw GetPersonDetailsRequestError.invalidArguments
         }
 
-        self.instanceURL = instanceURL
+        self.instanceURL = instanceURL ?? DefaultLemmyServer
         var queryItems: [URLQueryItem] = [
             .init(name: "auth", value: accessToken),
             .init(name: "sort", value: sort?.rawValue),
@@ -49,7 +49,7 @@ struct GetPersonDetailsRequest: APIGetRequest {
 
         if var username {
             if !username.contains("@") {
-                guard let host = instanceURL.host() else {
+                guard let host = self.instanceURL.host() else {
                     throw GetPersonDetailsRequestError.unableToDetermineInstanceHost
                 }
                 username = "\(username)@\(host)"

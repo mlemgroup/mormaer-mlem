@@ -17,7 +17,7 @@ struct GetPostsRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
+        account: SavedAccount?,
         communityId: Int?,
         page: Int,
         sort: SortingOptions?,
@@ -26,10 +26,13 @@ struct GetPostsRequest: APIGetRequest {
         savedOnly: Bool? = nil,
         communityName: String? = nil
     ) {
-        self.instanceURL = account.instanceLink
-
-        var queryItems: [URLQueryItem] = [
-            .init(name: "auth", value: account.accessToken),
+        self.instanceURL = account?.instanceLink ?? DefaultLemmyServer
+        var type: FeedType = type
+        if account == nil {
+            type = .all
+        }
+        let queryItems: [URLQueryItem] = [
+            .init(name: "auth", value: account?.accessToken),
             .init(name: "page", value: "\(page)"),
             .init(name: "type_", value: type.rawValue),
             .init(name: "sort", value: sort.map {$0.rawValue}),

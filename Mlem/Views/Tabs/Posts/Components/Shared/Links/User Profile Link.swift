@@ -12,7 +12,7 @@ struct UserProfileLink: View
 {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     
-    @State var account: SavedAccount
+    @State var account: SavedAccount?
     @State var user: APIPerson
 
     var body: some View

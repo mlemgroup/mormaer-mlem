@@ -18,6 +18,8 @@ enum APIClientError: Error {
     case response(APIErrorResponse, Int?)
 }
 
+let DefaultLemmyServer = URL(string: "https://lemmy.ml/api/v3/")!
+
 class APIClient {
     
     let session: URLSession
@@ -40,6 +42,12 @@ class APIClient {
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             throw APIClientError.response(apiError, statusCode)
         }
+        
+        decoder.dateDecodingStrategyFormatters = [ DateFormatter.expandedTWithTimezone,
+                                                   DateFormatter.expandedT,
+                                                   DateFormatter.standardT,
+                                                   DateFormatter.standard,
+                                                   DateFormatter.yearMonthDay ]
         
         return try decoder.decode(Request.Response.self, from: data)
     }

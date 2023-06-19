@@ -10,8 +10,8 @@ import SwiftUI
 struct SettingsView: View
 {
     @Environment(\.openURL) private var openURL
-    
-    @State private var specialContributors: [Contributor] = [
+
+    private let specialContributors: [Contributor] = [
         Contributor(
             name: "Seb Jachec",
             avatarLink: URL(string: "https://avatars.githubusercontent.com/u/379991?v=4")!,
@@ -19,7 +19,7 @@ struct SettingsView: View
             websiteLink: URL(string: "https://github.com/sebj")!
         ),
     ]
-    @State private var contributors: [Contributor] = [
+    private let contributors: [Contributor] = [
         Contributor(
             name: "Stuart A. Malone",
             avatarLink: URL(string: "https://media.mstdn.social/cache/accounts/avatars/109/299/685/376/110/779/original/9ef1f88eff2118a4.png")!,
@@ -100,7 +100,7 @@ struct SettingsView: View
                                         .foregroundColor(.secondary)
                                     Text("David Bureš")
                                         .font(.title)
-                                    
+
                                     VStack(alignment: .center, spacing: 0) {
                                         HStack(alignment: .center, spacing: 10) {
                                             Button {
@@ -175,7 +175,7 @@ struct SettingsView: View
                             .foregroundColor(.blue)
                         Text("About Mlem")
                     }
-                    
+
                     Link(destination: URL(string: "https://lemmy.ml/c/mlemapp")!) {
                         Image(systemName: "person.2.circle.fill")
                             .foregroundColor(.purple)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct CommentItem: View
 {
@@ -14,7 +15,9 @@ struct CommentItem: View
     
     @EnvironmentObject var appState: AppState
     
-    @State var account: SavedAccount
+    @Environment(\.displayToast) var displayToast
+    
+    @State var account: SavedAccount?
     
     @State var hierarchicalComment: HierarchicalComment
     
@@ -220,6 +223,7 @@ struct CommentItem: View
     }
     
     private func rate(_ comment: HierarchicalComment, operation: ScoringOperation) async throws {
+        guard let account = account else { return displayToast(AlertToast(displayMode: .banner(.pop), type: .regular, title: "Only registered accounts can rate comment")) }
         guard localVote == nil else {
             // if we have a local vote then we're in the middle of rating
             // so avoid the user being able to initiate additional requests

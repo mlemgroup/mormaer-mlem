@@ -17,23 +17,23 @@ struct GetCommunityRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
+        account: SavedAccount?,
         communityId: Int
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = account?.instanceLink ?? DefaultLemmyServer
         self.queryItems = [
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: account?.accessToken),
             .init(name: "id", value: "\(communityId)")
         ]
     }
 
     init(
-        account: SavedAccount,
+        account: SavedAccount?,
         name: String
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = account?.instanceLink ?? DefaultLemmyServer
         self.queryItems = [
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: account!.accessToken),
             .init(name: "name", value: name)
         ]
     }

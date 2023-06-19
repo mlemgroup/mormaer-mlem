@@ -20,4 +20,6 @@ struct APIPostAggregates: Decodable {
     let newestCommentTimeNecro: Date
     let featuredCommunity: Bool
     let featuredLocal: Bool
+    let hotRank: Int?
+    let hotRankActive: Int?
 }

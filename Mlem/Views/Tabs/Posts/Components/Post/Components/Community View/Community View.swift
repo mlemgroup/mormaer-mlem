@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct CommunityView: View
 {
@@ -21,7 +22,7 @@ struct CommunityView: View
 
     @StateObject var postTracker: PostTracker = .init()
 
-    @State var account: SavedAccount
+    @State var account: SavedAccount?
     @State var community: APICommunity?
     @State var communityDetails: GetCommunityResponse?
 
@@ -93,71 +94,72 @@ struct CommunityView: View
                             Text("")
                         }
                         .hidden()
-
-                        VStack(alignment: .leading, spacing: 15)
-                        {
+                        if let account = account {
                             VStack(alignment: .leading, spacing: 15)
                             {
-                                HStack(alignment: .center, spacing: 10)
+                                VStack(alignment: .leading, spacing: 15)
                                 {
-                                    TextField("New post title…", text: $newPostTitle, axis: .vertical)
-                                        .textFieldStyle(.roundedBorder)
-                                        .focused($focusedNewPostField, equals: .newPostTitle)
-
-                                    if !newPostTitle.isEmpty
+                                    HStack(alignment: .center, spacing: 10)
                                     {
-                                        if !isPostingPost
+                                        TextField("New post title…", text: $newPostTitle, axis: .vertical)
+                                            .textFieldStyle(.roundedBorder)
+                                            .focused($focusedNewPostField, equals: .newPostTitle)
+
+                                        if !newPostTitle.isEmpty
                                         {
-                                            Button
+                                            if !isPostingPost
                                             {
-                                                Task(priority: .userInitiated) {
-                                                    isPostingPost = true
+                                                Button
+                                                {
+                                                    Task(priority: .userInitiated) {
+                                                        isPostingPost = true
 
-                                                    print("Will try to post comment")
+                                                        print("Will try to post comment")
 
-                                                    defer
-                                                    {
-                                                        newPostTitle = ""
-                                                        newPostURL = ""
-                                                        newPostBody = ""
-                                                        newPostIsNSFW = false
+                                                        defer
+                                                        {
+                                                            newPostTitle = ""
+                                                            newPostURL = ""
+                                                            newPostBody = ""
+                                                            newPostIsNSFW = false
 
-                                                        isPostingPost = false
-                                                        focusedNewPostField = nil
+                                                            isPostingPost = false
+                                                            focusedNewPostField = nil
+                                                        }
+
+                                                        do
+                                                        {
+                                                            try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account, appState: appState)
+                                                        }
+                                                        catch let postPostingError
+                                                        {
+                                                            print("Failed while posting post: \(postPostingError)")
+                                                        }
                                                     }
-
-                                                    do
-                                                    {
-                                                        try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account, appState: appState)
-                                                    }
-                                                    catch let postPostingError
-                                                    {
-                                                        print("Failed while posting post: \(postPostingError)")
-                                                    }
+                                                } label: {
+                                                    Image(systemName: "paperplane")
                                                 }
-                                            } label: {
-                                                Image(systemName: "paperplane")
+                                            }
+                                            else
+                                            {
+                                                ProgressView()
                                             }
                                         }
-                                        else
-                                        {
-                                            ProgressView()
-                                        }
+                                    }
+
+                                    if !newPostTitle.isEmpty {
+                                        postInputView
                                     }
                                 }
+                                .padding()
 
-                                if !newPostTitle.isEmpty {
-                                    postInputView
-                                }
+                                Divider()
                             }
-                            .padding()
-
-                            Divider()
+                            .background(.regularMaterial)
+                            .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostTitle)
+                            .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostBody)
+                            .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostURL)
                         }
-                        .background(.regularMaterial)
-                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostTitle)
-                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostBody)
-                        .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: newPostURL)
                     }
                 }
             }
@@ -285,40 +287,41 @@ struct CommunityView: View
                         }
 
                         Divider()
-
-                        if let communityDetails
-                        {
-                            SubscribeButton(
-                                communityDetails: Binding(
-                                    get: {
-                                        communityDetails.communityView
-                                    },
-                                    set: { newValue in
-                                        guard let newValue else { return }
-                                        self.communityDetails?.communityView = newValue
-                                    }),
-                                account: account
-                            )
-
-                            if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id })
-                            { /// This is when a community is already favorited
-                                Button(role: .destructive) {
-                                    unfavoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
-                                } label: {
-                                    Label("Unfavorite", systemImage: "star.slash")
-                                }
-                            }
-                            else
+                        if let account = account {
+                            if let communityDetails
                             {
-                                Button {
-                                    favoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
-                                } label: {
-                                    Label("Favorite", systemImage: "star")
-                                }
-                                .tint(.yellow)
-                            }
+                                SubscribeButton(
+                                    communityDetails: Binding(
+                                        get: {
+                                            communityDetails.communityView
+                                        },
+                                        set: { newValue in
+                                            guard let newValue else { return }
+                                            self.communityDetails?.communityView = newValue
+                                        }),
+                                    account: account
+                                )
 
-                            Divider()
+                                if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id })
+                                { /// This is when a community is already favorited
+                                    Button(role: .destructive) {
+                                        unfavoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                                    } label: {
+                                        Label("Unfavorite", systemImage: "star.slash")
+                                    }
+                                }
+                                else
+                                {
+                                    Button {
+                                        favoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                                    } label: {
+                                        Label("Favorite", systemImage: "star")
+                                    }
+                                    .tint(.yellow)
+                                }
+
+                                Divider()
+                            }
 
                             if let actorId = community?.actorId {
                                 ShareButton(
@@ -329,7 +332,7 @@ struct CommunityView: View
                         }
                         else
                         {
-                            ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
+                            ShareButton(urlToShare: URL(string: "https://\((account?.instanceLink ?? DefaultLemmyServer).host!)")!, isShowingButtonText: true)
                         }
                     } label: {
                         Label("More", systemImage: "ellipsis")
@@ -365,6 +368,11 @@ struct CommunityView: View
             feedType: $feedType,
             isShowingSearch: $isShowingCommunitySearch
         )
+        .onAppear {
+            if account == nil {
+                feedType = .all
+            }
+        }
     }
 
     @ViewBuilder
@@ -447,7 +455,7 @@ struct CommunityView: View
             }
         }
     }
-    
+
     @ViewBuilder
     private var loadingMorePostsView: some View {
         if postTracker.isLoading {
@@ -478,7 +486,7 @@ struct CommunityView: View
             guard postTracker.posts.isEmpty else {
                 return
             }
-            
+
             errorAlert = .init(
                 title: "Unable to connect to Lemmy",
                 message: "Please check your internet connection and try again"
@@ -491,6 +499,7 @@ struct CommunityView: View
         } catch {
             // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
             // for now we will fail silently if the user has posts to view while we investigate further
+            print(String(describing: error))
             assertionFailure("Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat")
             // errorAlert = .unexpected
         }

@@ -18,7 +18,7 @@ struct CommunitySearchField: View {
     
     @Binding var searchText: String
     
-    @State var account: SavedAccount
+    @State var account: SavedAccount?
     
     @State private var debouncedTextReadyForSearching: String = ""
     

@@ -16,7 +16,7 @@ struct UserView: View {
     @EnvironmentObject var appState: AppState
 
     @State var userID: Int
-    @State var account: SavedAccount
+    @State var account: SavedAccount?
     
     @State var userDetails: APIPersonView?
 
@@ -139,8 +139,8 @@ struct UserView: View {
     
     private func loadUser() async throws -> GetPersonDetailsResponse {
         let request = try GetPersonDetailsRequest(
-            accessToken: account.accessToken,
-            instanceURL: account.instanceLink,
+            accessToken: account?.accessToken,
+            instanceURL: account?.instanceLink,
             personId: userID
         )
         

@@ -17,7 +17,7 @@ struct GetCommentsRequest: APIGetRequest {
 
     // lemmy_api_common::comment::GetComments
     init(
-        account: SavedAccount,
+        account: SavedAccount?,
         postId: Int,
         maxDepth: Int = 15,
         type: FeedType = .all,
@@ -30,9 +30,9 @@ struct GetCommentsRequest: APIGetRequest {
         parentId: Int? = nil,
         savedOnly: Bool? = nil
     ) {
-        self.instanceURL = account.instanceLink
+        self.instanceURL = account?.instanceLink ?? DefaultLemmyServer
         self.queryItems = [
-            .init(name: "auth", value: account.accessToken),
+            .init(name: "auth", value: account?.accessToken),
             .init(name: "post_id", value: "\(postId)"),
             .init(name: "max_depth", value: "\(maxDepth)"),
             .init(name: "type_", value: type.rawValue),

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AlertToast
 
 internal enum PossibleStyling
 {
@@ -18,10 +19,12 @@ struct ExpandedPost: View
 
     @EnvironmentObject var appState: AppState
 
+    @Environment(\.displayToast) var displayToast
+
     @StateObject var commentTracker: CommentTracker = .init()
     @StateObject var commentReplyTracker: CommentReplyTracker = .init()
 
-    @State var account: SavedAccount
+    @State var account: SavedAccount?
 
     @EnvironmentObject var postTracker: PostTracker
 
@@ -32,7 +35,7 @@ struct ExpandedPost: View
     @State private var commentSortingType: CommentSortTypes = .top
 
     @FocusState var isReplyFieldFocused
-    
+
     @Binding var feedType: FeedType
 
     @State private var textFieldContents: String = ""
@@ -42,14 +45,14 @@ struct ExpandedPost: View
     @State private var isPostingComment: Bool = false
 
     @State private var viewID: UUID = UUID()
-    
+
     @State private var errorAlert: ErrorAlert?
 
     var body: some View
     {
         ScrollView {
             postView
-            
+
             if commentTracker.isLoading {
                 commentsLoadingView
             }
@@ -78,113 +81,115 @@ struct ExpandedPost: View
                                 // UserProfileLink(shouldShowUserAvatars: true, user: commentToReplyTo.creator)
                             }
                             .foregroundColor(.secondary)
-                            
+
                             Text(commentToReplyTo.comment.content)
                                 .font(.system(size: 16))
                         }
-                        
+
                         Spacer()
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    
+
                     Divider()
                 }
-                
-                HStack(alignment: .center, spacing: 10)
-                {
-                    TextField("Reply to post", text: $textFieldContents, prompt: Text("\(account.username):"), axis: .vertical)
-                        .textFieldStyle(.roundedBorder)
-                        .focused($isReplyFieldFocused)
 
-                    if !textFieldContents.isEmpty
+                if let account = account {
+                    HStack(alignment: .center, spacing: 10)
                     {
-                        if !isPostingComment
+                        TextField("Reply to post", text: $textFieldContents, prompt: Text("\(account.username):"), axis: .vertical)
+                            .textFieldStyle(.roundedBorder)
+                            .focused($isReplyFieldFocused)
+
+                        if !textFieldContents.isEmpty
                         {
-                            Button
+                            if !isPostingComment
                             {
-                                if commentReplyTracker.commentToReplyTo == nil
+                                Button
                                 {
-                                    Task(priority: .userInitiated)
+                                    if commentReplyTracker.commentToReplyTo == nil
                                     {
-                                        isPostingComment = true
-                                        
-                                        print("Will post comment")
-                                        
-                                        defer
+                                        Task(priority: .userInitiated)
                                         {
-                                            isPostingComment = false
-                                        }
-                                        
-                                        do
-                                        {
-                                            try await postComment(
-                                                to: post,
-                                                commentContents: textFieldContents,
-                                                commentTracker: commentTracker,
-                                                account: account,
-                                                appState: appState
-                                            )
-                                            
-                                            isReplyFieldFocused = false
-                                            textFieldContents = ""
-                                        }
-                                        catch let commentPostingError
-                                        {
-                                            
-                                            appState.alertTitle = "Couldn't post comment"
-                                            appState.alertMessage = "An error occured when posting the comment.\nTry again later, or restart Mlem."
-                                            appState.isShowingAlert.toggle()
-                                            
-                                            print("Failed while posting error: \(commentPostingError)")
+                                            isPostingComment = true
+
+                                            print("Will post comment")
+
+                                            defer
+                                            {
+                                                isPostingComment = false
+                                            }
+
+                                            do
+                                            {
+                                                try await postComment(
+                                                    to: post,
+                                                    commentContents: textFieldContents,
+                                                    commentTracker: commentTracker,
+                                                    account: account,
+                                                    appState: appState
+                                                )
+
+                                                isReplyFieldFocused = false
+                                                textFieldContents = ""
+                                            }
+                                            catch let commentPostingError
+                                            {
+
+                                                appState.alertTitle = "Couldn't post comment"
+                                                appState.alertMessage = "An error occured when posting the comment.\nTry again later, or restart Mlem."
+                                                appState.isShowingAlert.toggle()
+
+                                                print("Failed while posting error: \(commentPostingError)")
+                                            }
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    Task(priority: .userInitiated) {
-                                        isPostingComment = true
-                                        
-                                        print("Will post reply")
-                                        
-                                        defer
-                                        {
-                                            isPostingComment = false
-                                        }
-                                        
-                                        do
-                                        {
-                                            try await postComment(
-                                                to: commentReplyTracker.commentToReplyTo!,
-                                                post: post,
-                                                commentContents: textFieldContents,
-                                                commentTracker: commentTracker,
-                                                account: account,
-                                                appState: appState
-                                            )
-                                            
-                                            commentReplyTracker.commentToReplyTo = nil
-                                            isReplyFieldFocused = false
-                                            textFieldContents = ""
-                                        }
-                                        catch let replyPostingError
-                                        {                                            
-                                            print("Failed while posting response: \(replyPostingError)")
+                                    else
+                                    {
+                                        Task(priority: .userInitiated) {
+                                            isPostingComment = true
+
+                                            print("Will post reply")
+
+                                            defer
+                                            {
+                                                isPostingComment = false
+                                            }
+
+                                            do
+                                            {
+                                                try await postComment(
+                                                    to: commentReplyTracker.commentToReplyTo!,
+                                                    post: post,
+                                                    commentContents: textFieldContents,
+                                                    commentTracker: commentTracker,
+                                                    account: account,
+                                                    appState: appState
+                                                )
+
+                                                commentReplyTracker.commentToReplyTo = nil
+                                                isReplyFieldFocused = false
+                                                textFieldContents = ""
+                                            }
+                                            catch let replyPostingError
+                                            {
+                                                print("Failed while posting response: \(replyPostingError)")
+                                            }
                                         }
                                     }
+
+                                } label: {
+                                    Image(systemName: "paperplane")
                                 }
-                                
-                            } label: {
-                                Image(systemName: "paperplane")
+                            }
+                            else
+                            {
+                                ProgressView()
                             }
                         }
-                        else
-                        {
-                            ProgressView()
-                        }
                     }
-                }
                 .padding()
+                }
 
                 Divider()
             }
@@ -244,7 +249,7 @@ struct ExpandedPost: View
                 Button
                 {
                     isReplyFieldFocused = false
-                    
+
                     if commentReplyTracker.commentToReplyTo != nil
                     {
                         commentReplyTracker.commentToReplyTo = nil
@@ -270,7 +275,7 @@ struct ExpandedPost: View
         }
     }
     // subviews
-    
+
     /**
      Displays the post itself, plus a little divider to keep it visually distinct from comments
      */
@@ -280,7 +285,7 @@ struct ExpandedPost: View
             Divider().background(.black)
         }
     }
-    
+
     /**
      Displays a loading indicator for the comments
      */
@@ -298,7 +303,7 @@ struct ExpandedPost: View
                 commentSortingType = defaultCommentSorting
             }
     }
-    
+
     /**
      Displays a "no comments" message
      */
@@ -314,7 +319,7 @@ struct ExpandedPost: View
         .foregroundColor(.secondary)
         .padding()
     }
-    
+
     /**
      Displays the comments
      */
@@ -326,12 +331,12 @@ struct ExpandedPost: View
         }
         .environmentObject(commentTracker)
     }
-    
+
     // helper functions
-    
+
     func loadComments() async {
         defer { commentTracker.isLoading = false }
-        
+
         commentTracker.isLoading = true
         do {
             let request = GetCommentsRequest(account: account, postId: post.id)
@@ -363,14 +368,15 @@ struct ExpandedPost: View
             return newComment
         }
     }
-    
-    
-    
+
+
+
     /**
      Votes on a post
      NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
      */
     func voteOnPost(inputOp: ScoringOperation) async -> Void {
+        guard let account = account else { return displayToast(AlertToast(displayMode: .banner(.pop), type: .regular, title: "Only registered accounts can rate posts")) }
         do {
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             try await ratePost(postId: post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)

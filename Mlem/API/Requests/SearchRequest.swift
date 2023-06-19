@@ -26,7 +26,7 @@ struct SearchRequest: APIGetRequest {
     let queryItems: [URLQueryItem]
 
     init(
-        account: SavedAccount,
+        account: SavedAccount?,
         query: String,
         searchType: SearchType,
         sortOption: SortingOptions = .topAll,
@@ -37,9 +37,9 @@ struct SearchRequest: APIGetRequest {
         creatorId: Int? = nil,
         limit: Int? = nil
     ) {
-        self.instanceURL = account.instanceLink
-        var queryItems: [URLQueryItem] = [
-            .init(name: "auth", value: account.accessToken),
+        self.instanceURL = account?.instanceLink ?? DefaultLemmyServer
+        let queryItems: [URLQueryItem] = [
+            .init(name: "auth", value: account?.accessToken),
             .init(name: "type_", value: searchType.rawValue),
             .init(name: "sort", value: sortOption.rawValue),
             .init(name: "listing_type", value: listingType.rawValue),

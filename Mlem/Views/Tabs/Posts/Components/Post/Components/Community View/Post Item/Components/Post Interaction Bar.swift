@@ -35,11 +35,11 @@ struct PostInteractionBar: View {
     
     // parameters
     let post: APIPostView
-    let account: SavedAccount
+    let account: SavedAccount?
     let compact: Bool
     let voteOnPost: (ScoringOperation) async -> Void
     
-    init(post: APIPostView, account: SavedAccount, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
+    init(post: APIPostView, account: SavedAccount?, compact: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void) {
         self.post = post
         self.account = account
         self.compact = compact

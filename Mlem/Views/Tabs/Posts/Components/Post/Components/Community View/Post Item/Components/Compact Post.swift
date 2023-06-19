@@ -12,15 +12,15 @@ import SwiftUI
 struct CompactPost: View {
     // constants
     let thumbnailSize: CGFloat = 60
-    
+
     // arguments
     let post: APIPostView
-    let account: SavedAccount
+    let account: SavedAccount?
     let voteOnPost: (ScoringOperation) async -> Void
-    
+
     var body: some View {
         VStack(spacing: 0) {
-            
+
             HStack(alignment: .top) {
                 switch post.postType {
                 case .image(let url):
@@ -52,17 +52,17 @@ struct CompactPost: View {
                         .overlay(RoundedRectangle(cornerRadius: 4)
                             .stroke(.secondary, lineWidth: 1))
                 }
-                
+
                 VStack(spacing: 2) {
                     Text(post.post.name)
                         .font(.subheadline)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                         .padding(.trailing)
-                    
+
                     HStack(spacing: 4) {
                         // stickied
                         if post.post.featuredLocal { StickiedTag(compact: true) }
-                        
+
                         // community name
                         NavigationLink(destination: CommunityView(account: account, community: post.community, feedType: .all)) {
                             Text(post.community.name)
@@ -95,16 +95,16 @@ struct CompactPost: View {
                                         .foregroundColor(.secondary)
                                 }
                         }
-                        
+
                         Spacer()
                     }
                 }
-                
+
             }
-            
+
             .padding(.horizontal, 16)
             .padding(.top, 8)
-            
+
             PostInteractionBar(post: post, account: account, compact: true, voteOnPost: voteOnPost)
         }
     }

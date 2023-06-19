@@ -4,7 +4,7 @@
 //
 //  Created by David Bureš on 27.03.2022.
 //
-
+import AlertToast
 import SwiftUI
 
 struct AccountsPage: View
@@ -13,13 +13,22 @@ struct AccountsPage: View
     @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var isShowingInstanceAdditionSheet: Bool = false
-    
+
+    @State private var showToast = false
+    @State private var toast: AlertToast? = nil
+
     func accountNavigationBinding() -> Binding<Bool> {
         .init {
             accountsTracker.savedAccounts.count == 1
         } set: { _ in }
     }
-    
+
+    func guestAccountNavigationBinding() -> Binding<Bool> {
+        .init {
+            accountsTracker.savedAccounts.count == 0
+        } set: { _ in }
+    }
+
     var body: some View
     {
         NavigationStack
@@ -61,6 +70,24 @@ struct AccountsPage: View
                                 }
                             }
                         })
+                        NavigationLink
+                        {
+                            CommunityView(account: nil, community: nil)
+                                .onAppear
+                                {
+                                    appState.currentActiveAccount = nil
+                                }
+                        } label: {
+                            HStack(alignment: .center)
+                            {
+                                Text("Continue as Guest")
+                                Spacer()
+                                Text(DefaultLemmyServer.host!)
+                                    .foregroundColor(.secondary)
+                            }
+                            .minimumScaleFactor(0.01)
+                            .lineLimit(1)
+                        }
                     }
                     .toolbar
                     {
@@ -75,8 +102,15 @@ struct AccountsPage: View
                     VStack(alignment: .center, spacing: 15)
                     {
                         Text("You have no accounts added")
+                            .foregroundColor(.secondary)
+                        NavigationLink
+                        {
+                            CommunityView(account: nil, community: nil)
+                        } label: {
+                            Text("View Lemmy as a guest")
+
+                        }
                     }
-                    .foregroundColor(.secondary)
                 }
             }
             .onAppear
@@ -85,6 +119,14 @@ struct AccountsPage: View
             }
             .navigationTitle("Accounts")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: guestAccountNavigationBinding(), destination: {
+                CommunityView(account: nil, community: nil)
+                    .onAppear
+                {
+                    appState.currentActiveAccount = nil
+                }
+
+            })
             .toolbar
             {
                 ToolbarItem(placement: .navigationBarTrailing)
@@ -118,6 +160,19 @@ struct AccountsPage: View
         {
             print("Saved thing from keychain: \(String(describing: AppConstants.keychain["test"]))")
         }
+        .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
+            if let toast = toast {
+                toast
+            } else {
+                AlertToast(type: .regular, title: "Message Missing!")
+            }
+        }
+        .environment(\.displayToast, displayToast)
+    }
+
+    func displayToast(message: AlertToast) {
+        toast = message
+        showToast = true
     }
 
     internal func deleteAccount(at offsets: IndexSet)

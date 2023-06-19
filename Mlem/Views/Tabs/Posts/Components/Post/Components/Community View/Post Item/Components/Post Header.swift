@@ -12,13 +12,13 @@ import CachedAsyncImage
 struct PostHeader: View {
     // parameters
     var post: APIPostView
-    var account: SavedAccount
+    var account: SavedAccount?
     @State private var isShowingCommunity = false
-    
+
     // constants
     private let communityIconSize: CGFloat = 32
     private let defaultCommunityIconSize: CGFloat = 24 // a little smaller so it looks nice
-    
+
     var body: some View {
         HStack {
             HStack(spacing: 4) {
@@ -52,9 +52,9 @@ struct PostHeader: View {
                         }
                 }
             }
-            
+
             Spacer()
-            
+
             if (post.post.featuredLocal) {
                 StickiedTag(compact: false)
             }
@@ -68,7 +68,7 @@ struct PostHeader: View {
         .font(.subheadline)
         .foregroundColor(.secondary)
     }
-    
+
     @ViewBuilder
     private var communityAvatar: some View {
         Group {

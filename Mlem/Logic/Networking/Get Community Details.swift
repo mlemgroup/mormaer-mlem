@@ -9,7 +9,7 @@ import Foundation
 
 func loadCommunityDetails(
     community: APICommunity,
-    account: SavedAccount,
+    account: SavedAccount?,
     appState: AppState
 ) async throws -> GetCommunityResponse {
     do {
