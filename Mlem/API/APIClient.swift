@@ -21,19 +21,19 @@ enum APIClientError: Error {
 let DefaultLemmyServer = URL(string: "https://lemmy.ml/api/v3/")!
 
 class APIClient {
-
+    
     let session: URLSession
     let decoder: JSONDecoder
-
+    
     init(session: URLSession = .init(configuration: .default), decoder: JSONDecoder = .defaultDecoder) {
         self.session = session
         self.decoder = decoder
     }
-
+    
     func perform<Request: APIRequest>(request: Request) async throws -> Request.Response {
         let urlRequest = try urlRequest(from: request)
         let (data, response) = try await execute(urlRequest)
-
+        
         if let apiError = try? decoder.decode(APIErrorResponse.self, from: data) {
             // at present we have a single error model which appears to be used throughout
             // the API, however we may way to consider adding the error model type as an
@@ -42,7 +42,7 @@ class APIClient {
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             throw APIClientError.response(apiError, statusCode)
         }
-
+        
         decoder.dateDecodingStrategyFormatters = [ DateFormatter.expandedTWithTimezone,
                                                    DateFormatter.expandedT,
                                                    DateFormatter.standardT,
@@ -51,7 +51,7 @@ class APIClient {
 
         return try decoder.decode(Request.Response.self, from: data)
     }
-
+    
     private func execute(_ urlRequest: URLRequest) async throws -> (Data, URLResponse) {
         do {
             return try await session.data(for: urlRequest)
@@ -59,13 +59,13 @@ class APIClient {
             throw APIClientError.networking(error)
         }
     }
-
+    
     private func urlRequest(from defintion: any APIRequest) throws -> URLRequest {
         var urlRequest = URLRequest(url: defintion.endpoint)
         defintion.headers.forEach { header in
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
-
+        
         if let _ = defintion as? any APIGetRequest {
             urlRequest.httpMethod = "GET"
         } else if let postDefinition = defintion as? any APIPostRequest {
@@ -75,10 +75,10 @@ class APIClient {
             urlRequest.httpMethod = "PUT"
             urlRequest.httpBody = try createBodyData(for: putDefinition)
         }
-
+        
         return urlRequest
     }
-
+    
     private func createBodyData(for defintion: any APIRequestBodyProviding) throws -> Data {
         do {
             return try JSONEncoder().encode(defintion.body)
