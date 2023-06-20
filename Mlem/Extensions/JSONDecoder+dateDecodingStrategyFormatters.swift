@@ -18,6 +18,7 @@ extension DateFormatter {
     static let expandedT: DateFormatter = {
         var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSS"
+        dateFormatter.timeZone = TimeZone(identifier:"GMT")
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return dateFormatter
     }()
@@ -25,6 +26,7 @@ extension DateFormatter {
     static let standardT: DateFormatter = {
         var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier:"GMT")
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return dateFormatter
     }()
@@ -32,6 +34,7 @@ extension DateFormatter {
     static let standard: DateFormatter = {
         var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier:"GMT")
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return dateFormatter
     }()
@@ -39,6 +42,7 @@ extension DateFormatter {
     static let yearMonthDay: DateFormatter = {
         var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(identifier:"GMT")
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return dateFormatter
     }()
