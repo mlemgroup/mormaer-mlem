@@ -40,13 +40,7 @@ class APIClient {
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             throw APIClientError.response(apiError, statusCode)
         }
-
-        decoder.dateDecodingStrategyFormatters = [ DateFormatter.expandedTWithTimezone,
-                                                   DateFormatter.expandedT,
-                                                   DateFormatter.standardT,
-                                                   DateFormatter.standard,
-                                                   DateFormatter.yearMonthDay ]
-
+        
         return try decoder.decode(Request.Response.self, from: data)
     }
 
