@@ -101,16 +101,19 @@ struct GeneralSettingsView: View
 
             }
 
-            Section("App Disk Usage")
+            Section("Disk Usage")
             {
                 Button(role: .destructive) {
                     URLCache.shared.removeAllCachedResponses()
                     diskUsage = Int64(URLCache.shared.currentDiskUsage)
                 } label: {
-                    Label("Disk: \(ByteCountFormatter.string(fromByteCount: diskUsage, countStyle: .file))", systemImage: "trash")
+                    Label("Image cache: \(ByteCountFormatter.string(fromByteCount: diskUsage, countStyle: .file))", systemImage: "trash")
                         .foregroundColor(.red)
                 }
+            } footer: {
+                Text("All images are cached for fast reuse")
             }
+            
         }
         .onAppear {
             diskUsage = Int64(URLCache.shared.currentDiskUsage)
