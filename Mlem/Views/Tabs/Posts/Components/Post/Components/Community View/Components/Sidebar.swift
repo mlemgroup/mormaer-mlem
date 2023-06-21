@@ -81,6 +81,24 @@ struct CommunitySidebarView: View {
                         .foregroundColor(.secondary)
                 }
             }
+            
+            Section("Server")
+            {
+                if let communityServer = communityDetails.communityView.community.actorId.host() {
+                    if let communityProtocol = communityDetails.communityView.community.actorId.scheme {
+                        Link(communityServer, destination: URL(string: "\(communityProtocol)://\(communityServer)")!)
+                    }
+                    else {
+                        Text(communityServer)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                else
+                {
+                    Text("n/a")
+                        .foregroundColor(.secondary)
+                }
+            }
 
             NavigationLink {
                 List {
