@@ -101,7 +101,7 @@ struct GeneralSettingsView: View
 
             }
 
-            Section("Disk Usage")
+            Section()
             {
                 Button(role: .destructive) {
                     URLCache.shared.removeAllCachedResponses()
@@ -110,7 +110,11 @@ struct GeneralSettingsView: View
                     Label("Image cache: \(ByteCountFormatter.string(fromByteCount: diskUsage, countStyle: .file))", systemImage: "trash")
                         .foregroundColor(.red)
                 }
-            } footer: {
+            }
+            header: {
+                Text("Disk Usage")
+            }
+            footer: {
                 Text("All images are cached for fast reuse")
             }
             
