@@ -41,30 +41,37 @@ class PostTracker: ObservableObject {
             return
         }
         Task(priority: .background) {
-            await preloadImages(response.posts)
+            preloadImages(response.posts)
         }
 
         add(response.posts)
         page += 1
     }
 
-    func preloadImages(_ newPosts: [APIPostView]) async {
+    func preloadImages(_ newPosts: [APIPostView]) {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
         for post in newPosts {
+            if let thumbnailUrl = post.post.thumbnailUrl {
+                preloadSingleImage(url: thumbnailUrl)
+            }
             switch post.postType {
             case .image(let url):
-                let task = URLSession.shared.dataTask(with: url) { data, res, err in
-                    if let data = data, let res = res {
-                        AppConstants.urlCache.storeCachedResponse(CachedURLResponse(response: res, data: data), for: URLRequest(url: url))
-                    }
-                    print("loaded: \(res?.url?.lastPathComponent ?? "") (\(err?.localizedDescription ?? ""))")
-                }
-                task.resume()
+                preloadSingleImage(url: url)
             default:
                 break
             }
 
         }
+    }
+    
+    private func preloadSingleImage(url: URL) {
+        let task = URLSession.shared.dataTask(with: url) { data, res, err in
+            if let data = data, let res = res {
+                AppConstants.urlCache.storeCachedResponse(CachedURLResponse(response: res, data: data), for: URLRequest(url: url))
+            }
+            print("loaded: \(res?.url?.lastPathComponent ?? "") (\(err?.localizedDescription ?? ""))")
+        }
+        task.resume()
     }
 
     /// A method to add new posts into the tracker, duplicate posts will be rejected
