@@ -24,7 +24,7 @@ struct CompactPost: View {
             HStack(alignment: .top) {
                 switch post.postType {
                 case .image(let url):
-                    CachedAsyncImage(url: url) { image in
+                    CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
                         image
                             .resizable()
                             .scaledToFill()

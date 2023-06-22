@@ -53,8 +53,11 @@ class PostTracker: ObservableObject {
         for post in newPosts {
             switch post.postType {
             case .image(let url):
-                let task = URLSession.shared.dataTask(with: url) { _, req, err in
-                    print("loaded: \(req?.url?.lastPathComponent ?? "") (\(err?.localizedDescription ?? ""))")
+                let task = URLSession.shared.dataTask(with: url) { data, res, err in
+                    if let data = data, let res = res {
+                        AppConstants.urlCache.storeCachedResponse(CachedURLResponse(response: res, data: data), for: URLRequest(url: url))
+                    }
+                    print("loaded: \(res?.url?.lastPathComponent ?? "") (\(err?.localizedDescription ?? ""))")
                 }
                 task.resume()
             default:

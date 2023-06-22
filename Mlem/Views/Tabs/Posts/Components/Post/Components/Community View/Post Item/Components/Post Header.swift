@@ -68,7 +68,7 @@ struct PostHeader: View {
     private var communityAvatar: some View {
         Group {
             if let communityAvatarLink = post.community.icon {
-                CachedAsyncImage(url: communityAvatarLink) { image in
+                CachedAsyncImage(url: communityAvatarLink, urlCache: AppConstants.urlCache) { image in
                     if let avatar = image.image {
                         avatar
                             .resizable()

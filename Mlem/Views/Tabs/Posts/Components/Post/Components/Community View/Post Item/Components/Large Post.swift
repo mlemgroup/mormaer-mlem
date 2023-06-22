@@ -37,7 +37,7 @@ struct LargePost: View {
                 
                 switch post.postType {
                 case .image(let url):
-                    CachedAsyncImage(url: url) { image in
+                    CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
                         image
                             .resizable()
                             .frame(maxWidth: .infinity)
