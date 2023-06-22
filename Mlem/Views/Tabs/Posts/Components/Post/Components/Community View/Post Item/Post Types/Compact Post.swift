@@ -12,16 +12,16 @@ import SwiftUI
 struct CompactPost: View {
     // app storage
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
-    
+
     // constants
     let thumbnailSize: CGFloat = 60
     private let spacing: CGFloat = 8 // constant for readability, ease of modification
-    
+
     // arguments
     let postView: APIPostView
     let account: SavedAccount
     let voteOnPost: (ScoringOperation) async -> Void
-    
+
     // computed
     var usernameColor: Color {
         if postView.creator.admin {
@@ -30,28 +30,28 @@ struct CompactPost: View {
         if postView.creator.botAccount {
             return .indigo
         }
-        
+
         return .secondary
     }
-    
+
     var showNsfwFilter: Bool { postView.post.nsfw && shouldBlurNsfw }
-    
+
     var body: some View {
         VStack(spacing: spacing) {
             HStack(alignment: .top) {
                 thumbnailImage
-                
+
                 VStack(spacing: 2) {
                     Text(postView.post.name)
                         .font(.subheadline)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                         .padding(.trailing)
-                    
+
                     HStack(spacing: 4) {
                         // stickied
                         if postView.post.featuredLocal { StickiedTag(compact: true) }
                         if postView.post.nsfw { NSFWTag(compact: true) }
-                        
+
                         // community name
                         NavigationLink(destination: CommunityView(account: account, community: postView.community, feedType: .all)) {
                             Text(postView.community.name)
@@ -69,24 +69,24 @@ struct CompactPost: View {
                                 .italic()
                                 .foregroundColor(usernameColor)
                         }
-                        
+
                         Spacer()
                     }
                 }
-                
+
             }
             PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost)
         }
         .padding(spacing)
         .buttonStyle(EmptyButtonStyle())
     }
-    
+
     @ViewBuilder
     private var thumbnailImage: some View {
         Group {
             switch postView.postType {
             case .image(let url):
-                CachedAsyncImage(url: url) { image in
+                CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -95,7 +95,7 @@ struct CompactPost: View {
                     ProgressView()
                 }
             case .link(let url):
-                CachedAsyncImage(url: url) { image in
+                CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
                     image
                         .resizable()
                         .scaledToFill()
