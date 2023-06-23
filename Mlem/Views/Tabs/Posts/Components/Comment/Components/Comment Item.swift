@@ -46,17 +46,17 @@ struct CommentItem: View {
     let account: SavedAccount
     let hierarchicalComment: HierarchicalComment
     let depth: Int
+    let showPostContext: Bool
     
     @Binding var isDragging: Bool
-    @FocusState var isReplyFieldFocused: Bool
     
     // init needed to get dirty and clean aligned
-    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, depth: Int, isDragging: Binding<Bool>, isReplyFieldFocused: FocusState<Bool>) {
+    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, depth: Int, showPostContext: Bool, isDragging: Binding<Bool>) {
         self.account = account
         self.hierarchicalComment = hierarchicalComment
         self.depth = depth
+        self.showPostContext = showPostContext
         _isDragging = isDragging
-        _isReplyFieldFocused = isReplyFieldFocused
         
         _dirtyVote = State(initialValue: hierarchicalComment.commentView.myVote ?? .resetVote)
         _dirtyScore = State(initialValue: hierarchicalComment.commentView.counts.score)
@@ -191,6 +191,10 @@ struct CommentItem: View {
                 .frame(maxWidth: .infinity, alignment: .topLeading)
                 // .transition(.move(edge: .top).combined(with: .opacity))
         }
+        
+        if showPostContext {
+            EmbeddedPost(post: hierarchicalComment.commentView.post)
+        }
     }
     
     @ViewBuilder
@@ -199,7 +203,7 @@ struct CommentItem: View {
             // lazy stack because there might be *lots* of these
             LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in
-                    CommentItem(account: account, hierarchicalComment: child, depth: depth + 1, isDragging: $isDragging, isReplyFieldFocused: _isReplyFieldFocused)
+                    CommentItem(account: account, hierarchicalComment: child, depth: depth + 1, showPostContext: false, isDragging: $isDragging)
                 }
             }
         }
