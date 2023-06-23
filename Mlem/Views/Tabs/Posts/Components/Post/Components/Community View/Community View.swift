@@ -518,8 +518,7 @@ struct CommunityView: View
         } catch {
             // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
             // for now we will fail silently if the user has posts to view while we investigate further
-            print(String(describing: error))
-//            assertionFailure("Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat")
+            assertionFailure("Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat")
             // errorAlert = .unexpected
         }
 

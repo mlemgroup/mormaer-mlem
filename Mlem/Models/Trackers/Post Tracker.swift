@@ -32,7 +32,7 @@ class PostTracker: ObservableObject {
             page: page,
             sort: sort,
             type: type,
-            limit: 50
+            limit: page == 1 ? 25 : 50
         )
 
         let response = try await APIClient().perform(request: request)
@@ -52,11 +52,15 @@ class PostTracker: ObservableObject {
         URLSession.shared.configuration.urlCache = AppConstants.urlCache
         for post in newPosts {
             if let thumbnailUrl = post.post.thumbnailUrl {
-                preloadSingleImage(url: thumbnailUrl)
+                Task(priority: .background) {
+                    await preloadSingleImage(url: thumbnailUrl)
+                }
             }
             switch post.postType {
             case .image(let url):
-                preloadSingleImage(url: url)
+                Task(priority: .background) {
+                    await preloadSingleImage(url: url)
+                }
             default:
                 break
             }
@@ -64,14 +68,13 @@ class PostTracker: ObservableObject {
         }
     }
     
-    private func preloadSingleImage(url: URL) {
-        let task = URLSession.shared.dataTask(with: url) { data, res, err in
-            if let data = data, let res = res {
-                AppConstants.urlCache.storeCachedResponse(CachedURLResponse(response: res, data: data), for: URLRequest(url: url))
-            }
-            print("loaded: \(res?.url?.lastPathComponent ?? "") (\(err?.localizedDescription ?? ""))")
-        }
-        task.resume()
+    private func preloadSingleImage(url: URL) async {
+        do {
+            let request = URLRequest(url: url)
+            let (data, response) = try await URLSession.shared.data(for: request)
+            let cachedResponse = CachedURLResponse(response: response, data: data)
+            AppConstants.urlCache.storeCachedResponse(cachedResponse, for: request)
+        } catch {}
     }
 
     /// A method to add new posts into the tracker, duplicate posts will be rejected
