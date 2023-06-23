@@ -176,24 +176,27 @@ struct CommentItem: View {
     
     @ViewBuilder
     var commentBody: some View {
-        if hierarchicalComment.commentView.comment.deleted {
-            Text("Comment was deleted")
-                .italic()
-                .foregroundColor(.secondary)
-        }
-        else if hierarchicalComment.commentView.comment.removed {
-            Text("Comment was removed")
-                .italic()
-                .foregroundColor(.secondary)
-        }
-        else if !isCollapsed {
-            MarkdownView(text: hierarchicalComment.commentView.comment.content)
-                .frame(maxWidth: .infinity, alignment: .topLeading)
-                // .transition(.move(edge: .top).combined(with: .opacity))
-        }
-        
-        if showPostContext {
-            EmbeddedPost(post: hierarchicalComment.commentView.post)
+        VStack {
+            // comment text or placeholder
+            if hierarchicalComment.commentView.comment.deleted {
+                Text("Comment was deleted")
+                    .italic()
+                    .foregroundColor(.secondary)
+            }
+            else if hierarchicalComment.commentView.comment.removed {
+                Text("Comment was removed")
+                    .italic()
+                    .foregroundColor(.secondary)
+            }
+            else if !isCollapsed {
+                MarkdownView(text: hierarchicalComment.commentView.comment.content)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+            }
+            
+            // embedded post
+            if showPostContext {
+                EmbeddedPost(post: hierarchicalComment.commentView.post)
+            }
         }
     }
     
