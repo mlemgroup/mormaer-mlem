@@ -28,8 +28,18 @@ struct SettingsView: View
         ),
     ]
     
-    func getVersionString() -> String? {
-        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    func getVersionString() -> String {
+        var result = "n/a"
+        
+        if let releaseVersion = Bundle.main.releaseVersionNumber {
+            result = releaseVersion;
+        }
+        
+        if let buildVersion = Bundle.main.buildVersionNumber {
+            result.append(" (\(buildVersion))")
+        }
+        
+        return result
     }
 
     var body: some View
@@ -131,7 +141,7 @@ struct SettingsView: View
                                     Text("Packages Used")
                                 }
                                 
-                                Text("Version \(getVersionString() ?? "n/a")")
+                                Text("Version \(getVersionString())")
                             }
                         }
                     } label: {
