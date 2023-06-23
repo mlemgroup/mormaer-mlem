@@ -198,6 +198,10 @@ struct CommentItem: View {
                 EmbeddedPost(post: hierarchicalComment.commentView.post)
             }
         }
+        
+        if showPostContext {
+            EmbeddedPost(post: hierarchicalComment.commentView.post)
+        }
     }
     
     @ViewBuilder
