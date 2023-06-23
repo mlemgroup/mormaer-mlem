@@ -100,7 +100,7 @@ struct GeneralSettingsView: View
                     URLCache.shared.removeAllCachedResponses()
                     diskUsage = Int64(URLCache.shared.currentDiskUsage)
                 } label: {
-                    Label("Image cache: \(ByteCountFormatter.string(fromByteCount: diskUsage, countStyle: .file))", systemImage: "trash")
+                    Label("Cache: \(ByteCountFormatter.string(fromByteCount: diskUsage, countStyle: .file))", systemImage: "trash")
                         .foregroundColor(.red)
                 }
             }
