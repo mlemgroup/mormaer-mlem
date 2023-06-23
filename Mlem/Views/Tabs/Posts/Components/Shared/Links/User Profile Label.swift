@@ -18,11 +18,13 @@ struct UserProfileLabel : View {
     // to pick the correct flair
     @State var postContext: APIPostView? = nil
     @State var commentContext: APIComment? = nil
+    @State var communityContext: GetCommunityResponse? = nil
     
     static let developerNames = [
         "vlemmy.net/u/darknavi",
         "lemmy.ml/u/BrooklynMan",
         "beehaw.org/u/jojo",
+        "sh.itjust.works/u/ericbandrews",
     ]
     
     static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, systemIcon: "hammer.fill")
@@ -74,6 +76,11 @@ struct UserProfileLabel : View {
                 return UserProfileLabel.flairMod
             }
         }
+        if let community = communityContext {
+            if community.moderators.contains(where: { $0.moderator == user }) {
+                return UserProfileLabel.flairMod
+            }
+        }
         if let post = postContext {
             if user == post.creator {
                 return UserProfileLabel.flairOP
@@ -99,7 +106,7 @@ struct UserProfileLinkPreview: PreviewProvider {
     }
     
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
-        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: nil, banned: false, published: "idk", updated: nil, actorId: userType == .Dev ? URL(string: "http://\(UserProfileLabel.developerNames[0])")! : URL(string: "google.com")!, bio: nil, local: false, banner: nil, deleted: false, inboxUrl: URL(string: "google.com")!, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
+        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: nil, banned: false, published: "idk", updated: nil, actorId: userType == .Dev ? URL(string: "http://\(UserProfileLabel.developerNames[0])")! : URL(string: "google.com")!, bio: nil, local: false, banner: nil, deleted: false, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
     }
     
     static func generatePreviewComment(creator: APIPerson, isMod: Bool) -> APIComment {

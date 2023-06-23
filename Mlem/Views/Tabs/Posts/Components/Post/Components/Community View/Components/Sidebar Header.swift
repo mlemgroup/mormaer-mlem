@@ -41,7 +41,6 @@ struct CommunitySidebarHeader : View {
                         Spacer().frame(height: 170)
                         HStack {
                             CommunitySidebarHeaderLabel("\(communityDetails.communityView.counts.subscribers) Subscribers")
-                            CommunitySidebarHeaderLabel("\(communityDetails.online) Online")
                         }
                         Spacer().frame(height: 20)
                         
@@ -56,7 +55,6 @@ struct CommunitySidebarHeader : View {
                                 .font(.footnote)
                                 .lineLimit(1)
                         }
-                        Text("@\(communityDetails.communityView.community.name)@\(communityDetails.communityView.community.actorId.host()!)").font(.footnote).lineLimit(1)
                         
                     }.padding([.trailing])
                 }
