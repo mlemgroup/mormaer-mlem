@@ -49,4 +49,4 @@ As of now, Mlem is still in beta. While it already has many core features, there
 
 Mlem is licensed under [Commons Clause](https://commonsclause.com).
 
-This means that Mlem is open-source and you can do whatever you want with its source, like modifying it, contributing to it etc., but you can't sell Mlem or modified versions of it.
+This means that Mlem is source available and you can do whatever you want with its source, like modifying it, contributing to it etc., but you can't sell Mlem or modified versions of it.
