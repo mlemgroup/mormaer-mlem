@@ -6,45 +6,22 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
 
 struct UserProfileLink: View
 {
-    @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
-    
     @State var account: SavedAccount
     @State var user: APIPerson
-
+    
+    // Extra context about where the link is being displayed
+    // to pick the correct flair
+    @State var postContext: APIPostView? = nil
+    @State var commentContext: APIComment? = nil
+   
     var body: some View
     {
         NavigationLink(destination: UserView(userID: user.id, account: account))
         {
-            HStack(alignment: .center, spacing: 5) {
-                if shouldShowUserAvatars {
-                    if let avatarLink = user.avatar {
-                        AvatarView(avatarLink: avatarLink)
-                    }
-                }
-                
-                Text(user.name)
-                    .minimumScaleFactor(0.01)
-                    .lineLimit(1)
-            }
-            .if(user.admin)
-            { viewProxy in
-                viewProxy
-                    .foregroundColor(.red)
-            }
-            .if(user.botAccount == true)
-            { viewProxy in
-                viewProxy
-                    .foregroundColor(.indigo)
-            }
-            .if(user.name == "lFenix")
-            { viewProxy in
-                viewProxy
-                    .foregroundColor(.yellow)
-            }
+            UserProfileLabel(account: account, user: user, postContext: postContext, commentContext: commentContext)
         }
     }
 }

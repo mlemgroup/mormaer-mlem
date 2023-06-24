@@ -12,6 +12,7 @@ struct CommunityView: View
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("hideTopBarAndNavBarWhenScrolling") var hideTopBarAndNavBarWhenScrolling: Bool = false
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
+    @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
 
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var filtersTracker: FiltersTracker
@@ -47,6 +48,8 @@ struct CommunityView: View
     @State private var newPostIsNSFW: Bool = false
     @State private var isPostingPost: Bool = false
     @State private var errorAlert: ErrorAlert?
+    
+    @State var isDragging: Bool = false
 
     enum FocusedNewPostField
     {
@@ -68,6 +71,7 @@ struct CommunityView: View
         ZStack(alignment: .top)
         {
             searchResultsView
+                .accessibilityHidden(!isShowingCommunitySearch)
             ScrollView {
                 if postTracker.posts.isEmpty {
                     noPostsView
@@ -75,6 +79,7 @@ struct CommunityView: View
                     LazyVStack(spacing: 0) {
                         bannerView
                         postListView
+                        loadingMorePostsView
                     }
                 }
             }
@@ -167,28 +172,18 @@ struct CommunityView: View
                 Task(priority: .userInitiated) {
                     isRefreshing = true
 
-                    postTracker.page = 1 /// Reset the page so it doesn't load some page in the middle of the feed
-                    postTracker.posts = .init()
+                    postTracker.reset()
 
                     await loadFeed()
 
                     isRefreshing = false
                 }
             }
-            .task(priority: .userInitiated)
-            {
+            .task(priority: .userInitiated) {
                 if postTracker.posts.isEmpty
                 {
                     print("Post tracker is empty")
-
-                    if postTracker.posts.isEmpty
-                    {
-                        postTracker.isLoading = true
-                    }
-
                     await loadFeed()
-
-                    postTracker.isLoading = false
                 }
                 else
                 {
@@ -214,14 +209,8 @@ struct CommunityView: View
             }
             .onChange(of: feedType, perform: { newValue in
                 Task(priority: .userInitiated) {
-                    postTracker.page = 1
-
-                    postTracker.posts = .init()
-                    postTracker.isLoading = true
-
+                    postTracker.reset()
                     await loadFeed()
-
-                    postTracker.isLoading = false
                 }
             })
         }
@@ -243,6 +232,10 @@ struct CommunityView: View
                         Image(systemName: "chevron.down")
                             .scaleEffect(0.7)
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(community?.name ?? feedType.rawValue)")
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityHint("Activate to search and select feeds")
                     .onTapGesture
                     {
                         isSearchFieldFocused = true
@@ -251,11 +244,15 @@ struct CommunityView: View
                         {
                             isShowingCommunitySearch.toggle()
                         }
+
                     }
                 }
                 else
                 {
                     CommunitySearchField(isSearchFieldFocused: $isSearchFieldFocused, searchText: $searchText, account: account)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Search for communities.")
+                        .accessibilityAddTraits(.isSearchField)
                 }
             }
         }
@@ -271,17 +268,8 @@ struct CommunityView: View
                             Task {
                                 print("Selected sorting option: \(newValue), \(newValue.rawValue)")
 
-                                postTracker.posts = .init()
-                                postTracker.page = 1
-
-
-                                if postTracker.posts.isEmpty {
-                                    postTracker.isLoading = true
-                                }
-
+                                postTracker.reset()
                                 await loadFeed()
-                                postTracker.isLoading = false
-
                             }
                         }
                     ))
@@ -337,16 +325,34 @@ struct CommunityView: View
                             Divider()
 
                             if let actorId = community?.actorId {
-                                ShareButton(
-                                    urlToShare: actorId,
-                                    isShowingButtonText: true
-                                )
+                                ShareButton(size: 20, accessibilityContext: "community") {
+                                    showShareSheet(URLtoShare: actorId)
+                                }
                             }
                         }
-                        else
-                        {
-                            ShareButton(urlToShare: URL(string: "https://\(account.instanceLink.host!)")!, isShowingButtonText: true)
+                        
+                        Button {
+                            shouldBlurNsfw.toggle()
+                        } label: {
+                            if (shouldBlurNsfw) {
+                                Label("Unblur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
+                            }
+                            else {
+                                Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
+                            }
                         }
+                        
+                        Button {
+                            shouldShowCompactPosts.toggle()
+                        } label: {
+                            if (shouldShowCompactPosts) {
+                                Label("Large posts", systemImage: "rectangle.expand.vertical")
+                            }
+                            else {
+                                Label("Compact posts", systemImage: "rectangle.compress.vertical")
+                            }
+                        }
+                        .foregroundColor(.primary)
                     } label: {
                         Label("More", systemImage: "ellipsis")
                     }
@@ -463,36 +469,56 @@ struct CommunityView: View
             )
             {
                 FeedPost(
-                    post: post,
+                    postView: post,
                     account: account,
-                    feedType: $feedType
+                    // feedType: $feedType,
+                    isDragging: $isDragging
                 )
             }
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .task {
-                if post == postTracker.posts.last {
-                    if postTracker.posts.isEmpty {
-                        postTracker.isLoading = true
+                if !postTracker.isLoading {
+                    if let position = postTracker.posts.lastIndex(of: post) {
+                        if  position >= (postTracker.posts.count - 40) {
+                            await loadFeed()
+                        }
                     }
-
-                    await loadFeed()
-                    postTracker.isLoading = false
                 }
             }
         }
     }
 
+    @ViewBuilder
+    private var loadingMorePostsView: some View {
+        if postTracker.isLoading {
+            VStack(alignment: .center) {
+                ProgressView()
+                    .frame(width: 16, height: 16)
+                Text("Loading more posts...")
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .foregroundColor(.secondary)
+            .background(Color.systemBackground)
+            .accessibilityElement(children: .combine)
+        }
+    }
+
     func loadFeed() async {
         do {
-            try await loadInfiniteFeed(
-                postTracker: postTracker,
-                appState: appState,
+            try await postTracker.loadNextPage(
+                account: account,
                 communityId: community?.id,
-                feedType: feedType,
-                sortingType: selectedSortingOption,
-                account: account
+                sort: selectedSortingOption,
+                type: feedType
             )
         } catch APIClientError.networking {
+            // TODO: we're seeing a number of SSL related errors on some instances while loading pages from the feed
+            // while we investigate the reasons we will only show this error if the user would otherwise be left with an empty feed
+            guard postTracker.posts.isEmpty else {
+                return
+            }
+
             errorAlert = .init(
                 title: "Unable to connect to Lemmy",
                 message: "Please check your internet connection and try again"
@@ -502,8 +528,13 @@ struct CommunityView: View
                 title: "Error",
                 message: message.error
             )
+        } catch APIClientError.cancelled {
+            print("Failed while loading feed (request cancelled)")
         } catch {
-            errorAlert = .unexpected
+            // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
+            // for now we will fail silently if the user has posts to view while we investigate further
+            assertionFailure("Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat")
+            // errorAlert = .unexpected
         }
 
     }

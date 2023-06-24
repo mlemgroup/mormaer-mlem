@@ -27,6 +27,20 @@ struct SettingsView: View
             websiteLink: URL(string: "https://elk.zone/mstdn.social/@samalone@twit.social")!
         ),
     ]
+    
+    func getVersionString() -> String {
+        var result = "n/a"
+        
+        if let releaseVersion = Bundle.main.releaseVersionNumber {
+            result = releaseVersion;
+        }
+        
+        if let buildVersion = Bundle.main.buildVersionNumber {
+            result.append(" (\(buildVersion))")
+        }
+        
+        return result
+    }
 
     var body: some View
     {
@@ -79,48 +93,6 @@ struct SettingsView: View
                     {
                         VStack(alignment: .center, spacing: 20)
                         {
-                            VStack(alignment: .center, spacing: 10)
-                            {
-                                AsyncImage(url: URL(string: "https://media.mstdn.social/accounts/avatars/108/939/255/808/776/594/original/38b73188943130ee.png"))
-                                { image in
-                                    image
-                                        .resizable()
-                                        .frame(width: 200, height: 200, alignment: .center)
-                                        .clipShape(Circle())
-                                        .shadow(radius: 10)
-                                } placeholder: {
-                                    ProgressView()
-                                        .frame(width: 200, height: 200, alignment: .center)
-                                }
-
-                                VStack(alignment: .leading, spacing: 0)
-                                {
-                                    Text("Mlem by")
-                                        .font(.caption2)
-                                        .foregroundColor(.secondary)
-                                    Text("David Bureš")
-                                        .font(.title)
-                                    
-                                    VStack(alignment: .center, spacing: 0) {
-                                        HStack(alignment: .center, spacing: 10) {
-                                            Button {
-                                                openURL(URL(string: "https://mstdn.social/@davidbures")!)
-                                            } label: {
-                                                Label("Mastodon", systemImage: "link")
-                                            }
-                                            .buttonStyle(.bordered)
-                                            Button {
-                                                openURL(URL(string: "https://twitter.com/davidbures")!)
-                                            } label: {
-                                                Label("Twitter", systemImage: "link")
-                                            }
-                                            .buttonStyle(.bordered)
-                                        }
-                                    }
-                                }
-                            }
-                            .padding()
-
                             List
                             {
                                 Section
@@ -168,6 +140,8 @@ struct SettingsView: View
                                 } header: {
                                     Text("Packages Used")
                                 }
+                                
+                                Text("Version \(getVersionString())")
                             }
                         }
                     } label: {

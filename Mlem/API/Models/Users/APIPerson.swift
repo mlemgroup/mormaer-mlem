@@ -21,11 +21,16 @@ struct APIPerson: Decodable {
     let local: Bool
     let banner: URL?
     let deleted: Bool
-    let inboxUrl: URL
     let sharedInboxUrl: URL?
     let matrixUserId: String?
     let admin: Bool
     let botAccount: Bool
     let banExpires: Date?
     let instanceId: Int
+}
+
+extension APIPerson: Equatable {
+    static func == (lhs: APIPerson, rhs: APIPerson) -> Bool {
+        lhs.actorId == rhs.actorId
+    }
 }

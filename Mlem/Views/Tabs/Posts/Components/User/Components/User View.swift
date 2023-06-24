@@ -50,7 +50,7 @@ struct UserView: View {
             Section {
                 VStack(alignment: .center, spacing: 15) {
                     if let avatarURL = userDetails.person.avatar {
-                        CachedAsyncImage(url: avatarURL) { image in
+                        CachedAsyncImage(url: avatarURL, urlCache: AppConstants.urlCache) { image in
                             image
                                 .resizable()
                                 .frame(width: 100, height: 100)
@@ -130,7 +130,7 @@ struct UserView: View {
                 
                 userDetails = response.personView
                 privateCommentTracker.comments = response.comments.hierarchicalRepresentation
-                privatePostTracker.posts = response.posts
+                privatePostTracker.add(response.posts)
             } catch {
                 handle(error)
             }
