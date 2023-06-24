@@ -104,7 +104,7 @@ struct CommunityListView: View
     }
     
     private func refreshCommunitiesList() async {
-        let communitiesRequestCount = 25
+        let communitiesRequestCount = 50
         do {
             var moreCommunities = true
             var refreshedCommunities: [APICommunity] = []
