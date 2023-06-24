@@ -23,7 +23,6 @@ struct CommunityView: View
 
     @StateObject var postTracker: PostTracker = .init()
 
-    @State private var isScrollViewDragging = true
     @State var account: SavedAccount
     @State var community: APICommunity?
     @State var communityDetails: GetCommunityResponse?
@@ -377,18 +376,18 @@ struct CommunityView: View
                 }
             }
         }
-        .hideNavBarAndTopBar(isScrollViewDragging, hideTopBarAndNavBarWhenScrolling)
+        .hideNavBarAndTopBar(isDragging, hideTopBarAndNavBarWhenScrolling)
         .simultaneousGesture(dragGesture)
     }
 
     private var dragGesture: some Gesture {
         DragGesture().onChanged { value in
             withAnimation {
-                isScrollViewDragging.toggle()
+                isDragging.toggle()
             }
         }.onEnded { _ in
             withAnimation {
-                isScrollViewDragging.toggle()
+                isDragging.toggle()
             }
         }
     }
