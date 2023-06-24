@@ -28,8 +28,8 @@ struct AppearanceSettingsView: View {
     // icons
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-    
-    @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
+
+    // navigation
     @AppStorage("hideTopBarAndNavBarWhenScrolling") var hideTopBarAndNavBarWhenScrolling: Bool = false
     
     // other
@@ -154,7 +154,7 @@ struct AppearanceSettingsView: View {
             }
             Section("Navigation")
             {
-                SettingsItem(
+                SwitchableSettingsItem(
                     settingPictureSystemName: "scroll.fill",
                     settingPictureColor: .pink,
                     settingName: "Hide TopBar and NavBar when scrolling",
