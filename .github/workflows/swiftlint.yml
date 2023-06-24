@@ -1,0 +1,27 @@
+name: SwiftLint
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/swiftlint.yml'
+      - '**/*.swift'
+
+jobs:
+  SwiftLint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: GitHub Action for SwiftLint (Only files changed in the PR)
+        uses: norio-nomura/action-swiftlint@3.2.1
+        env:
+          DIFF_BASE: ${{ github.base_ref }}
+          WORKING_DIRECTORY: Mlem
+        with:
+          args: --reporter html --output_file swiftlint-report.html  
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: swiftlint-report
+          path: Mlem/swiftlint-report.html
