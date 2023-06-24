@@ -52,6 +52,10 @@ struct ExpandedPost: View
         ScrollView {
             VStack(spacing: 0) {
                 postView
+                    .onTapGesture {
+                        print(post)
+                        print(post.postType)
+                    }
                 
                 if commentTracker.isLoading {
                     commentsLoadingView
