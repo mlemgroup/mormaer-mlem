@@ -157,7 +157,7 @@ struct AppearanceSettingsView: View {
                 SwitchableSettingsItem(
                     settingPictureSystemName: "scroll.fill",
                     settingPictureColor: .pink,
-                    settingName: "Hide TopBar and NavBar when scrolling",
+                    settingName: "Hide top and bottom bars when scrolling",
                     isTicked: $hideTopBarAndNavBarWhenScrolling
                 )
             }
