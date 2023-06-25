@@ -31,8 +31,8 @@ struct User: Codable, Identifiable, Hashable {
     let bot: Bool
 
     let onInstanceID: Int
-    
-    var details: UserDetails? = nil
+
+    var details: UserDetails?
 }
 
 struct UserDetails: Codable, Hashable {

@@ -36,7 +36,7 @@ struct ExpandedPost: View {
     @Binding var feedType: FeedType
 
     @State private var textFieldContents: String = ""
-    @State private var replyingToCommentID: Int? = nil
+    @State private var replyingToCommentID: Int?
 
     @State private var isInTheMiddleOfStyling: Bool = false
     @State private var isPostingComment: Bool = false

@@ -14,9 +14,9 @@ struct UserProfileLink: View {
 
     // Extra context about where the link is being displayed
     // to pick the correct flair
-    @State var postContext: APIPostView? = nil
-    @State var commentContext: APIComment? = nil
-   
+    @State var postContext: APIPostView?
+    @State var commentContext: APIComment?
+
     var body: some View {
         NavigationLink(value: user) {
             UserProfileLabel(

@@ -17,10 +17,10 @@ struct UserProfileLabel : View {
 
     // Extra context about where the link is being displayed
     // to pick the correct flair
-    @State var postContext: APIPostView? = nil
-    @State var commentContext: APIComment? = nil
-    @State var communityContext: GetCommunityResponse? = nil
-    
+    @State var postContext: APIPostView?
+    @State var commentContext: APIComment?
+    @State var communityContext: GetCommunityResponse?
+
     static let developerNames = [
         "vlemmy.net/u/darknavi",
         "lemmy.ml/u/BrooklynMan",
@@ -71,7 +71,7 @@ struct UserProfileLabel : View {
 
     struct UserProfileLinkFlair {
         var color: Color
-        var systemIcon: String? = nil
+        var systemIcon: String?
     }
 
     private func calculateLinkFlair() -> UserProfileLinkFlair {
@@ -148,8 +148,8 @@ struct UserProfileLinkPreview: PreviewProvider {
     ) -> UserProfileLink {
         let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType);
         
-        var postContext: APIPostView? = nil
-        var commentContext: APIComment? = nil
+        var postContext: APIPostView?
+        var commentContext: APIComment?
         
         if userType == .Mod {
             commentContext = generatePreviewComment(creator: previewUser, isMod:  true)
