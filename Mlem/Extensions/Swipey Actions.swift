@@ -200,6 +200,7 @@ struct SwipeyView: ViewModifier {
 
 public extension View {
     @ViewBuilder
+    // swiftlint:disable function_parameter_count
     func addSwipeyActions(isDragging: Binding<Bool>,
 
                           emptyLeftSymbolName: String,
@@ -235,6 +236,7 @@ public extension View {
                             longRightAction: longRightAction,
                             longRightColor: longRightColor))
     }
+    // swiftlint:enable function_parameter_count
 }
 
 #warning("ERIC TODO: finish this implementation")
