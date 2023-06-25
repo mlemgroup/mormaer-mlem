@@ -16,12 +16,14 @@ struct SavePostRequest: APIPutRequest {
     let body: Body
 
     // lemmy_api_common::post::SavePost
+    // swiftlint:disable identifier_name
     struct Body: Encodable {
         let post_id: Int
         let save: Bool
 
         let auth: String
     }
+    // swiftlint:enable identifier_name
 
     init(
         account: SavedAccount,

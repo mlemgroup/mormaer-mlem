@@ -16,6 +16,7 @@ struct EditCommentRequest: APIPutRequest {
     let body: Body
 
     // lemmy_api_common::comment::EditComment
+    // swiftlint:disable identifier_name
     struct Body: Encodable {
         let comment_id: Int
         let content: String?
@@ -25,6 +26,7 @@ struct EditCommentRequest: APIPutRequest {
 
         let auth: String
     }
+    // swiftlint:enable identifier_name
 
     init(
         account: SavedAccount,

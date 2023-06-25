@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct MlemApp: App {
-    @AppStorage("hasUndergoneLegacyAccountDeletion_debug_3") var hasUndergoneLegaryAccountDeletion_debug: Bool = false
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
 
     @StateObject var appState: AppState = .init()

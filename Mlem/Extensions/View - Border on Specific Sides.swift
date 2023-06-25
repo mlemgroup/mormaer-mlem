@@ -18,6 +18,7 @@ internal struct EdgeBorder: Shape {
     var width: CGFloat
     var edges: [Edge]
 
+    // swiftlint:disable identifier_name
     func path(in rect: CGRect) -> Path {
         var path = Path()
         for edge in edges {
@@ -52,4 +53,5 @@ internal struct EdgeBorder: Shape {
         }
         return path
     }
+    // swiftlint:enable identifier_name
 }

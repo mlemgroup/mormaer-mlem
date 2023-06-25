@@ -16,6 +16,7 @@ struct HideCommunityRequest: APIPutRequest {
     let body: Body
 
     // lemmy_api_common::community::HideCommunity
+    // swiftlint:disable identifier_name
     struct Body: Encodable {
         let community_id: Int
 
@@ -24,6 +25,7 @@ struct HideCommunityRequest: APIPutRequest {
 
         let auth: String
     }
+    // swiftlint:enable identifier_name
 
     init(
         account: SavedAccount,

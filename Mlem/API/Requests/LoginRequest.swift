@@ -16,11 +16,13 @@ struct LoginRequest: APIPostRequest {
     let body: Body
 
     // lemmy_api_common::person::Login
+    // swiftlint:disable identifier_name
     struct Body: Encodable {
         let username_or_email: String
         let password: String
         let totp_2fa_token: String?
     }
+    // swiftlint:enable identifier_name
 
     init(instanceURL: URL, username: String, password: String, totpToken: String?) {
         self.instanceURL = instanceURL

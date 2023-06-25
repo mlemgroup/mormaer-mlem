@@ -16,12 +16,14 @@ struct DeletePostRequest: APIPostRequest {
     let body: Body
 
     // lemmy_api_common::post::DeletePost
+    // swiftlint:disable identifier_name
     struct Body: Encodable {
         let post_id: Int
         let deleted: Bool
 
         let auth: String
     }
+    // swiftlint:enable identifier_name
 
     init(
         account: SavedAccount,

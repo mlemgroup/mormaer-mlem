@@ -59,6 +59,8 @@ struct SearchResponse: Decodable {
     let comments: [APICommentView]
     let communities: [APICommunityView]
     let posts: [APIPostView]
+    // swiftlint:disable identifier_name
     let type_: SearchType
+    // swiftlint:enable identifier_name
     let users: [APIPersonView]
 }

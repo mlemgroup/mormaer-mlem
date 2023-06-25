@@ -112,16 +112,35 @@ struct UserProfileLinkPreview: PreviewProvider {
     // Only Admin and Bot work right now
     // Because the rest require post/comment context
     enum PreviewUserType: String, CaseIterable {
-        case Normal = "normal"
-        case Mod = "mod"
-        case OP = "op"
-        case Bot = "bot"
-        case Admin = "admin"
-        case Dev = "developer"
+        case normal = "normal"
+        case mod = "mod"
+        case op = "op"
+        case bot = "bot"
+        case admin = "admin"
+        case dev = "developer"
     }
 
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
-        return APIPerson(id: name.hashValue, name: name, displayName: displayName, avatar: nil, banned: false, published: Date.now.advanced(by: -120000), updated: nil, actorId: userType == .Dev ? URL(string: "https://\(UserProfileLabel.developerNames[0])")! : URL(string: "https://vlemmy.net/c/\(name)")!, bio: nil, local: false, banner: nil, deleted: false, sharedInboxUrl: nil, matrixUserId: nil, admin: userType == .Admin, botAccount: userType == .Bot, banExpires: nil, instanceId: 123)
+        APIPerson(
+            id: name.hashValue,
+            name: name,
+            displayName: displayName,
+            avatar: nil,
+            banned: false,
+            published: Date.now.advanced(by: -120000),
+            updated: nil,
+            actorId: userType == .dev ? URL(string: "https://\(UserProfileLabel.developerNames[0])")! : URL(string: "https://vlemmy.net/c/\(name)")!,
+            bio: nil,
+            local: false,
+            banner: nil,
+            deleted: false,
+            sharedInboxUrl: nil,
+            matrixUserId: nil,
+            admin: userType == .admin,
+            botAccount: userType == .bot,
+            banExpires: nil,
+            instanceId: 123
+        )
     }
 
     static func generatePreviewComment(creator: APIPerson, isMod: Bool) -> APIComment {
@@ -151,11 +170,11 @@ struct UserProfileLinkPreview: PreviewProvider {
         var postContext: APIPostView?
         var commentContext: APIComment?
         
-        if userType == .Mod {
+        if userType == .mod {
             commentContext = generatePreviewComment(creator: previewUser, isMod: true)
         }
 
-        if userType == .OP {
+        if userType == .op {
             commentContext = generatePreviewComment(creator: previewUser, isMod: false)
             postContext = generatePreviewPost(creator: previewUser)
         }
