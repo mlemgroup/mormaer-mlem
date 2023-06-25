@@ -9,9 +9,9 @@ import Foundation
 
 @MainActor
 func sendSaveCommentRequest(account: SavedAccount,
-              commentId: Int,
-              save: Bool,
-              commentTracker: CommentTracker) async throws {
+                            commentId: Int,
+                            save: Bool,
+                            commentTracker: CommentTracker) async throws {
     do {
         let request = SaveCommentRequest(account: account, commentId: commentId, save: save)
 

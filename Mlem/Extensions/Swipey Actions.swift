@@ -88,6 +88,8 @@ struct SwipeyView: ViewModifier {
         _isDragging = isDragging
     }
 
+    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
     func body(content: Content) -> some View {
         ZStack {
             // background
@@ -197,6 +199,8 @@ struct SwipeyView: ViewModifier {
         .buttonStyle(EmptyButtonStyle())
     }
 }
+// swiftlint:enable cyclomatic_complexity
+// swiftlint:enable function_body_length
 
 public extension View {
     @ViewBuilder
@@ -239,7 +243,7 @@ public extension View {
     // swiftlint:enable function_parameter_count
 }
 
-#warning("ERIC TODO: finish this implementation")
+// TODO: ERIC - finish this implementation
 // struct SwipeyActionConfig {
 //    let symbolName: String
 //    let emptySymbolName: String

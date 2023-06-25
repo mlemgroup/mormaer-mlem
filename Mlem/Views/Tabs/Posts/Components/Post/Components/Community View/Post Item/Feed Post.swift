@@ -129,10 +129,9 @@ struct FeedPost: View {
     func replyToPost() {
         self.replyIsPresented = true
     }
-    /**
-     Votes on a post
-     NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
-     */
+
+    /// Votes on a post
+    /// - Parameter inputOp: The vote operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
             let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp

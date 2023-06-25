@@ -20,6 +20,9 @@ extension UIUserInterfaceStyle: SettingsOptions {
             return "System"
         case .dark:
             return "Dark"
+        @unknown default:
+            assertionFailure("A new case has been added which we are not handling")
+            return "Unknown"
         }
     }
 

@@ -62,7 +62,11 @@ struct CommunitySearchField: View {
                                 print("Search command error: \(error)")
                                 errorAlert = .init(
                                     title: "Couldn't connect to Lemmy",
-                                    message: "Your network conneciton is either not stable enough, or the Lemmy server you're connected to is overloaded.\nTry again later."
+                                    message: """
+                                             Your network conneciton is either not stable enough, or the Lemmy server you're connected \
+                                             to is overloaded. \n
+                                             Try again later.
+                                             """
                                 )
                             }
                         }

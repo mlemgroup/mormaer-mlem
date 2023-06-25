@@ -21,12 +21,12 @@ func decodeFromFile(fromURL: URL, whatToDecode: WhatToDecode) throws -> any Coda
 
         do {
             switch whatToDecode {
-                case .accounts:
-                    return try JSONDecoder().decode([SavedAccount].self, from: rawData)
-                case .filteredKeywords:
-                    return try JSONDecoder().decode([String].self, from: rawData)
-                case .favoriteCommunities:
-                    return try JSONDecoder().decode([FavoriteCommunity].self, from: rawData)
+            case .accounts:
+                return try JSONDecoder().decode([SavedAccount].self, from: rawData)
+            case .filteredKeywords:
+                return try JSONDecoder().decode([String].self, from: rawData)
+            case .favoriteCommunities:
+                return try JSONDecoder().decode([FavoriteCommunity].self, from: rawData)
             }
         } catch let decodingError {
             print("Failed to decode loaded data: \(decodingError.localizedDescription)")

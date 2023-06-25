@@ -219,7 +219,14 @@ struct CommentItem: View {
             // lazy stack because there might be *lots* of these
             LazyVStack(spacing: 0) {
                 ForEach(hierarchicalComment.children) { child in
-                    CommentItem(account: account, hierarchicalComment: child, postContext: postContext, depth: depth + 1, showPostContext: false, isDragging: $isDragging)
+                    CommentItem(
+                        account: account,
+                        hierarchicalComment: child,
+                        postContext: postContext,
+                        depth: depth + 1,
+                        showPostContext: false,
+                        isDragging: $isDragging
+                    )
                 }
             }
         }

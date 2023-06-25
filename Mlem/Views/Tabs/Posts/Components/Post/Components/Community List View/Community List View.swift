@@ -23,7 +23,9 @@ struct CommunityListView: View {
 
     private var hasTestCommunities = false
 
+    // swiftlint:disable line_length
     private static let alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    // swiftlint:enable line_length
 
     // Note: These are in order that they appear in the sidebar
     @State var communitySections: [CommunitySection] = []
@@ -43,10 +45,28 @@ struct CommunityListView: View {
                 HStack {
                     List {
 
-                        HomepageFeedRowView(account: account, feedType: .subscribed, iconName: "house.circle.fill", iconColor: Color.red, description: "Subscribed communities from all servers")
+                        HomepageFeedRowView(
+                            account: account,
+                            feedType: .subscribed,
+                            iconName: "house.circle.fill",
+                            iconColor: .red,
+                            description: "Subscribed communities from all servers"
+                        )
                             .id("top") // For "scroll to top" sidebar item
-                        HomepageFeedRowView(account: account, feedType: .local, iconName: "building.2.crop.circle.fill", iconColor: Color.green, description: "Local communities from your server")
-                        HomepageFeedRowView(account: account, feedType: .all, iconName: "cloud.circle.fill", iconColor: Color.blue, description: "All communities that federate with your server")
+                        HomepageFeedRowView(
+                            account: account,
+                            feedType: .local,
+                            iconName: "building.2.crop.circle.fill",
+                            iconColor: .green,
+                            description: "Local communities from your server"
+                        )
+                        HomepageFeedRowView(
+                            account: account,
+                            feedType: .all,
+                            iconName: "cloud.circle.fill",
+                            iconColor: .blue,
+                            description: "All communities that federate with your server"
+                        )
 
                         ForEach(calculateVisibleCommunitySections()) { communitySection in
                             Section(header:
@@ -98,7 +118,6 @@ struct CommunityListView: View {
                     inlineHeaderLabel: nil,
                     accessibilityLabel: "Top of communities"
                 ),
-                
                 CommunitySection(
                     viewId: "favorites",
                     sidebarEntry: FavoritesSidebarEntry(
@@ -113,14 +132,25 @@ struct CommunityListView: View {
             ] +
             CommunityListView.alphabet.map {
                 // This looks sinister but I didn't know how to string replace in a non-string based regex
-                CommunitySection(viewId: $0, sidebarEntry: RegexCommunityNameSidebarEntry(communityNameRegex: (try? Regex("^[\($0.uppercased())\($0.lowercased())]"))!,
-                                                                                          sidebarLabel: $0,
-                                                                                          sidebarIcon: nil),
-                                 inlineHeaderLabel: $0, accessibilityLabel: "Communities starting with the letter '\($0)'")} +
-            [ CommunitySection(viewId: "non_letter_titles", sidebarEntry: RegexCommunityNameSidebarEntry(communityNameRegex: /^[^a-zA-Z]/,
-                                                                                                         sidebarLabel: "#",
-                                                                                                         sidebarIcon: nil),
-                               inlineHeaderLabel: "#", accessibilityLabel: "Communities starting with a symbol or number") ]
+                CommunitySection(
+                    viewId: $0,
+                    sidebarEntry: RegexCommunityNameSidebarEntry(
+                        communityNameRegex: (try? Regex("^[\($0.uppercased())\($0.lowercased())]"))!,
+                        sidebarLabel: $0,
+                        sidebarIcon: nil
+                    ),
+                    inlineHeaderLabel: $0,
+                    accessibilityLabel: "Communities starting with the letter '\($0)'")} +
+            [CommunitySection(
+                viewId: "non_letter_titles",
+                sidebarEntry: RegexCommunityNameSidebarEntry(
+                    communityNameRegex: /^[^a-zA-Z]/,
+                    sidebarLabel: "#",
+                    sidebarIcon: nil
+                ),
+                inlineHeaderLabel: "#",
+                accessibilityLabel: "Communities starting with a symbol or number"
+            )]
         }
     }
 
@@ -167,8 +197,10 @@ struct CommunityListView: View {
         return communitySections
 
         // Only show letter headers for letters we have in our community list
-            .filter({ (communitySection) -> Bool in
-                getSubscriptionsAndFavorites().contains(where: { communitySection.sidebarEntry.contains(community: $0, isSubscribed: subscribedCommunities.contains($0)) })
+            .filter({ communitySection -> Bool in
+                getSubscriptionsAndFavorites()
+                    .contains(where: { communitySection.sidebarEntry
+                        .contains(community: $0, isSubscribed: subscribedCommunities.contains($0)) })
             })
         // Only show sections which have labels to show
             .filter({ (communitySection) -> Bool in
@@ -259,9 +291,7 @@ struct SectionIndexTitles: View {
     }
 }
 
-///
 // Sidebar Label Views
-///
 struct SectionIndexText: View {
     let label: String
     var body: some View {
@@ -335,11 +365,9 @@ struct CommunityListViewPreview: PreviewProvider {
     static var previews: some View {
         CommunityListView(
             account: SavedAccount(id: 0, instanceLink: URL(string: "lemmy.com")!, accessToken: "abcdefg", username: "Test Account"),
-            testCommunities: fakeCommunityPrefixes.enumerated().map({
-                (index, element) in
+            testCommunities: fakeCommunityPrefixes.enumerated().map({ index, element in
                 generateFakeCommunity(id: index, namePrefix: element)
             })
         ).environmentObject(favoritesTracker)
     }
 }
-

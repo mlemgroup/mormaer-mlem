@@ -107,7 +107,12 @@ struct UserProfileLabel: View {
 
 // TODO: darknavi - Move these to a common area for reuse
 struct UserProfileLinkPreview: PreviewProvider {
-    static let previewAccount = SavedAccount(id: 0, instanceLink: URL(string: "lemmy.com")!, accessToken: "abcdefg", username: "Test Account")
+    static let previewAccount = SavedAccount(
+        id: 0,
+        instanceLink: URL(string: "lemmy.com")!,
+        accessToken: "abcdefg",
+        username: "Test Account"
+    )
 
     // Only Admin and Bot work right now
     // Because the rest require post/comment context

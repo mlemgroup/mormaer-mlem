@@ -57,12 +57,19 @@ struct CommunitySearchResultsView: View {
                 if communitySearchResultsTracker.foundCommunities.isEmpty {
                     Section {
                         if !getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker).isEmpty {
-                            ForEach(getFavoritedCommunitiesForAccount(account: account, tracker: favoritedCommunitiesTracker)) { favoritedCommunity in
+                            ForEach(getFavoritedCommunitiesForAccount(
+                                account: account,
+                                tracker: favoritedCommunitiesTracker
+                            )) { favoritedCommunity in
                                 NavigationLink(value: favoritedCommunity.community) {
-                                    Text("\(favoritedCommunity.community.name)\(Text("@\(favoritedCommunity.community.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
+                                    communityNameView(for: favoritedCommunity.community)
                                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                         Button(role: .destructive) {
-                                            unfavoriteCommunity(account: account, community: favoritedCommunity.community, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
+                                            unfavoriteCommunity(
+                                                account: account,
+                                                community: favoritedCommunity.community,
+                                                favoritedCommunitiesTracker: favoritedCommunitiesTracker
+                                            )
                                         } label: {
                                             Label("Unfavorite", systemImage: "star.slash")
                                         }
@@ -86,7 +93,7 @@ struct CommunitySearchResultsView: View {
                             if !subscribedCommunities!.isEmpty {
                                 ForEach(subscribedCommunities!) { subscribedCommunity in
                                     NavigationLink(value: subscribedCommunity) {
-                                        Text("\(subscribedCommunity.name)\(Text("@\(subscribedCommunity.actorId.host!)").foregroundColor(.secondary).font(.caption))")
+                                        communityNameView(for: subscribedCommunity)
                                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                         }
                                     }
@@ -107,23 +114,33 @@ struct CommunitySearchResultsView: View {
                     Section {
                         ForEach(communitySearchResultsTracker.foundCommunities) { foundCommunity in
                             NavigationLink(value: foundCommunity) {
-                                Text("\(foundCommunity.name)\(Text("@\(foundCommunity.actorId.host ?? "ERROR")").foregroundColor(.secondary).font(.caption))")
+                                communityNameView(for: foundCommunity)
                                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                    if favoritedCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == foundCommunity.id }) { /// This is when a community is already favorited
-                                        Button(role: .destructive) {
-                                            unfavoriteCommunity(account: account, community: foundCommunity, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
-                                        } label: {
-                                            Label("Unfavorite", systemImage: "star.slash")
+                                        // This is when a community is already favorited
+                                        if favoritedCommunitiesTracker.favoriteCommunities
+                                            .contains(where: { $0.community.id == foundCommunity.id }) {
+                                            Button(role: .destructive) {
+                                                unfavoriteCommunity(
+                                                    account: account,
+                                                    community: foundCommunity,
+                                                    favoritedCommunitiesTracker: favoritedCommunitiesTracker
+                                                )
+                                            } label: {
+                                                Label("Unfavorite", systemImage: "star.slash")
+                                            }
+                                        } else {
+                                            Button {
+                                                favoriteCommunity(
+                                                    account: account,
+                                                    community: foundCommunity,
+                                                    favoritedCommunitiesTracker: favoritedCommunitiesTracker
+                                                )
+                                            } label: {
+                                                Label("Favorite", systemImage: "star")
+                                            }
+                                            .tint(.yellow)
                                         }
-                                    } else {
-                                        Button {
-                                            favoriteCommunity(account: account, community: foundCommunity, favoritedCommunitiesTracker: favoritedCommunitiesTracker)
-                                        } label: {
-                                            Label("Favorite", systemImage: "star")
-                                        }
-                                        .tint(.yellow)
                                     }
-                                }
                             }
                         }
                     } header: {
@@ -150,5 +167,14 @@ struct CommunitySearchResultsView: View {
 
     internal func getFavoritedCommunitiesForAccount(account: SavedAccount, tracker: FavoriteCommunitiesTracker) -> [FavoriteCommunity] {
         return tracker.favoriteCommunities.filter { $0.forAccountID == account.id }
+    }
+    
+    private func communityNameView(for community: APICommunity) -> some View {
+        let name = community.name
+        let host = community.actorId.host ?? "ERROR"
+        let hostText = Text("@\(host)")
+            .foregroundColor(.secondary)
+            .font(.caption)
+        return Text("\(name)\(hostText)")
     }
 }

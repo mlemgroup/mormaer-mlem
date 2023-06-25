@@ -64,7 +64,7 @@ class APIClient {
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)
         }
 
-        if let _ = defintion as? any APIGetRequest {
+        if defintion as? any APIGetRequest != nil {
             urlRequest.httpMethod = "GET"
         } else if let postDefinition = defintion as? any APIPostRequest {
             urlRequest.httpMethod = "POST"

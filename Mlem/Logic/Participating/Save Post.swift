@@ -7,9 +7,10 @@
 
 @MainActor
 func sendSavePostRequest(account: SavedAccount,
-              postId: Int,
-              save: Bool,
-              postTracker: PostTracker) async throws -> APIPostView {
+                         postId: Int,
+                         save: Bool,
+                         postTracker: PostTracker
+) async throws -> APIPostView {
     do {
         let request = SavePostRequest(account: account, postId: postId, save: save)
 

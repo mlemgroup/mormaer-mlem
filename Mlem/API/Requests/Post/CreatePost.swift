@@ -16,7 +16,6 @@ struct CreatePostRequest: APIPostRequest {
     let body: Body
 
     // lemmy_api_common::post::CreatePost
-    // swiftlint:disable identifier_name
     struct Body: Encodable {
         // missing: honeypot field
         let auth: String
@@ -27,7 +26,6 @@ struct CreatePostRequest: APIPostRequest {
         let language_id: Int?
         let url: URL?
     }
-    // swiftlint:enable identifier_name
 
     init(
         account: SavedAccount,

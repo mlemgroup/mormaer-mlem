@@ -16,14 +16,12 @@ struct BlockCommunityRequest: APIPostRequest {
     let body: Body
 
     // lemmy_api_common::community::BlockCommunity
-    // swiftlint:disable identifier_name
     struct Body: Encodable {
         let community_id: Int
         let block: Bool
 
         let auth: String
     }
-    // swiftlint:enable identifier_name
 
     init(
         account: SavedAccount,

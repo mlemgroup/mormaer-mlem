@@ -11,7 +11,8 @@ import UIKit
 
 class CustomUITextField: UITextField, UITextFieldDelegate {
 
-    /// (Not used for this workaround, see below for the full code) Binding from the `CustomTextField` so changes of the text can be observed by `SwiftUI`
+    // (Not used for this workaround, see below for the full code)
+    // Binding from the `CustomTextField` so changes of the text can be observed by `SwiftUI`
     fileprivate var _textBinding: Binding<String>!
 
     /// If it is `true` the text field behaves normally.
@@ -37,16 +38,16 @@ class CustomUITextField: UITextField, UITextFieldDelegate {
         // if it is not editable
         if !_isEditable {
             switch action {
-                case #selector(cut(_:)),
-                    #selector(delete(_:)),
-                    #selector(paste(_:)):
+            case #selector(cut(_:)),
+                #selector(delete(_:)),
+                #selector(paste(_:)):
+                return false
+            default:
+                // do not show 'Replace...' which can also replace text
+                // Note: This selector is private and may change
+                if action == Selector("_promptForReplace:") {
                     return false
-                default:
-                    // do not show 'Replace...' which can also replace text
-                    // Note: This selector is private and may change
-                    if action == Selector("_promptForReplace:") {
-                        return false
-                    }
+                }
             }
         }
         return super.canPerformAction(action, withSender: sender)

@@ -16,13 +16,11 @@ struct CreatePostLikeRequest: APIPostRequest {
     let body: Body
 
     // lemmy_api_common::post::CreatePostLike
-    // swiftlint:disable identifier_name
     struct Body: Encodable {
         let auth: String
         let post_id: Int
         let score: Int
     }
-    // swiftlint:enable identifier_name
 
     init(
         account: SavedAccount,

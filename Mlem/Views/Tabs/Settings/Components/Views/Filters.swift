@@ -61,7 +61,10 @@ struct FiltersSettingsView: View {
                     do {
                         let urlOfImportedFile: URL = try result.get()
 
-                        urlOfImportedFile.startAccessingSecurityScopedResource()
+                        defer { urlOfImportedFile.stopAccessingSecurityScopedResource() }
+                        guard urlOfImportedFile.startAccessingSecurityScopedResource() else {
+                            return
+                        }
 
                         print("URL of imported file: \(urlOfImportedFile)")
                         do {
@@ -78,8 +81,6 @@ struct FiltersSettingsView: View {
                                 filtersTracker.filteredKeywords = decodedKeywords
                             }
                         } catch let decodingError {
-                            urlOfImportedFile.stopAccessingSecurityScopedResource()
-
                             appState.alertTitle = "Couldn't decode blocklist"
                             appState.alertMessage = "Try again. If the problem keeps happening, try reinstalling Mlem."
                             appState.isShowingAlert.toggle()
@@ -90,7 +91,10 @@ struct FiltersSettingsView: View {
                     } catch let blocklistImportingError {
 
                         appState.alertTitle = "Couldn't find blocklist"
-                        appState.alertMessage = "If you are trying to read it from iCloud, make sure your internet is working.\nOtherwise, try moving the blocklist file to another location."
+                        appState.alertMessage = """
+                                                If you are trying to read it from iCloud, make sure your internet is working.
+                                                Otherwise, try moving the blocklist file to another location.
+                                                """
                         appState.isShowingAlert.toggle()
 
                         print("Failed while reading file: \(blocklistImportingError)")
@@ -126,7 +130,12 @@ struct FiltersSettingsView: View {
                             Text("Cancel")
                         }
                     } message: {
-                        Text("You are about to delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters.\nYou cannot undo this action.")
+                        Text(
+                             """
+                             You are about to delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters.
+                             You cannot undo this action.
+                             """
+                        )
                     }
 
             }

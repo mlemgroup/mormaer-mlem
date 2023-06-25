@@ -25,7 +25,7 @@ struct FavoriteStarButtonStyle: ButtonStyle {
         Image(systemName: isFavorited ? "star.fill" : "star")
             .foregroundColor(.blue)
             .opacity(isFavorited ? 1.0 : 0.2)
-            .accessibilityRepresentation{ configuration.label }
+            .accessibilityRepresentation { configuration.label }
     }
 }
 
@@ -46,7 +46,9 @@ struct CommuntiyFeedRowView: View {
                     Text("@\(website)").font(.footnote).foregroundColor(.gray).opacity(0.5)
                 }
             }.background(
-                NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {}.opacity(0).buttonStyle(.plain)
+                NavigationLink(value: CommunityLinkWithContext(community: community, feedType: .subscribed)) {}
+                    .opacity(0)
+                    .buttonStyle(.plain)
             )
             .accessibilityLabel("Community \(community.name)")
             .accessibilityAddTraits(.isLink)

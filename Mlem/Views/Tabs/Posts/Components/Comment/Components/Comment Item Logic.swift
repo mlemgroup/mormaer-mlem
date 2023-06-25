@@ -11,7 +11,13 @@ extension CommentItem {
     func voteOnComment(inputOp: ScoringOperation) async {
         do {
             let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            try await _ = rateComment(comment: hierarchicalComment.commentView, operation: operation, account: account, commentTracker: commentTracker, appState: appState)
+            try await _ = rateComment(
+                comment: hierarchicalComment.commentView,
+                operation: operation,
+                account: account,
+                commentTracker: commentTracker,
+                appState: appState
+            )
         } catch {
             print("failed to vote!")
         }

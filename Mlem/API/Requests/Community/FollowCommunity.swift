@@ -16,13 +16,11 @@ struct FollowCommunityRequest: APIPostRequest {
     let body: Body
 
     // lemmy_api_common::community::FollowCommunity
-    // swiftlint:disable identifier_name
     struct Body: Encodable {
         let community_id: Int
         let follow: Bool
         let auth: String
     }
-    // swiftlint:enable identifier_name
 
     init(
         account: SavedAccount,

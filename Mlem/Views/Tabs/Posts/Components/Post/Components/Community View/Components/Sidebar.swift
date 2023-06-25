@@ -73,7 +73,14 @@ struct CommunitySidebarView: View {
 
                         NavigationLink(value: moderatorView.moderator) {
                             HStack {
-                                UserProfileLabel(account: account, user: moderatorView.moderator, showServerInstance: true, postContext: nil, commentContext: nil, communityContext: communityDetails)
+                                UserProfileLabel(
+                                    account: account,
+                                    user: moderatorView.moderator,
+                                    showServerInstance: true,
+                                    postContext: nil,
+                                    commentContext: nil,
+                                    communityContext: communityDetails
+                                )
                                 Spacer()
                             }.padding()
                         }

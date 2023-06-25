@@ -40,7 +40,7 @@ struct CommentItemOld: View {
         print("long right")
     }
 
-    /// The color to use on the upvote button depending on our current state
+// /// The color to use on the upvote button depending on our current state
 //    private var upvoteColor: Color {
 //        let vote = localVote ?? hierarchicalComment.commentView.myVote
 //        // TODO: when the posts overhaul merge is in this should use the same value
@@ -76,7 +76,7 @@ struct CommentItemOld: View {
                 }
 
                 HStack(spacing: 12) {
-#warning("TODO: Add post rating")
+// TODO: Add post rating
                     HStack {
                         HStack(alignment: .center, spacing: 2) {
                             Image(systemName: "arrow.up")
@@ -140,7 +140,7 @@ struct CommentItemOld: View {
                     let creator = hierarchicalComment.commentView.creator.displayName ?? ""
                     let commentorLabel = "Last updated \(relativeTime) ago by \(creator)"
                     HStack {
-#warning("TODO: Make the text selection work")
+// TODO: Make the text selection work
                         /*
                          Menu {
                          Button {

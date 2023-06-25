@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 struct CommunityView: View {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
@@ -126,8 +127,7 @@ struct CommunityView: View {
                                                             postURL: newPostURL,
                                                             postIsNSFW: newPostIsNSFW,
                                                             postTracker: postTracker,
-                                                            account: account,
-                                                            appState: appState
+                                                            account: account
                                                         )
                                                     } catch let postPostingError {
                                                         print("Failed while posting post: \(postPostingError)")
@@ -281,15 +281,24 @@ struct CommunityView: View {
                                 account: account
                             )
 
-                            if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) { /// This is when a community is already favorited
+                            if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) {
+                                // This is when a community is already favorited
                                 Button(role: .destructive) {
-                                    unfavoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                                    unfavoriteCommunity(
+                                        account: account,
+                                        community: community!,
+                                        favoritedCommunitiesTracker: favoriteCommunitiesTracker
+                                    )
                                 } label: {
                                     Label("Unfavorite", systemImage: "star.slash")
                                 }
                             } else {
                                 Button {
-                                    favoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
+                                    favoriteCommunity(
+                                        account: account,
+                                        community: community!,
+                                        favoritedCommunitiesTracker: favoriteCommunitiesTracker
+                                    )
                                 } label: {
                                     Label("Favorite", systemImage: "star")
                                 }
@@ -505,3 +514,4 @@ struct CommunityView: View {
     }
 }
 // swiftlint:enable type_body_length
+// swiftlint:enable file_length

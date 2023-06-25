@@ -280,7 +280,10 @@ struct AddSavedInstanceView: View {
             isShowingEndpointDiscoverySpinner = false
             errorAlert = .init(
                 title: "Unsupported Lemmy Version",
-                message: "\(instanceLink) uses an outdated version of Lemmy that Mlem doesn't support.\nContact \(instanceLink) developers for more information."
+                message: """
+                         \(instanceLink) uses an outdated version of Lemmy that Mlem doesn't support. \
+                         Contact \(instanceLink) developers for more information.
+                         """
             )
         }
     }

@@ -37,8 +37,7 @@ func postComment(
     post: APIPostView,
     commentContents: String,
     commentTracker: CommentTracker,
-    account: SavedAccount,
-    appState: AppState
+    account: SavedAccount
 ) async throws {
     let dominantLanguage = NSLinguisticTagger.dominantLanguage(for: commentContents)
     let request = CreateCommentRequest(
@@ -78,5 +77,5 @@ func postComment(
         postId: post.post.id
     )
 
-    try await APIClient().perform(request: request)
+    _ = try await APIClient().perform(request: request)
 }

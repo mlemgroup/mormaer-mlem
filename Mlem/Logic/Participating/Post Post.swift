@@ -8,6 +8,9 @@
 import Foundation
 import SwiftUI
 
+// TODO: give this a home so it's not a globally scoped function
+// TODO: consider a small struct to hold the post information as oppossed to individual arguments?
+// swiftlint:disable function_parameter_count
 func postPost(
     to community: APICommunity,
     postTitle: String,
@@ -15,9 +18,7 @@ func postPost(
     postURL: String?,
     postIsNSFW: Bool,
     postTracker: PostTracker,
-    account: SavedAccount,
-    appState: AppState
-) async throws {
+    account: SavedAccount) async throws {
     let request = CreatePostRequest(
         account: account,
         communityId: community.id,
@@ -34,3 +35,4 @@ func postPost(
         }
     }
 }
+// swiftlint:enable function_parameter_count

@@ -11,6 +11,7 @@ internal enum PossibleStyling {
     case bold, italics
 }
 
+// swiftlint:disable type_body_length
 struct ExpandedPost: View {
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
@@ -73,7 +74,15 @@ struct ExpandedPost: View {
                         VStack(alignment: .leading, spacing: 5) {
                             HStack(alignment: .center, spacing: 2) {
                                 Text("Replying to ")
-                                UserProfileLabel(shouldShowUserAvatars: false, account: account, user: commentToReplyTo.creator, showServerInstance: shouldShowUserServerInComment, postContext: post, commentContext: commentToReplyTo.comment, communityContext: nil)
+                                UserProfileLabel(
+                                    shouldShowUserAvatars: false,
+                                    account: account,
+                                    user: commentToReplyTo.creator,
+                                    showServerInstance: shouldShowUserServerInComment,
+                                    postContext: post,
+                                    commentContext: commentToReplyTo.comment,
+                                    communityContext: nil
+                                )
                             }
                             .foregroundColor(.secondary)
 
@@ -90,10 +99,15 @@ struct ExpandedPost: View {
                 }
 
                 HStack(alignment: .center, spacing: 10) {
-                    TextField("Reply to post", text: $textFieldContents, prompt: Text("Commenting as \(account.username):"), axis: .vertical)
-                        .textFieldStyle(.roundedBorder)
-                        .focused($isReplyFieldFocused)
-
+                    TextField(
+                        "Reply to post",
+                        text: $textFieldContents,
+                        prompt: Text("Commenting as \(account.username):"),
+                        axis: .vertical
+                    )
+                    .textFieldStyle(.roundedBorder)
+                    .focused($isReplyFieldFocused)
+                    
                     if !textFieldContents.isEmpty {
                         if !isPostingComment {
                             Button {
@@ -119,7 +133,7 @@ struct ExpandedPost: View {
                                             textFieldContents = ""
                                         } catch let commentPostingError {
                                             appState.alertTitle = "Couldn't post comment"
-                                            appState.alertMessage = "An error occured when posting the comment.\nTry again later, or restart Mlem."
+                                            appState.alertMessage = "An error occured when posting the comment.\nTry again later."
                                             appState.isShowingAlert.toggle()
 
                                             print("Failed while posting error: \(commentPostingError)")
@@ -141,8 +155,7 @@ struct ExpandedPost: View {
                                                 post: post,
                                                 commentContents: textFieldContents,
                                                 commentTracker: commentTracker,
-                                                account: account,
-                                                appState: appState
+                                                account: account
                                             )
 
                                             commentReplyTracker.commentToReplyTo = nil
@@ -314,10 +327,8 @@ struct ExpandedPost: View {
         }
     }
 
-    /**
-     Votes on a post
-     NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
-     */
+    /// Votes on a post
+    /// - Parameter inputOp: The voting operation to perform
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
@@ -342,3 +353,5 @@ struct ExpandedPost: View {
         }
     }
 }
+
+// swiftlint:enable type_body_length
