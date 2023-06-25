@@ -16,7 +16,7 @@ struct SymmetricVoteComplex: View {
     let downvote: () async -> Void
 
     var scoreColor: Color {
-        switch(vote) {
+        switch vote {
         case .upvote:
                 return Color.upvoteColor
         case .resetVote:

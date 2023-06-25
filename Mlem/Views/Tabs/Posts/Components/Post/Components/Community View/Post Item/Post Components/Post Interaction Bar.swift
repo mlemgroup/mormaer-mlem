@@ -121,7 +121,7 @@ struct PostInteractionBar: View {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
             // fake downvote
-            switch (displayedVote) {
+            switch displayedVote {
             case .upvote:
                 dirtyVote = .resetVote
                 dirtyScore = displayedScore - 1
@@ -147,7 +147,7 @@ struct PostInteractionBar: View {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
             // fake upvote
-            switch (displayedVote) {
+            switch displayedVote {
             case .upvote:
                 dirtyVote = .downvote
                 dirtyScore = displayedScore - 2

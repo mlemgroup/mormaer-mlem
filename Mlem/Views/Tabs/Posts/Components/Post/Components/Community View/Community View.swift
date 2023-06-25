@@ -298,7 +298,7 @@ struct CommunityView: View {
                         Button {
                             shouldBlurNsfw.toggle()
                         } label: {
-                            if (shouldBlurNsfw) {
+                            if shouldBlurNsfw {
                                 Label("Unblur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
                             } else {
                                 Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
@@ -308,7 +308,7 @@ struct CommunityView: View {
                         Button {
                             shouldShowCompactPosts.toggle()
                         } label: {
-                            if (shouldShowCompactPosts) {
+                            if shouldShowCompactPosts {
                                 Label("Large posts", systemImage: "rectangle.expand.vertical")
                             } else {
                                 Label("Compact posts", systemImage: "rectangle.compress.vertical")

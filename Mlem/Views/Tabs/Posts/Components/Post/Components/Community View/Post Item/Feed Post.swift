@@ -101,7 +101,7 @@ struct FeedPost: View {
 
     @ViewBuilder
     var postItem: some View {
-        if (shouldShowCompactPosts){
+        if shouldShowCompactPosts {
             CompactPost(postView: postView, account: account, voteOnPost: voteOnPost, savePost: { _ in await savePost() }, deletePost: deletePost)
         }
         else {

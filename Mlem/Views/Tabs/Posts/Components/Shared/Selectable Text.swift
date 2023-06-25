@@ -35,7 +35,7 @@ class CustomUITextField: UITextField, UITextFieldDelegate {
 
         // disable 'cut', 'delete', 'paste','_promptForReplace:'
         // if it is not editable
-        if (!_isEditable) {
+        if !_isEditable {
             switch action {
                 case #selector(cut(_:)),
                     #selector(delete(_:)),
@@ -44,7 +44,7 @@ class CustomUITextField: UITextField, UITextFieldDelegate {
                 default:
                     // do not show 'Replace...' which can also replace text
                     // Note: This selector is private and may change
-                    if (action == Selector("_promptForReplace:")) {
+                    if action == Selector("_promptForReplace:") {
                         return false
                     }
             }

@@ -55,11 +55,11 @@ struct PostHeader: View {
 
             Spacer()
 
-            if (postView.post.featuredLocal) {
+            if postView.post.featuredLocal {
                 StickiedTag(compact: false)
             }
 
-            if (postView.post.nsfw) {
+            if postView.post.nsfw {
                 NSFWTag(compact: false)
             }
         }
