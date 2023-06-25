@@ -50,10 +50,10 @@ struct ReplyEditor: UIViewRepresentable
                 let cursorPosition = textView.offset(from: textView.beginningOfDocument, to: selectedRange.start)
                 print("Cursor position: \(cursorPosition)")
             }
-            
+
             text = textView.text
         }
-        
+
     }
 
     typealias UIViewType = UITextView

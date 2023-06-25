@@ -44,12 +44,11 @@ struct Post: Codable, Identifiable, Equatable, Hashable
     
     var saved: Bool
     var read: Bool
-    
+
     var unreadComments: Int
-    
-    
+
     let author: User
-    
+
     let community: Community
     
     

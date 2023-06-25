@@ -11,7 +11,7 @@ extension UIUserInterfaceStyle: SettingsOptions {
     public static var allCases: [UIUserInterfaceStyle] {
         return [.light, .unspecified, .dark]
     }
-    
+
     var label: String {
         switch self {
         case .light:
@@ -22,6 +22,6 @@ extension UIUserInterfaceStyle: SettingsOptions {
             return "Dark"
         }
     }
-    
+
     public var id: Self { self }
 }

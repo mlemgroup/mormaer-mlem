@@ -17,7 +17,7 @@ enum PostFormat: String, SettingsOptions {
             self.rawValue
         }
     }
-    
+
     var id: Self {
         return self
     }

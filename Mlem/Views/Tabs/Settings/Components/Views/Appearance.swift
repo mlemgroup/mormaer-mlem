@@ -8,36 +8,36 @@
 import SwiftUI
 
 struct AppearanceSettingsView: View {
-    
+
     // appearance
     @AppStorage("lightOrDarkMode") var lightOrDarkMode: UIUserInterfaceStyle = .unspecified
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
-    
+
     // website previews
     @AppStorage("shouldShowWebsitePreviews") var shouldShowWebsitePreviews: Bool = true
     @AppStorage("shouldShowWebsiteFaviconAtAll") var shouldShowWebsiteFaviconAtAll: Bool = true
     @AppStorage("shouldShowWebsiteHost") var shouldShowWebsiteHost: Bool = true
     @AppStorage("shouldShowWebsiteFavicons") var shouldShowWebsiteFavicons: Bool = true
-    
+
     // posts
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldShowUserServerInPost") var shouldShowUserServerInPost: Bool = false
     
     // comments
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
-    
+
     // communities
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = true
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
-    
+
     // icons
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
-    
+
     // other
     @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
-    
+
     var body: some View {
         List
         {
@@ -76,9 +76,9 @@ struct AppearanceSettingsView: View {
                                         updated: nil
                                     )
                                    )
-                
+
                 .padding(.horizontal)
-                
+
                 SwitchableSettingsItem(
                     settingPictureSystemName: "photo.circle.fill",
                     settingPictureColor: .pink,
@@ -117,12 +117,12 @@ struct AppearanceSettingsView: View {
                     isTicked: $shouldShowWebsiteFavicons
                 )
                 .disabled(!shouldShowWebsiteFaviconAtAll)
-                
+
                 SwitchableSettingsItem(settingPictureSystemName: "rectangle.compress.vertical",
                              settingPictureColor: .pink,
                              settingName: "Compact post view",
                              isTicked: $shouldShowCompactPosts)
-                
+
                 SwitchableSettingsItem(settingPictureSystemName: "eye.trianglebadge.exclamationmark",
                              settingPictureColor: .pink,
                              settingName: "Blur NSFW",
@@ -167,7 +167,7 @@ struct AppearanceSettingsView: View {
                     settingName: "Show user avatars",
                     isTicked: $shouldShowUserAvatars
                 )
-                
+
                 SwitchableSettingsItem(
                     settingPictureSystemName: "rectangle.grid.1x2",
                     settingPictureColor: .pink,
@@ -175,7 +175,7 @@ struct AppearanceSettingsView: View {
                     isTicked: $shouldShowUserHeaders
                 )
             }
-            
+
             Section("Further customization") {
                 SelectableSettingsItem(
                     settingIconSystemName: "arrow.up.arrow.down.square.fill",

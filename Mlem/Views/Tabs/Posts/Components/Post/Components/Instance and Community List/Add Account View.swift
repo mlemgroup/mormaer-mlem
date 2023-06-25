@@ -34,22 +34,22 @@ struct AddSavedInstanceView: View
 {
     @EnvironmentObject var communityTracker: SavedAccountTracker
     @EnvironmentObject var appState: AppState
-    
+
     @Binding var isShowingSheet: Bool
-    
+
     @State private var instanceLink: String = ""
     @State private var usernameOrEmail: String = ""
     @State private var password: String = ""
     @State private var twoFactorToken: String = ""
 
     @State private var token: String = ""
-    
+
     @State private var isShowingEndpointDiscoverySpinner: Bool = false
     @State private var hasSuccessfulyConnectedToEndpoint: Bool = false
     @State private var errorOccuredWhileConnectingToEndpoint: Bool = false
     @State private var errorText: String = ""
     @State private var isShowingTwoFactorText: Bool = false
-    
+
     @State private var errorAlert: ErrorAlert?
     @FocusState private var focusedField: Field?
     
@@ -179,41 +179,40 @@ struct AddSavedInstanceView: View
             Alert(title: Text(content.title), message: Text(content.message))
         }
     }
-    
+
     func tryToAddAccount() async {
         print("Will start the account addition process")
-        
+
         withAnimation {
             isShowingEndpointDiscoverySpinner = true
         }
-        
+
         let sanitizedLink = instanceLink
             .replacingOccurrences(of: "https://", with: "")
             .replacingOccurrences(of: "http://", with: "")
             .replacingOccurrences(of: "www.", with: "")
             .lowercased()
-        
+
         print("Sanitized link: \(sanitizedLink)")
-        
+
         do {
             let instanceURL = try await getCorrectURLtoEndpoint(baseInstanceAddress: sanitizedLink)
             print("Found correct endpoint: \(instanceURL)")
-            
             guard !instanceURL.path().contains("v1") else {
                 // If the link is to a v1 instance, stop and show an error
                 displayIncompatibleVersionAlert()
                 return
             }
-            
+
             let loginRequest = LoginRequest(
                 instanceURL: instanceURL,
                 username: usernameOrEmail,
                 password: password,
                 totpToken: twoFactorToken == "" ? nil : twoFactorToken
             )
-            
+
             let response = try await APIClient().perform(request: loginRequest)
-            
+
             hasSuccessfulyConnectedToEndpoint = true
             print("Successfully got the token")
             print("Obtained token: \(response.jwt)")
@@ -223,12 +222,12 @@ struct AddSavedInstanceView: View
                 accessToken: response.jwt,
                 username: usernameOrEmail
             )
-            
+
             // MARK: - Save the account's credentials into the keychain
-            
+
             AppConstants.keychain["\(newAccount.id)_accessToken"] = response.jwt
             communityTracker.savedAccounts.append(newAccount)
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 isShowingSheet = false
             }
@@ -236,7 +235,7 @@ struct AddSavedInstanceView: View
             handle(error)
         }
     }
-    
+
     private func getUserID(authToken: String, instanceURL: URL) async throws -> Int {
         do {
             let request = try GetPersonDetailsRequest(
@@ -254,7 +253,7 @@ struct AddSavedInstanceView: View
             throw UserIDRetrievalError.couldNotFetchUserInformation
         }
     }
-            
+
     private func handle(_ error: Error) {
                 let message: String
                 switch error {
@@ -281,18 +280,18 @@ struct AddSavedInstanceView: View
                     message = "Something went wrong"
                     assertionFailure("add error handling for this case...")
                 }
-                
+
                 displayError(message)
     }
-            
+
     private func displayError(_ message: String) {
         errorText = message
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if !errorText.isEmpty {
                 errorOccuredWhileConnectingToEndpoint = true
             }
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 withAnimation {
                     isShowingEndpointDiscoverySpinner = false
@@ -301,7 +300,7 @@ struct AddSavedInstanceView: View
             }
         }
     }
-    
+
     private func displayIncompatibleVersionAlert() {
         withAnimation {
             isShowingEndpointDiscoverySpinner = false

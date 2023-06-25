@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct FiltersSettingsView: View {
-    
+
     @EnvironmentObject var filtersTracker: FiltersTracker
     @EnvironmentObject var appState: AppState
-    
+
     @State private var newFilteredKeyword: String = ""
     @State private var isShowingKeywordImporter: Bool = false
-    
+
     @State private var isShowingFilterDeletionConfirmation: Bool = false
-    
+
     var body: some View {
         List
         {
@@ -26,12 +26,12 @@ struct FiltersSettingsView: View {
                     Text(filteredKeyword)
                 }
                 .onDelete(perform: deleteKeyword)
-                
+
                 HStack(alignment: .center) {
                     TextField("Add Keyword…", text: $newFilteredKeyword, prompt: Text("Add Keyword…"))
-                    
+
                     Spacer()
-                    
+
                     Button {
                         addKeyword(newFilteredKeyword)
                     } label: {
@@ -64,18 +64,18 @@ struct FiltersSettingsView: View {
                     do
                     {
                         let urlOfImportedFile: URL = try result.get()
-                        
+
                         urlOfImportedFile.startAccessingSecurityScopedResource()
-                        
+
                         print("URL of imported file: \(urlOfImportedFile)")
                         do
                         {
                             let decodedKeywords: [String] = try decodeFromFile(fromURL: urlOfImportedFile, whatToDecode: .filteredKeywords) as! [String]
-                            
+
                             urlOfImportedFile.stopAccessingSecurityScopedResource()
-                            
+
                             print("Decoded these: \(decodedKeywords)")
-                            
+
                             withAnimation {
                                 filtersTracker.filteredKeywords = decodedKeywords
                             }
@@ -83,11 +83,11 @@ struct FiltersSettingsView: View {
                         catch let decodingError
                         {
                             urlOfImportedFile.stopAccessingSecurityScopedResource()
-                            
+
                             appState.alertTitle = "Couldn't decode blocklist"
                             appState.alertMessage = "Try again. If the problem keeps happening, try reinstalling Mlem."
                             appState.isShowingAlert.toggle()
-                            
+
                             print("Failed while decoding blocklist: \(decodingError)")
                         }
 
@@ -98,7 +98,7 @@ struct FiltersSettingsView: View {
                         appState.alertTitle = "Couldn't find blocklist"
                         appState.alertMessage = "If you are trying to read it from iCloud, make sure your internet is working.\nOtherwise, try moving the blocklist file to another location."
                         appState.isShowingAlert.toggle()
-                        
+
                         print("Failed while reading file: \(blocklistImportingError)")
                     }
                 }
@@ -126,7 +126,7 @@ struct FiltersSettingsView: View {
                         } label: {
                             Text("Delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters")
                         }
-                        
+
                         Button(role: .cancel) {
                             isShowingFilterDeletionConfirmation = false
                         } label: {
@@ -135,7 +135,6 @@ struct FiltersSettingsView: View {
                     } message: {
                         Text("You are about to delete \(filtersTracker.filteredKeywords.count + filtersTracker.filteredUsers.count) filters.\nYou cannot undo this action.")
                     }
-
 
             }
         }
@@ -167,7 +166,7 @@ struct FiltersSettingsView: View {
                     filtersTracker.filteredKeywords.prepend(newKeyword)
                 }
             }
-            
+
             newFilteredKeyword = ""
         }
     }
@@ -176,4 +175,3 @@ struct FiltersSettingsView: View {
         filtersTracker.filteredKeywords.remove(atOffsets: offsets)
     }
 }
-

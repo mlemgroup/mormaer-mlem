@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SwipeyView: ViewModifier {    
+struct SwipeyView: ViewModifier {
     // state
     @GestureState var dragState: CGFloat = .zero
     @State var dragPosition = CGFloat.zero
@@ -15,19 +15,19 @@ struct SwipeyView: ViewModifier {
     @State var dragBackground: Color = .systemBackground
     @State var leftSwipeSymbol: String
     @State var rightSwipeSymbol: String
-    
+
     // haptics
     let tapper: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
-    
+
     // isDragging callback
     @Binding var isDragging: Bool
-    
+
     // callbacks
     let shortLeftAction: () async -> Void
     let longLeftAction: () async -> Void
     let shortRightAction: () async -> Void
     let longRightAction: () async -> Void
-    
+
     // symbols
     let emptyLeftSymbolName: String
     let shortLeftSymbolName: String
@@ -35,30 +35,30 @@ struct SwipeyView: ViewModifier {
     let emptyRightSymbolName: String
     let shortRightSymbolName: String
     let longRightSymbolName: String
-    
+
     // colors
     let shortLeftColor: Color
     let longLeftColor: Color
     let shortRightColor: Color
     let longRightColor: Color
-    
+
     // TODO: compress this somehow? This is *awful* to read
     init(isDragging: Binding<Bool>,
-        
+
          emptyLeftSymbolName: String,
          shortLeftSymbolName: String,
          shortLeftAction: @escaping () async -> Void,
          shortLeftColor: Color,
-         
+
          longLeftSymbolName: String,
          longLeftAction: @escaping () async -> Void,
          longLeftColor: Color,
-         
+
          emptyRightSymbolName: String,
          shortRightSymbolName: String,
          shortRightAction: @escaping () async -> Void,
          shortRightColor: Color,
-         
+
          longRightSymbolName: String,
          longRightAction: @escaping () async -> Void,
          longRightColor: Color) {
@@ -67,7 +67,7 @@ struct SwipeyView: ViewModifier {
         self.longLeftAction = longLeftAction
         self.shortRightAction = shortRightAction
         self.longRightAction = longRightAction
-        
+
         // symbols
         self.emptyLeftSymbolName = emptyLeftSymbolName
         self.shortLeftSymbolName = shortLeftSymbolName
@@ -75,24 +75,24 @@ struct SwipeyView: ViewModifier {
         self.emptyRightSymbolName = emptyRightSymbolName
         self.shortRightSymbolName = shortRightSymbolName
         self.longRightSymbolName = longRightSymbolName
-        
+
         // colors
         self.shortLeftColor = shortLeftColor
         self.longLeftColor = longLeftColor
         self.shortRightColor = shortRightColor
         self.longRightColor = longRightColor
-        
+
         // other init
         _leftSwipeSymbol = State(initialValue: shortLeftSymbolName)
         _rightSwipeSymbol = State(initialValue: shortRightSymbolName)
         _isDragging = isDragging
     }
-    
+
     func body(content: Content) -> some View {
         ZStack {
             // background
             dragBackground
-            
+
             // symbols
             HStack(spacing: 0) {
                 Image(systemName: leftSwipeSymbol)
@@ -108,7 +108,7 @@ struct SwipeyView: ViewModifier {
                     .padding(.horizontal, 20)
             }
             .accessibilityHidden(true) // prevent these from popping up in VO
-            
+
             // content
             content
                 .offset(x: dragPosition) // using dragPosition so we can apply withAnimation() to it
@@ -210,21 +210,21 @@ struct SwipeyView: ViewModifier {
 public extension View {
     @ViewBuilder
     func addSwipeyActions(isDragging: Binding<Bool>,
-                          
+
                           emptyLeftSymbolName: String,
                           shortLeftSymbolName: String,
                           shortLeftAction: @escaping () async -> Void,
                           shortLeftColor: Color,
-                          
+
                           longLeftSymbolName: String,
                           longLeftAction: @escaping () async -> Void,
                           longLeftColor: Color,
-                          
+
                           emptyRightSymbolName: String,
                           shortRightSymbolName: String,
                           shortRightAction: @escaping () async -> Void,
                           shortRightColor: Color,
-                          
+
                           longRightSymbolName: String,
                           longRightAction: @escaping () async -> Void,
                           longRightColor: Color) -> some View {

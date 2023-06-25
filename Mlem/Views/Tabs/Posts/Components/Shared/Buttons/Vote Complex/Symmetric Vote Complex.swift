@@ -14,7 +14,7 @@ struct SymmetricVoteComplex: View {
     let height: CGFloat
     let upvote: () async -> Void
     let downvote: () async -> Void
-    
+
     var scoreColor: Color {
         switch(vote) {
         case .upvote:
@@ -25,7 +25,7 @@ struct SymmetricVoteComplex: View {
                 return Color.downvoteColor
         }
     }
-    
+
     var body: some View {
         HStack(spacing: 6) {
             UpvoteButton(vote: vote, size: height)

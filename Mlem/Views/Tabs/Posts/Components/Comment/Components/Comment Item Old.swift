@@ -14,19 +14,19 @@ struct CommentItemOld: View
     
     @EnvironmentObject var commentReplyTracker: CommentReplyTracker
     @EnvironmentObject var commentTracker: CommentTracker
-    
+
     @EnvironmentObject var appState: AppState
-    
+
     @State var account: SavedAccount
-    
+
     @State var hierarchicalComment: HierarchicalComment
-    
+
     @State var isCollapsed = false
-    
+
     @State private var isShowingTextSelectionSheet: Bool = false
     @State private var localCommentScore: Int?
     @State private var localVote: ScoringOperation?
-    
+
     // TEMP
     func voidPrintShortLeft() -> Void {
         print("short left")
@@ -40,7 +40,7 @@ struct CommentItemOld: View
     func voidPrintLongRight() -> Void {
         print("long right")
     }
-    
+
     /// The color to use on the upvote button depending on our current state
 //    private var upvoteColor: Color {
 //        let vote = localVote ?? hierarchicalComment.commentView.myVote
@@ -92,7 +92,7 @@ struct CommentItemOld: View
                     {
                         HStack(alignment: .center, spacing: 2) {
                             Image(systemName: "arrow.up")
-                            
+
                             Text(String(localCommentScore ?? hierarchicalComment.commentView.counts.score))
                         }
                         .foregroundColor(.upvoteColor)
@@ -101,7 +101,7 @@ struct CommentItemOld: View
                                 try await rate(hierarchicalComment, operation: .upvote)
                             }
                         }
-                        
+
                         Image(systemName: "arrow.down")
                             .foregroundColor(.downvoteColor)
                             .onTapGesture {
@@ -134,21 +134,21 @@ struct CommentItemOld: View
                     {
                         Button(action: {
                             print("Would reply to comment ID \(hierarchicalComment.id)")
-                            
+
                             commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
                         }, label: {
                             Image(systemName: "arrowshape.turn.up.backward")
                         })
-                        
+
                         Text("Reply")
                             .foregroundColor(.accentColor)
                     }
                     .accessibilityAddTraits(.isButton)
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel("Reply")
-                    
+
                     Spacer()
-                    
+
                     let relativeTime = getTimeIntervalFromNow(date: hierarchicalComment.commentView.comment.published)
                     let creator = hierarchicalComment.commentView.creator.displayName ?? ""
                     let commentorLabel = "Last updated \(relativeTime) ago by \(creator)"
@@ -200,7 +200,7 @@ struct CommentItemOld: View
 //                              longRightSymbolName: "arrowshape.turn.up.left.fill",
 //                              longRightAction: voidPrintLongRight,
 //                              longRightColor: .accentColor)
-            
+
             Divider()
             
             if !isCollapsed
@@ -245,27 +245,27 @@ struct CommentItemOld: View
                         } label: {
                             Text("Close")
                         }
-                        
+
                     }
                 }
             }
             .presentationDetents([.medium])
         }
     }
-    
+
     private func rate(_ comment: HierarchicalComment, operation: ScoringOperation) async throws {
         guard localVote == nil else {
             // if we have a local vote then we're in the middle of rating
             // so avoid the user being able to initiate additional requests
             return
         }
-        
+
         defer {
             // clear our 'faked' values after this function completes
             localVote = nil
             localCommentScore = nil
         }
-        
+
         let operationToPerform: ScoringOperation?
         switch operation {
         case .upvote:
@@ -276,11 +276,11 @@ struct CommentItemOld: View
             operationToPerform = nil
             assertionFailure("unexpected case passed into function")
         }
-        
+
         guard let operationToPerform else { return }
-        
+
         adjustLocalState(for: operationToPerform)
-        
+
         let updatedComment = try await rateComment(
             comment: comment.commentView,
             operation: operationToPerform,
@@ -288,20 +288,20 @@ struct CommentItemOld: View
             commentTracker: commentTracker,
             appState: appState
         )
-        
+
         if let updatedComment {
             // if the rating succeeded update our genuine comment and clear the local state
             self.hierarchicalComment = updatedComment
         }
     }
-    
+
     private func upvoteAction(for state: ScoringOperation?) -> ScoringOperation {
         switch state {
         case .upvote: return .resetVote
         case .resetVote, .downvote, .none: return .upvote
         }
     }
-    
+
     private func downvoteAction(for state: ScoringOperation?) -> ScoringOperation {
         switch state {
         case .downvote: return .resetVote
@@ -311,12 +311,12 @@ struct CommentItemOld: View
 }
 
 private extension CommentItemOld {
-    
+
     /// A method which adjusts our local state to reflect the expected outcome from the users rating
     /// - Parameter operation: The operation the user is performing, eg `.upvote`
     func adjustLocalState(for operation: ScoringOperation) {
         let currentVote = hierarchicalComment.commentView.myVote ?? .resetVote
-        
+
         switch operation {
             // jump by two if we're going from one extreme to another...
         case .upvote where currentVote == .downvote:
@@ -337,7 +337,7 @@ private extension CommentItemOld {
             localVote = nil
             localCommentScore = nil
         }
-        
+
         localVote = operation
     }
 }

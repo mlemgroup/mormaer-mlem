@@ -13,7 +13,7 @@ enum EndpointDiscoveryError: Error {
 
 func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL {
     var validAddress: URL?
-    
+
 #if targetEnvironment(simulator)
     let possibleInstanceAddresses = [
         URL(string: "https://\(baseInstanceAddress)/api/v3/user"),
@@ -32,7 +32,7 @@ func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL {
     ]
         .compactMap{ $0 }
 #endif
-    
+
     for address in possibleInstanceAddresses {
         if await checkIfEndpointExists(at: address) {
             print("\(address) is valid")
@@ -43,10 +43,10 @@ func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL {
             continue
         }
     }
-    
+
     if let validAddress {
         return validAddress
     }
-    
+
     throw EndpointDiscoveryError.couldNotFindAnyCorrectEndpoints
 }

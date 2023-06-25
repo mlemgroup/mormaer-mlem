@@ -41,10 +41,10 @@ extension CommentItem {
                 dirtyScore = displayedScore + 2
             }
             dirty = true
-            
+
             // wait for vote
             await voteOnComment(inputOp: .upvote)
-            
+
             // unfake downvote and restore state
             dirty = false
             return
@@ -67,16 +67,16 @@ extension CommentItem {
                 dirtyScore = displayedScore + 1
             }
             dirty = true
-            
+
             // wait for vote
             await voteOnComment(inputOp: .downvote)
-            
+
             // unfake upvote
             dirty = false
             return
         }
     }
-    
+
     /**
      Sends a save request for the current post
      */
@@ -85,7 +85,7 @@ extension CommentItem {
             // fake save
             dirtySaved.toggle()
             dirty = true
-            
+
             do {
                 try await sendSaveCommentRequest(account: account,
                                                  commentId: hierarchicalComment.id,
@@ -94,13 +94,13 @@ extension CommentItem {
             } catch {
                 print("failed to save comment!")
             }
-            
+
             // unfake save
             dirty = false
             return
         }
     }
-    
+
     @MainActor
     func replyToComment() -> Void {
         commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView

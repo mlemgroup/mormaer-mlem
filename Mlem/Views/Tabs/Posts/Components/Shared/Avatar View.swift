@@ -9,10 +9,10 @@ import SwiftUI
 import CachedAsyncImage
 
 struct AvatarView: View {
-    
+
     let avatarLink: URL
     var overridenSize: CGFloat = 15
-    
+
     var body: some View {
         CachedAsyncImage(url: avatarLink, urlCache: AppConstants.urlCache)
         { phase in

@@ -14,11 +14,11 @@ internal enum CommandError: Error
 
 struct SubscribeButton: View {
     @EnvironmentObject var appState: AppState
-    
+
     @Binding var communityDetails: APICommunityView?
-    
+
     @State var account: SavedAccount
-    
+
     var body: some View {
         if let communityDetails {
             if communityDetails.subscribed == .notSubscribed
@@ -53,7 +53,7 @@ struct SubscribeButton: View {
                 .disabled(true)
         }
     }
-    
+
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
         do {
             let request = FollowCommunityRequest(
@@ -61,7 +61,7 @@ struct SubscribeButton: View {
                 communityId: communityId,
                 follow: shouldSubscribe
             )
-            
+
             let response = try await APIClient().perform(request: request)
             self.communityDetails = response.communityView
         } catch {

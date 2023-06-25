@@ -46,7 +46,7 @@ struct CommunityView: View
     @State private var newPostIsNSFW: Bool = false
     @State private var isPostingPost: Bool = false
     @State private var errorAlert: ErrorAlert?
-    
+
     @State var isDragging: Bool = false
 
     enum FocusedNewPostField
@@ -328,7 +328,7 @@ struct CommunityView: View
                                 }
                             }
                         }
-                        
+
                         Button {
                             shouldBlurNsfw.toggle()
                         } label: {
@@ -339,7 +339,7 @@ struct CommunityView: View
                                 Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
                             }
                         }
-                        
+
                         Button {
                             shouldShowCompactPosts.toggle()
                         } label: {
@@ -527,4 +527,3 @@ struct CommunityView: View
 
     }
 }
-

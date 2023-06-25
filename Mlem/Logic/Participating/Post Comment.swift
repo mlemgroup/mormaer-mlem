@@ -23,7 +23,7 @@ func postComment(
         parentId: nil,
         postId: post.post.id
     )
-    
+
     let response = try await APIClient().perform(request: request)
     let comment = HierarchicalComment(comment: response.commentView, children: [])
     withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
@@ -49,9 +49,9 @@ func postComment(
         parentId: comment.id,
         postId: post.post.id
     )
-    
+
     let response = try await APIClient().perform(request: request)
-    
+
     withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
         // the return value from `.update(with: ...)` is discardable by design but
         // the `withAnimation` closure implicitly returns it resulting in a warning for an unused
@@ -77,6 +77,6 @@ func postComment(
         parentId: nil,
         postId: post.post.id
     )
-    
+
     try await APIClient().perform(request: request)
 }

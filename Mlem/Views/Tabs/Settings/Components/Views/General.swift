@@ -139,7 +139,7 @@ struct GeneralSettingsView: View
             footer: {
                 Text("All images are cached for fast reuse.")
             }
-            
+
         }
         .onAppear {
             diskUsage = Int64(URLCache.shared.currentDiskUsage)

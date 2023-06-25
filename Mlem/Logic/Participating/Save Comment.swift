@@ -14,11 +14,11 @@ func sendSaveCommentRequest(account: SavedAccount,
               commentTracker: CommentTracker) async throws {
     do {
         let request = SaveCommentRequest(account: account, commentId: commentId, save: save)
-        
+
         AppConstants.hapticManager.notificationOccurred(.success)
-        
+
         let response = try await APIClient().perform(request: request)
-        
+
         commentTracker.comments.update(with: response.commentView)
     }
     catch {

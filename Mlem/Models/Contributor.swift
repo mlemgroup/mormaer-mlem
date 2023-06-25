@@ -10,7 +10,7 @@ import Foundation
 struct Contributor: Identifiable
 {
     var id: UUID = UUID()
-    
+
     let name: String
     let avatarLink: URL
     let reasonForAcknowledgement: String

@@ -14,24 +14,24 @@ import Foundation
  */
 struct PostInteractionBar: View {    
     @EnvironmentObject var postTracker: PostTracker
-    
+
     // constants
     let iconToTextSpacing: CGFloat = 2
     let iconPadding: CGFloat = 4
     let iconCorner: CGFloat = 2
     let scoreItemWidth: CGFloat = 12
-    
+
     // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation
     @State var dirtyScore: Int
     @State var dirtySaved: Bool
     @State var dirty: Bool
-    
+
     // computed properties--if dirty, show dirty value, otherwise show post value
     var displayedVote: ScoringOperation { dirty ? dirtyVote : postView.myVote ?? .resetVote }
     var displayedScore: Int { dirty ? dirtyScore : postView.counts.score }
     var displayedSaved: Bool { dirty ? dirtySaved : postView.saved }
-    
+
     // parameters
     let postView: APIPostView
     let account: SavedAccount
@@ -56,34 +56,38 @@ struct PostInteractionBar: View {
         _dirtySaved = State(initialValue: postView.saved)
         _dirty = State(initialValue: false)
     }
-    
+
     var body: some View {
         HStack(spacing: compact ? 18 : 12) {
             VoteComplex(vote: displayedVote, score: displayedScore, height: height, upvote: upvote, downvote: downvote)
                 .padding(.trailing, 8)
-            
+
             SaveButton(isSaved: displayedSaved, size: height, accessibilityContext: "post") {
                 Task(priority: .userInitiated) {
                     await savePost()
                 }
             }
-            
+
             if let postURL = URL(string: postView.post.apId) {
                 ShareButton(size: height, accessibilityContext: "post") {
                     showShareSheet(URLtoShare: postURL)
                 }
             }
-            
-            EllipsisMenu(size: height, shareUrl: postView.post.apId, deleteButtonCallback: canDeletePost() ? self.deletePost : nil)
-            
+
+            EllipsisMenu(
+                size: height,
+                shareUrl: postView.post.apId,
+                deleteButtonCallback: canDeletePost() ? self.deletePost : nil
+            )
+
             Spacer()
             infoBlock
         }
         .font(compact ? .footnote : .callout)
     }
-    
+
     // subviews
-    
+
     var infoBlock: some View {
         // post info component
         HStack(spacing: 8) {
@@ -98,7 +102,7 @@ struct PostInteractionBar: View {
         }
         .foregroundColor(.secondary)
     }
-    
+
     // helper functions
     
     func canDeletePost() -> Bool {
@@ -129,10 +133,10 @@ struct PostInteractionBar: View {
                 dirtyScore = displayedScore + 2
             }
             dirty = true
-            
+
             // wait for vote
             await voteOnPost(.upvote)
-            
+
             // unfake downvote
             dirty = false
             return
@@ -155,16 +159,16 @@ struct PostInteractionBar: View {
                 dirtyScore = displayedScore + 1
             }
             dirty = true
-            
+
             // wait for vote
             await voteOnPost(.downvote)
-            
+
             // unfake upvote
             dirty = false
             return
         }
     }
-    
+
     func deletePost() async {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
@@ -177,7 +181,7 @@ struct PostInteractionBar: View {
             return
         }
     }
-    
+
     /**
      Sends a save request for the current post
      */

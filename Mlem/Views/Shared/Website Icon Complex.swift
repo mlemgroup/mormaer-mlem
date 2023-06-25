@@ -20,7 +20,7 @@ struct WebsiteIconComplex: View
     @State var post: APIPost
 
     @State private var overridenWebsiteFaviconName: String = "globe"
-    
+
     @Environment(\.openURL) private var openURL
 
     var faviconURL: URL? {
@@ -30,7 +30,7 @@ struct WebsiteIconComplex: View
         else {
             return nil
         }
-        
+
         return imageURL
     }
 

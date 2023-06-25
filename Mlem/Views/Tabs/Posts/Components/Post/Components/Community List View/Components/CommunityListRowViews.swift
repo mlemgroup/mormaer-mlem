@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HeaderView: View {
     let title: String
-    
+
     var body: some View {
         HStack {
             Text(title)
@@ -34,9 +34,9 @@ struct CommuntiyFeedRowView: View {
     let community: APICommunity
     let subscribed: Bool
     let communitySubscriptionChanged: (APICommunity, Bool) -> Void
-    
+
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
-    
+
     var body: some View {
         HStack {
             // NavigationLink with invisible array
@@ -65,7 +65,6 @@ struct CommuntiyFeedRowView: View {
                     favoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
                 }
             }).buttonStyle(FavoriteStarButtonStyle(isFavorited: isFavorited()))
-            
         }.swipeActions {
             if subscribed {
                 Button("Unsubscribe") {
@@ -80,25 +79,25 @@ struct CommuntiyFeedRowView: View {
                         await subscribe(communityId: community.id, shouldSubscribe: true)
                     }
                 }.tint(.blue)
-            }            
+            }
         }
     }
-    
+
     internal func isFavorited() -> Bool {
         return getFavoritedCommunities(account: account, favoritedCommunitiesTracker: favoritesTracker).contains(community)
     }
-    
+
     private func subscribe(communityId: Int, shouldSubscribe: Bool) async {
         // Refresh the list locally immedietly and undo it if we error
         communitySubscriptionChanged(community, shouldSubscribe)
-        
+
         do {
             let request = FollowCommunityRequest(
                 account: account,
                 communityId: communityId,
                 follow: shouldSubscribe
             )
-            
+
             _ = try await APIClient().perform(request: request)
         } catch {
             // TODO: If we fail here and want to notify the user we'd ideally
@@ -114,7 +113,7 @@ struct HomepageFeedRowView: View {
     let iconName: String
     let iconColor: Color
     let description: String
-    
+
     var body: some View {
         // NavigationLink with invisible array
         HStack {

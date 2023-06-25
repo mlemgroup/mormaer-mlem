@@ -17,7 +17,7 @@ protocol SidebarEntry {
 struct EmptySidebarEntry : SidebarEntry {
     var sidebarLabel: String?
     var sidebarIcon: String?
-    
+
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
         return false
     }
@@ -28,7 +28,7 @@ struct RegexCommunityNameSidebarEntry : SidebarEntry {
     var communityNameRegex: Regex<Substring>
     var sidebarLabel: String?
     var sidebarIcon: String?
-    
+
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
         // Ignore unsubscribed subs from main list
         if !isSubscribed {
@@ -44,7 +44,7 @@ struct FavoritesSidebarEntry : SidebarEntry {
     let favoritesTracker: FavoriteCommunitiesTracker
     var sidebarLabel: String?
     var sidebarIcon: String?
-    
+
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
         return getFavoritedCommunities(account: account, favoritedCommunitiesTracker: favoritesTracker).contains(community)
     }

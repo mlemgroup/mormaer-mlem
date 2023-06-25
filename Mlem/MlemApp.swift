@@ -193,7 +193,7 @@ struct MlemApp: App
                             print("Failed while creating empty file: \(emptyFileCreationError)")
                         }
                     }
-                    
+
                     // set app theme to user preference
                     let windowScene =  UIApplication.shared.connectedScenes.first as? UIWindowScene
                     windowScene?.windows.first?.overrideUserInterfaceStyle = lightOrDarkMode

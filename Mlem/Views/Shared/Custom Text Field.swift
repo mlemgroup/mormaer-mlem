@@ -18,13 +18,13 @@ struct CustomTextField: UIViewRepresentable
         let textField: UITextField = UITextField()
         textField.placeholder = placeholder
         textField.borderStyle = .roundedRect
-        
+
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        
+
         textField.isUserInteractionEnabled = false
-        
+
         textField.delegate = context.coordinator
-        
+
         return textField
     }
     
@@ -32,7 +32,7 @@ struct CustomTextField: UIViewRepresentable
     {
         uiView.text = text
     }
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(text: $text)
     }
@@ -40,11 +40,11 @@ struct CustomTextField: UIViewRepresentable
     class Coordinator: NSObject, UITextFieldDelegate
     {
         @Binding var text: String
-        
+
         init(text: Binding<String>) {
             self._text = text
         }
     }
-    
+
     typealias UIViewType = UITextField
 }

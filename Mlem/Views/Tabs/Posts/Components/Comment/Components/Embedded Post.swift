@@ -14,10 +14,13 @@ struct EmbeddedPost: View {
     let account: SavedAccount
     let community: APICommunity
     let post: APIPost
-    
-    @State
-    var loadedPostDetails: APIPostView?
-    
+
+    @State var loadedPostDetails: APIPostView?
+
+    // TODO:
+    // - beautify
+    // - enrich info
+    // - navigation link to post
     var body: some View {
         NavigationLink(value: LazyLoadPostLinkWithContext(post: post, postTracker: postTracker)) {
             PostLinkButton()

@@ -26,7 +26,7 @@ func postPost(
         body: postBody,
         url: postURL
     )
-    
+
     let response = try await APIClient().perform(request: request)
     await MainActor.run {
         withAnimation {

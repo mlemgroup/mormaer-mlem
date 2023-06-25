@@ -24,7 +24,6 @@ struct UserView: View {
     @State var account: SavedAccount
     @State var userDetails: APIPersonView?
 
-    // members
     @State private var errorAlert: ErrorAlert?
     @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
     @StateObject private var privatePostTracker: PostTracker = .init()
@@ -56,7 +55,7 @@ struct UserView: View {
                 Alert(title: Text(content.title), message: Text(content.message))
             }
     }
-    
+
     @ViewBuilder
     private var contentView: some View {
         if let userDetails {
@@ -65,7 +64,7 @@ struct UserView: View {
             progressView
         }
     }
-    
+
     private func view(for userDetails: APIPersonView) -> some View {
         ScrollView {
             CommunitySidebarHeader(
@@ -325,10 +324,10 @@ struct UserView: View {
             savedOnly: savedItems,
             personId: userID
         )
-        
+
         return try await APIClient().perform(request: request)
     }
-    
+
     private func handle(_ error: Error) {
         switch error {
         case APIClientError.response(let message, _):

@@ -11,7 +11,7 @@ struct ContentView: View
 {
     
     @EnvironmentObject var appState: AppState
-    
+
     @State private var errorAlert: ErrorAlert?
     @State private var tabSelection = 1
     
@@ -52,7 +52,7 @@ struct ContentView: View
                     }
                 }.tag(3)
             }
-            
+
             SettingsView()
                 .tabItem
                 {
@@ -75,7 +75,7 @@ struct ContentView: View
 extension ContentView {
     func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
         let outcome = URLHandler.handle(url)
-        
+
         switch outcome.action {
         case let .error(message):
             errorAlert = .init(
@@ -85,7 +85,7 @@ extension ContentView {
         default:
             break
         }
-        
+
         return outcome.result
     }
 }

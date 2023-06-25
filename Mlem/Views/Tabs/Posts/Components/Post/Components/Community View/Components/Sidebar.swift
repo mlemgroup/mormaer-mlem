@@ -12,7 +12,7 @@ struct CommunitySidebarView: View {
     @State var account: SavedAccount
     @Binding var communityDetails: GetCommunityResponse?
     @Binding var isActive: Bool
-    
+
     @State private var selectionSection = 0
     
      var shouldShowCommunityHeaders: Bool = true
@@ -58,7 +58,7 @@ struct CommunitySidebarView: View {
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
-            
+
             if selectionSection == 0 {
                 if let description = communityDetails
                     .communityView
@@ -99,7 +99,7 @@ struct SidebarPreview: PreviewProvider {
     static let previewUser = APIPerson(id: 0, name: "ExamplePerson", displayName: "Example Person", avatar: nil, banned: false, published: Date.now, updated: nil, actorId: URL(string: "lem.foo.bar/u/exampleperson")!, bio: nil, local: false, banner: nil, deleted: false, sharedInboxUrl: nil, matrixUserId: nil, admin: false, botAccount: false, banExpires: nil, instanceId: 0)
     
     static let previewModerator = APICommunityModeratorView(community: previewCommunity, moderator: previewUser)
-    
+
     static var previews: some View {
         CommunitySidebarView(account: SavedAccount(id: 0, instanceLink: URL(string: "https://lemmy.foo.com/")!, accessToken: "abcd", username: "foobar"), communityDetails: .constant( GetCommunityResponse(communityView: APICommunityView(community: previewCommunity, subscribed: .subscribed, blocked: false, counts: APICommunityAggregates(id: 0, communityId: 0, subscribers: 1234, posts: 0, comments: 0, published: Date.now, usersActiveDay: 0, usersActiveWeek: 0, usersActiveMonth: 0, usersActiveHalfYear: 0)), site: nil, moderators: [previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator, previewModerator], discussionLanguages: [], defaultPostLanguage: nil)), isActive: .constant(true))
     }

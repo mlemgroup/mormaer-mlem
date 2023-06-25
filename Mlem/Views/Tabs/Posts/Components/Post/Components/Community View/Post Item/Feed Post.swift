@@ -22,28 +22,28 @@ struct FeedPost: View
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
-    
+
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
-    
+
     // MARK: Parameters
-    
+
     let postView: APIPostView
     let account: SavedAccount
-    
+
     // MARK: State
-    
+
     @State private var isShowingSafari: Bool = false
     @State private var isShowingEnlargedImage: Bool = false
-    
+
     // swipe-to-vote
     @Binding var isDragging: Bool
-    
+
     // in-feed reply
     @State var replyIsPresented: Bool = false
     @State var replyContents: String = ""
     @State var replyIsSending: Bool = false
-    
+
     // MARK: Computed
     // TODO: real-time swipe-to-vote feedback
     //    var emptyVoteSymbolName: String { displayedVote == .upvote ? "minus.square" : "arrow.up.square" }
@@ -51,7 +51,7 @@ struct FeedPost: View
     //    var downvoteSymbolName: String { displayedVote == .downvote ? "minus.square.fill" : "arrow.down.square.fill" }
     //    var emptySaveSymbolName: String { displayedSaved ? "bookmark.slash" : "bookmark" }
     //    var saveSymbolName: String { displayedSaved ? "bookmark.slash.fill" : "bookmark.fill" }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             postItem
@@ -95,10 +95,11 @@ struct FeedPost: View
                     Button("I love beta apps", role: .cancel) { }
                 }
             
+
             Divider()
         }
     }
-    
+
     @ViewBuilder
     var postItem: some View {
         if (shouldShowCompactPosts){
@@ -108,14 +109,13 @@ struct FeedPost: View
             LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost, savePost: { _ in await savePost() }, deletePost: deletePost)
         }
     }
-    
-    
+
     // Reply handlers
-    
+
     func upvotePost() async {
         await voteOnPost(inputOp: .upvote)
     }
-    
+
     func downvotePost() async {
         await voteOnPost(inputOp: .downvote)
     }
@@ -152,4 +152,3 @@ struct FeedPost: View
         }
     }
 }
-

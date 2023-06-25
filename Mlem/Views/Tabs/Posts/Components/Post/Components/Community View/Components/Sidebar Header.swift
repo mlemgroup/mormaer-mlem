@@ -18,7 +18,7 @@ struct CommunitySidebarHeader : View {
     
     @State var label1: String?
     @State var label2: String?
-    
+
     var body: some View {
         ZStack(alignment: .top) {
             // Banner
@@ -38,15 +38,14 @@ struct CommunitySidebarHeader : View {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
                         CommunitySidebarHeaderAvatar(imageUrl: avatarUrl)
-                        
                         HStack {
                             Text(avatarSubtext).minimumScaleFactor(0.01)
                         }.foregroundColor(.gray)
-                        
+
                     }.padding([.leading])
-                    
+
                     Spacer()
-                    
+
                     VStack(alignment: .trailing) {
                         Spacer().frame(height: 60)
                         HStack {
@@ -58,7 +57,7 @@ struct CommunitySidebarHeader : View {
                             }
                         }.frame(width: .infinity, height: 16)
                         Spacer().frame(height: 20)
-                        
+
                         Text(title)
                             .font(.title)
                             .bold()
@@ -68,7 +67,6 @@ struct CommunitySidebarHeader : View {
                             .font(.footnote)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
-                        
                     }.padding([.trailing])
                 }
             }

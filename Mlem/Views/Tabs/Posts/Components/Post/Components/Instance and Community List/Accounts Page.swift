@@ -14,10 +14,7 @@ struct AccountsPage: View
     @EnvironmentObject var accountsTracker: SavedAccountTracker
 
     @State private var isShowingInstanceAdditionSheet: Bool = false
-
     @State var navigationPath = NavigationPath()
-
-
 
     var body: some View
     {

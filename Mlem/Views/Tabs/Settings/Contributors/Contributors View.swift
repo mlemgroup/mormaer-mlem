@@ -36,7 +36,7 @@ struct ContributorsView: View
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
             }
-            
+
             Spacer()
         }
         .padding()

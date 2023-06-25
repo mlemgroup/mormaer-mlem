@@ -10,10 +10,10 @@ import Foundation
 struct SavedAccount: Identifiable, Codable, Equatable, Hashable
 {
     var id: Int
-    
+
     let instanceLink: URL
-    
+
     var accessToken: String
-    
+
     let username: String
 }

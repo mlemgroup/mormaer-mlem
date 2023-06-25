@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View
 {
     @Environment(\.openURL) private var openURL
-    
+
     @State private var specialContributors: [Contributor] = [
         Contributor(
             name: "Seb Jachec",
@@ -27,18 +27,18 @@ struct SettingsView: View
             websiteLink: URL(string: "https://elk.zone/mstdn.social/@samalone@twit.social")!
         ),
     ]
-    
+
     func getVersionString() -> String {
         var result = "n/a"
-        
+
         if let releaseVersion = Bundle.main.releaseVersionNumber {
             result = releaseVersion;
         }
-        
+
         if let buildVersion = Bundle.main.buildVersionNumber {
             result.append(" (\(buildVersion))")
         }
-        
+
         return result
     }
 
@@ -140,7 +140,7 @@ struct SettingsView: View
                                 } header: {
                                     Text("Packages Used")
                                 }
-                                
+
                                 Text("Version \(getVersionString())")
                             }
                         }
@@ -149,7 +149,7 @@ struct SettingsView: View
                             .foregroundColor(.blue)
                         Text("About Mlem")
                     }
-                    
+
                     Link(destination: URL(string: "https://lemmy.ml/c/mlemapp")!) {
                         Image(systemName: "person.2.circle.fill")
                             .foregroundColor(.purple)

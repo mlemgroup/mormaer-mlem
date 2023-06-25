@@ -346,8 +346,6 @@ struct ExpandedPost: View
         }
     }
 
-
-
     /**
      Votes on a post
      NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
@@ -376,4 +374,3 @@ struct ExpandedPost: View
         }
     }
 }
-

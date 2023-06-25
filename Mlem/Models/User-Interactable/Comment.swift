@@ -66,7 +66,7 @@ struct Comment: Codable, Identifiable, Hashable
             return result
         }
     }
-    
+
     /// Locate the reply with the matching ID in the Comment tree
     /// and replace it with the specified reply. Note that this
     /// cannot change the parent of the reply!
@@ -88,7 +88,7 @@ struct Comment: Codable, Identifiable, Hashable
             return result
         }
     }
-    
+
     /// Remove the reply with the specified ID from the Comment tree,
     /// along with all of its descendents.
     func removeReply(id: Int) -> Comment?

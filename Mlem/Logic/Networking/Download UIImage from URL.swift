@@ -15,7 +15,7 @@ func downloadUIImageFromURL(_ url: URL) async -> UIImage?
     do
     {
         let (data, _) = try await session.data(from: url)
-        
+
         return UIImage(data: data)
     }
     catch
