@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension CommentItem {
-    func voteOnComment(inputOp: ScoringOperation) async -> Void {
+    func voteOnComment(inputOp: ScoringOperation) async {
         do {
             let operation = hierarchicalComment.commentView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             try await _ = rateComment(comment: hierarchicalComment.commentView, operation: operation, account: account, commentTracker: commentTracker, appState: appState)
@@ -17,7 +17,7 @@ extension CommentItem {
         }
     }
     
-    func deleteComment() async -> Void {
+    func deleteComment() async {
         do {
             try await _ = Mlem.deleteComment(comment: hierarchicalComment.commentView, account: account, commentTracker: commentTracker, appState: appState)
         } catch {
@@ -25,7 +25,7 @@ extension CommentItem {
         }
     }
     
-    func upvote() async -> Void {
+    func upvote() async {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
             // fake downvote
@@ -50,8 +50,8 @@ extension CommentItem {
             return
         }
     }
-    
-    func downvote() async -> Void {
+
+    func downvote() async {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
             // fake upvote
@@ -80,7 +80,7 @@ extension CommentItem {
     /**
      Sends a save request for the current post
      */
-    func saveComment() async -> Void {
+    func saveComment() async {
         guard dirty else {
             // fake save
             dirtySaved.toggle()
@@ -102,7 +102,7 @@ extension CommentItem {
     }
 
     @MainActor
-    func replyToComment() -> Void {
+    func replyToComment() {
         commentReplyTracker.commentToReplyTo = hierarchicalComment.commentView
     }
 }

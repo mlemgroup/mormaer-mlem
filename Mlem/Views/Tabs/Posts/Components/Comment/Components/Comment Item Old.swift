@@ -27,16 +27,16 @@ struct CommentItemOld: View {
     @State private var localVote: ScoringOperation?
 
     // TEMP
-    func voidPrintShortLeft() -> Void {
+    func voidPrintShortLeft() {
         print("short left")
     }
-    func voidPrintLongLeft() -> Void {
+    func voidPrintLongLeft() {
         print("long left")
     }
-    func voidPrintShortRight() -> Void {
+    func voidPrintShortRight() {
         print("short right")
     }
-    func voidPrintLongRight() -> Void {
+    func voidPrintLongRight() {
         print("long right")
     }
 

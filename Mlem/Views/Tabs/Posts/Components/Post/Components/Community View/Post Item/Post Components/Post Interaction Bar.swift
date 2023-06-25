@@ -117,7 +117,7 @@ struct PostInteractionBar: View {
         return true
     }
     
-    func upvote() async -> Void {
+    func upvote() async {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
             // fake downvote
@@ -142,8 +142,8 @@ struct PostInteractionBar: View {
             return
         }
     }
-    
-    func downvote() async -> Void {
+
+    func downvote() async {
         // don't do anything if currently awaiting a vote response
         guard dirty else {
             // fake upvote
@@ -185,7 +185,7 @@ struct PostInteractionBar: View {
     /**
      Sends a save request for the current post
      */
-    func savePost() async -> Void {
+    func savePost() async {
         guard dirty else {
             do {
                 // fake save

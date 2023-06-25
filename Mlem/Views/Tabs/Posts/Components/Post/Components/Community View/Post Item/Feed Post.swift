@@ -134,7 +134,7 @@ struct FeedPost: View {
      Votes on a post
      NOTE: I /hate/ that this is here and threaded down through the view stack, but that's the only way I can get post votes to propagate properly without weird flickering
      */
-    func voteOnPost(inputOp: ScoringOperation) async -> Void {
+    func voteOnPost(inputOp: ScoringOperation) async {
         do {
             let operation = postView.myVote == inputOp ? ScoringOperation.resetVote : inputOp
             try await ratePost(postId: postView.post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
@@ -142,8 +142,8 @@ struct FeedPost: View {
             print("failed to vote!")
         }
     }
-    
-    func savePost() async -> Void {
+
+    func savePost() async {
         do {
             _ = try await sendSavePostRequest(account: account, postId: postView.post.id, save: !postView.saved, postTracker: postTracker)
         } catch {
