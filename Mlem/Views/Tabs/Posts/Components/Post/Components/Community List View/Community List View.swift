@@ -173,8 +173,8 @@ struct CommunityListView: View {
 
         // Remove duplicates and sort by name
         result = Array(Set(result)).sorted(by: { $0.name < $1.name })
-        
-        return result;
+
+        return result
     }
 }
 

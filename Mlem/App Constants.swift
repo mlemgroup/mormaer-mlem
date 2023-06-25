@@ -32,6 +32,6 @@ struct AppConstants {
     static let hapticManager: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
 
     // MARK: - DragGesture thresholds
-    static let longSwipeDragMin: CGFloat = 150;
-    static let shortSwipeDragMin: CGFloat = 60;
+    static let longSwipeDragMin: CGFloat = 150
+    static let shortSwipeDragMin: CGFloat = 60
 }

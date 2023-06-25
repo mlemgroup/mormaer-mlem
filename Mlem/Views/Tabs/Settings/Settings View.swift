@@ -31,7 +31,7 @@ struct SettingsView: View {
         var result = "n/a"
 
         if let releaseVersion = Bundle.main.releaseVersionNumber {
-            result = releaseVersion;
+            result = releaseVersion
         }
 
         if let buildVersion = Bundle.main.buildVersionNumber {

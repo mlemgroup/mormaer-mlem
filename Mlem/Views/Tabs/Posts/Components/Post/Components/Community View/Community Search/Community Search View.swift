@@ -134,14 +134,14 @@ struct CommunitySearchResultsView: View {
         }
         .frame(height: 300)
         .task {
-            let request = ListCommunitiesRequest(account: account, sort: nil, page: nil, limit: nil, type: FeedType.subscribed);
+            let request = ListCommunitiesRequest(account: account, sort: nil, page: nil, limit: nil, type: FeedType.subscribed)
             do {
-                let response = try await APIClient().perform(request: request);
+                let response = try await APIClient().perform(request: request)
                 subscribedCommunities = response.communities.map({
-                    return $0.community;
+                    return $0.community
                 }).sorted(by: {
                     $0.name < $1.name
-                });
+                })
             } catch {
 
             }

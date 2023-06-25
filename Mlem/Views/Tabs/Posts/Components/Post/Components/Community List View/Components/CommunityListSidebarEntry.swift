@@ -32,7 +32,7 @@ struct RegexCommunityNameSidebarEntry : SidebarEntry {
     func contains(community: APICommunity, isSubscribed: Bool) -> Bool {
         // Ignore unsubscribed subs from main list
         if !isSubscribed {
-            return false;
+            return false
         }
         return community.name.starts(with: communityNameRegex)
     }
