@@ -55,7 +55,13 @@ struct CommentItem: View {
     @Binding var isDragging: Bool
 
     // init needed to get dirty and clean aligned
-    init(account: SavedAccount, hierarchicalComment: HierarchicalComment, postContext: APIPostView?, depth: Int, showPostContext: Bool, isDragging: Binding<Bool>) {
+    init(account: SavedAccount,
+         hierarchicalComment: HierarchicalComment,
+         postContext: APIPostView?,
+         depth: Int,
+         showPostContext: Bool,
+         isDragging: Binding<Bool>
+    ) {
         self.account = account
         self.hierarchicalComment = hierarchicalComment
         self.postContext = postContext
