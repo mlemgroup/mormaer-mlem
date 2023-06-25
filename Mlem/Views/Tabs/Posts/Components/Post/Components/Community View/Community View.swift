@@ -26,7 +26,7 @@ struct CommunityView: View
     @State var community: APICommunity?
     @State var communityDetails: GetCommunityResponse?
 
-    @State private var selectedSortingOption: SortingOptions = .hot
+    @AppStorage("selectedSortingOption") private var selectedSortingOption: SortingOptions = .hot
 
     @State private var isSidebarShown: Bool = false
     @State private var isShowingCommunitySearch: Bool = false
@@ -37,7 +37,7 @@ struct CommunityView: View
 
     @FocusState var isSearchFieldFocused: Bool
 
-    @State var feedType: FeedType = .subscribed
+    @AppStorage("selectedFeedType") var feedType: FeedType = .subscribed
 
     @State private var isComposingPost: Bool = false
     @State private var newPostTitle: String = ""
