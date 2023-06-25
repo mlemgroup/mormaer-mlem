@@ -13,5 +13,5 @@ struct Contributor: Identifiable {
     let name: String
     let avatarLink: URL
     let reasonForAcknowledgement: String
-    let websiteLink: URL 
+    let websiteLink: URL
 }

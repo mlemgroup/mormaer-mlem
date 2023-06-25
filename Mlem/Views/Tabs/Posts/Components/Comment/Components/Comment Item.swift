@@ -12,7 +12,7 @@ struct CommentItem: View {
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
     // MARK: Temporary
-    //state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
+    // state fakers--these let the upvote/downvote/score/save views update instantly even if the call to the server takes longer
     @State var dirtyVote: ScoringOperation // = .resetVote
     @State var dirtyScore: Int // = 0
     @State var dirtySaved: Bool // = false

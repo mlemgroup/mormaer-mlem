@@ -93,7 +93,6 @@ struct FeedPost: View {
                 .alert("Not yet implemented!", isPresented: $replyIsPresented) {
                     Button("I love beta apps", role: .cancel) { }
                 }
-            
 
             Divider()
         }

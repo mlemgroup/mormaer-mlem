@@ -14,7 +14,7 @@ protocol SidebarEntry {
 }
 
 // Filters no communities, used for top entry in sidebar
-struct EmptySidebarEntry : SidebarEntry {
+struct EmptySidebarEntry: SidebarEntry {
     var sidebarLabel: String?
     var sidebarIcon: String?
 
@@ -24,7 +24,7 @@ struct EmptySidebarEntry : SidebarEntry {
 }
 
 // Filters based on community name
-struct RegexCommunityNameSidebarEntry : SidebarEntry {
+struct RegexCommunityNameSidebarEntry: SidebarEntry {
     var communityNameRegex: Regex<Substring>
     var sidebarLabel: String?
     var sidebarIcon: String?
@@ -39,7 +39,7 @@ struct RegexCommunityNameSidebarEntry : SidebarEntry {
 }
 
 // Filters to favorited communities
-struct FavoritesSidebarEntry : SidebarEntry {
+struct FavoritesSidebarEntry: SidebarEntry {
     let account: SavedAccount
     let favoritesTracker: FavoriteCommunitiesTracker
     var sidebarLabel: String?

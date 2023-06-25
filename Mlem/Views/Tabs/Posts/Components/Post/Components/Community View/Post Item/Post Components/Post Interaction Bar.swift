@@ -12,7 +12,7 @@ import Foundation
 /**
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
-struct PostInteractionBar: View {    
+struct PostInteractionBar: View {
     @EnvironmentObject var postTracker: PostTracker
 
     // constants

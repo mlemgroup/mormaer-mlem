@@ -22,9 +22,9 @@ struct CommunityListView: View {
     @State var subscribedCommunities = [APICommunity]()
 
     private var hasTestCommunities = false
-    
-    private static let alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-    
+
+    private static let alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
     // Note: These are in order that they appear in the sidebar
     @State var communitySections: [CommunitySection] = []
 
@@ -242,7 +242,7 @@ struct SectionIndexTitles: View {
 struct SectionIndexText: View {
     let label: String
     var body: some View {
-        Text(label).font(.system(size:12)).bold()
+        Text(label).font(.system(size: 12)).bold()
     }
 }
 

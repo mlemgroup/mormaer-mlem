@@ -36,10 +36,10 @@ struct Post: Codable, Identifiable, Equatable, Hashable {
     var myVote: MyVote
     let hotRank, hotRankActive: Int?
     let newestActivityTime: String?
-    //let userID: Int?
-    //let subscribed: Bool?
-    //let read: Bool?
-    
+    // let userID: Int?
+    // let subscribed: Bool?
+    // let read: Bool?
+
     var saved: Bool
     var read: Bool
 

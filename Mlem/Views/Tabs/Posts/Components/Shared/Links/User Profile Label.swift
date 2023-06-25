@@ -8,7 +8,7 @@
 import SwiftUI
 import CachedAsyncImage
 
-struct UserProfileLabel : View {
+struct UserProfileLabel: View {
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
 
     @State var account: SavedAccount
@@ -111,7 +111,7 @@ struct UserProfileLinkPreview: PreviewProvider {
 
     // Only Admin and Bot work right now
     // Because the rest require post/comment context
-    enum PreviewUserType:  String, CaseIterable {
+    enum PreviewUserType: String, CaseIterable {
         case Normal = "normal"
         case Mod = "mod"
         case OP = "op"
@@ -152,11 +152,11 @@ struct UserProfileLinkPreview: PreviewProvider {
         var commentContext: APIComment?
         
         if userType == .Mod {
-            commentContext = generatePreviewComment(creator: previewUser, isMod:  true)
+            commentContext = generatePreviewComment(creator: previewUser, isMod: true)
         }
 
         if userType == .OP {
-            commentContext = generatePreviewComment(creator: previewUser, isMod:  false)
+            commentContext = generatePreviewComment(creator: previewUser, isMod: false)
             postContext = generatePreviewPost(creator: previewUser)
         }
         

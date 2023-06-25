@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CommunitySidebarHeaderLabel : View {
+struct CommunitySidebarHeaderLabel: View {
     @State var text: String
 
     init(_ text: String) {
