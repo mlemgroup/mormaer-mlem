@@ -17,10 +17,9 @@ func sendSavePostRequest(account: SavedAccount,
         let response = try await APIClient().perform(request: request)
 
         postTracker.update(with: response.postView)
-        
+
         return response.postView
-    }
-    catch {
+    } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
         throw RatingFailure.failedToPostScore
     }

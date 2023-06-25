@@ -20,8 +20,7 @@ func sendSaveCommentRequest(account: SavedAccount,
         let response = try await APIClient().perform(request: request)
 
         commentTracker.comments.update(with: response.commentView)
-    }
-    catch {
+    } catch {
         print(error)
         AppConstants.hapticManager.notificationOccurred(.error)
         throw SavingFailure.failedToSaveComment

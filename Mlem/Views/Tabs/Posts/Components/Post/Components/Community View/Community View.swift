@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct CommunityView: View
-{
+struct CommunityView: View {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
     @AppStorage("shouldBlurNsfw") var shouldBlurNsfw: Bool = true
@@ -49,8 +48,7 @@ struct CommunityView: View
 
     @State var isDragging: Bool = false
 
-    enum FocusedNewPostField
-    {
+    enum FocusedNewPostField {
         case newPostTitle, newPostBody, newPostURL
     }
 
@@ -64,10 +62,8 @@ struct CommunityView: View
         }
     }
 
-    var body: some View
-    {
-        ZStack(alignment: .top)
-        {
+    var body: some View {
+        ZStack(alignment: .top) {
             searchResultsView
                 .accessibilityHidden(!isShowingCommunitySearch)
             ScrollView {
@@ -91,35 +87,27 @@ struct CommunityView: View
                                 isActive: $isSidebarShown
                             ),
                             isActive: $isSidebarShown
-                        )
-                        { /// This is here to show the sidebar when needed
+                        ) { /// This is here to show the sidebar when needed
                             Text("")
                         }
                         .hidden()
 
-                        VStack(alignment: .leading, spacing: 15)
-                        {
-                            VStack(alignment: .leading, spacing: 15)
-                            {
-                                HStack(alignment: .center, spacing: 10)
-                                {
+                        VStack(alignment: .leading, spacing: 15) {
+                            VStack(alignment: .leading, spacing: 15) {
+                                HStack(alignment: .center, spacing: 10) {
                                     TextField("New post title…", text: $newPostTitle, axis: .vertical)
                                         .textFieldStyle(.roundedBorder)
                                         .focused($focusedNewPostField, equals: .newPostTitle)
 
-                                    if !newPostTitle.isEmpty
-                                    {
-                                        if !isPostingPost
-                                        {
-                                            Button
-                                            {
+                                    if !newPostTitle.isEmpty {
+                                        if !isPostingPost {
+                                            Button {
                                                 Task(priority: .userInitiated) {
                                                     isPostingPost = true
 
                                                     print("Will try to post comment")
 
-                                                    defer
-                                                    {
+                                                    defer {
                                                         newPostTitle = ""
                                                         newPostURL = ""
                                                         newPostBody = ""
@@ -129,21 +117,16 @@ struct CommunityView: View
                                                         focusedNewPostField = nil
                                                     }
 
-                                                    do
-                                                    {
+                                                    do {
                                                         try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account, appState: appState)
-                                                    }
-                                                    catch let postPostingError
-                                                    {
+                                                    } catch let postPostingError {
                                                         print("Failed while posting post: \(postPostingError)")
                                                     }
                                                 }
                                             } label: {
                                                 Image(systemName: "paperplane")
                                             }
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             ProgressView()
                                         }
                                     }
@@ -178,13 +161,10 @@ struct CommunityView: View
                 }
             }
             .task(priority: .userInitiated) {
-                if postTracker.posts.isEmpty
-                {
+                if postTracker.posts.isEmpty {
                     print("Post tracker is empty")
                     await loadFeed()
-                }
-                else
-                {
+                } else {
                     print("Post tracker is not empty")
                 }
             }
@@ -219,12 +199,9 @@ struct CommunityView: View
             )
         }
         .toolbar {
-            ToolbarItem(placement: .principal)
-            { /// This is here to replace the default navigationTitle and make it possible to tap it
-                if !isShowingCommunitySearch
-                {
-                    HStack(alignment: .center, spacing: 0)
-                    {
+            ToolbarItem(placement: .principal) { /// This is here to replace the default navigationTitle and make it possible to tap it
+                if !isShowingCommunitySearch {
+                    HStack(alignment: .center, spacing: 0) {
                         Text(community?.name ?? feedType.rawValue)
                             .font(.headline)
                         Image(systemName: "chevron.down")
@@ -234,19 +211,15 @@ struct CommunityView: View
                     .accessibilityLabel("\(community?.name ?? feedType.rawValue)")
                     .accessibilityAddTraits(.isButton)
                     .accessibilityHint("Activate to search and select feeds")
-                    .onTapGesture
-                    {
+                    .onTapGesture {
                         isSearchFieldFocused = true
 
-                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
-                        {
+                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
                             isShowingCommunitySearch.toggle()
                         }
 
                     }
-                }
-                else
-                {
+                } else {
                     CommunitySearchField(isSearchFieldFocused: $isSearchFieldFocused, searchText: $searchText, account: account)
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel("Search for communities.")
@@ -272,12 +245,9 @@ struct CommunityView: View
                         }
                     ))
 
-                    Menu
-                    {
-                        if isInSpecificCommunity
-                        {
-                            Button
-                            {
+                    Menu {
+                        if isInSpecificCommunity {
+                            Button {
                                 print("Will toggle sidebar")
                                 isSidebarShown.toggle()
                                 print("Sidebar value: \(isSidebarShown)")
@@ -288,8 +258,7 @@ struct CommunityView: View
 
                         Divider()
 
-                        if let communityDetails
-                        {
+                        if let communityDetails {
                             SubscribeButton(
                                 communityDetails: Binding(
                                     get: {
@@ -302,16 +271,13 @@ struct CommunityView: View
                                 account: account
                             )
 
-                            if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id })
-                            { /// This is when a community is already favorited
+                            if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) { /// This is when a community is already favorited
                                 Button(role: .destructive) {
                                     unfavoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
                                 } label: {
                                     Label("Unfavorite", systemImage: "star.slash")
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 Button {
                                     favoriteCommunity(account: account, community: community!, favoritedCommunitiesTracker: favoriteCommunitiesTracker)
                                 } label: {
@@ -334,8 +300,7 @@ struct CommunityView: View
                         } label: {
                             if (shouldBlurNsfw) {
                                 Label("Unblur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
-                            }
-                            else {
+                            } else {
                                 Label("Blur NSFW", systemImage: "eye.trianglebadge.exclamationmark")
                             }
                         }
@@ -345,8 +310,7 @@ struct CommunityView: View
                         } label: {
                             if (shouldShowCompactPosts) {
                                 Label("Large posts", systemImage: "rectangle.expand.vertical")
-                            }
-                            else {
+                            } else {
                                 Label("Compact posts", systemImage: "rectangle.compress.vertical")
                             }
                         }
@@ -355,17 +319,14 @@ struct CommunityView: View
                         Label("More", systemImage: "ellipsis")
                     }
                 } else {
-                    Button
-                    {
+                    Button {
                         isSearchFieldFocused = false
 
-                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5))
-                        {
+                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
                             isShowingCommunitySearch.toggle()
                         }
 
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1)
-                        { /// Clear the search text and results one second after it disappears so it doesn't just disappear in the middle of the animation
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { /// Clear the search text and results one second after it disappears so it doesn't just disappear in the middle of the animation
                             searchText = ""
                             communitySearchResultsTracker.foundCommunities = .init()
                         }
@@ -412,8 +373,7 @@ struct CommunityView: View
 
     private var postInputView: some View {
         VStack(alignment: .leading) {
-            VStack(alignment: .leading, spacing: 5)
-            {
+            VStack(alignment: .leading, spacing: 5) {
                 Text("Post body (Optional)")
                     .foregroundColor(.secondary)
                     .font(.caption)
@@ -423,8 +383,7 @@ struct CommunityView: View
                     .focused($focusedNewPostField, equals: .newPostBody)
             }
 
-            VStack(alignment: .leading, spacing: 5)
-            {
+            VStack(alignment: .leading, spacing: 5) {
                 Text("Post URL (Optional)")
                     .foregroundColor(.secondary)
                     .font(.caption)
@@ -453,9 +412,7 @@ struct CommunityView: View
 
     private var postListView: some View {
         ForEach(filteredPosts) { post in
-            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker, feedType: $feedType)
-            )
-            {
+            NavigationLink(value: PostLinkWithContext(post: post, postTracker: postTracker, feedType: $feedType)) {
                 FeedPost(
                     postView: post,
                     account: account,

@@ -7,8 +7,7 @@
 
 import Foundation
 
-func getTimeIntervalFromNow(date: Date) -> String
-{
+func getTimeIntervalFromNow(date: Date) -> String {
     AppConstants.relativeDateFormatter.dateTimeStyle = .numeric
     AppConstants.relativeDateFormatter.unitsStyle = .short
     AppConstants.relativeDateFormatter.formattingContext = .standalone

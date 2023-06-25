@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-internal enum CommandError: Error
-{
+internal enum CommandError: Error {
     case receivedUnexpectedResponseFromServer
 }
 
@@ -21,10 +20,8 @@ struct SubscribeButton: View {
 
     var body: some View {
         if let communityDetails {
-            if communityDetails.subscribed == .notSubscribed
-            {
-                Button
-                {
+            if communityDetails.subscribed == .notSubscribed {
+                Button {
                     Task(priority: .userInitiated) {
                         print("Will subscribe")
                         await subscribe(communityId: communityDetails.community.id, shouldSubscribe: true)
@@ -33,11 +30,8 @@ struct SubscribeButton: View {
                     Label("Subscribe", systemImage: "person.badge.plus")
                 }
 
-            }
-            else
-            {
-                Button(role: .destructive)
-                {
+            } else {
+                Button(role: .destructive) {
                     Task(priority: .userInitiated) {
                         print("Will unsubscribe")
                         await subscribe(communityId: communityDetails.community.id, shouldSubscribe: false)
@@ -46,9 +40,7 @@ struct SubscribeButton: View {
                     Label("Unsubscribe", systemImage: "person.badge.minus")
                 }
             }
-        }
-        else
-        {
+        } else {
             Label("Loading community info…", systemImage: "clock.arrow.2.circlepath")
                 .disabled(true)
         }

@@ -129,18 +129,15 @@ struct SwipeyView: ViewModifier {
                             Task(priority: .userInitiated) {
                                 await longRightAction()
                             }
-                        }
-                        else if prevDragPosition < -1 * AppConstants.shortSwipeDragMin {
+                        } else if prevDragPosition < -1 * AppConstants.shortSwipeDragMin {
                             Task(priority: .userInitiated) {
                                 await shortRightAction()
                             }
-                        }
-                        else if prevDragPosition > AppConstants.longSwipeDragMin {
+                        } else if prevDragPosition > AppConstants.longSwipeDragMin {
                             Task(priority: .userInitiated) {
                                 await longLeftAction()
                             }
-                        }
-                        else if prevDragPosition > AppConstants.shortSwipeDragMin {
+                        } else if prevDragPosition > AppConstants.shortSwipeDragMin {
                             Task(priority: .userInitiated) {
                                 await shortLeftAction()
                             }
@@ -152,8 +149,7 @@ struct SwipeyView: ViewModifier {
                             rightSwipeSymbol = emptyRightSymbolName
                             dragBackground = .systemBackground
                         }
-                    }
-                    else {
+                    } else {
                         // update position
                         dragPosition = newDragState
 
@@ -164,30 +160,25 @@ struct SwipeyView: ViewModifier {
                             if prevDragPosition >= -1 * AppConstants.longSwipeDragMin {
                                 tapper.impactOccurred()
                             }
-                        }
-                        else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
+                        } else if dragPosition < -1 * AppConstants.shortSwipeDragMin {
                             rightSwipeSymbol = shortRightSymbolName
                             dragBackground = shortRightColor
                             if prevDragPosition >= -1 * AppConstants.shortSwipeDragMin {
                                 tapper.impactOccurred()
                             }
-                        }
-                        else if dragPosition < 0 {
+                        } else if dragPosition < 0 {
                             rightSwipeSymbol = emptyRightSymbolName
                             dragBackground = shortRightColor.opacity(-1 * dragPosition / AppConstants.shortSwipeDragMin)
-                        }
-                        else if dragPosition < AppConstants.shortSwipeDragMin {
+                        } else if dragPosition < AppConstants.shortSwipeDragMin {
                             leftSwipeSymbol = emptyLeftSymbolName
                             dragBackground = shortLeftColor.opacity(dragPosition / AppConstants.shortSwipeDragMin)
-                        }
-                        else if dragPosition < AppConstants.longSwipeDragMin {
+                        } else if dragPosition < AppConstants.longSwipeDragMin {
                             leftSwipeSymbol = shortLeftSymbolName
                             dragBackground = shortLeftColor
                             if prevDragPosition <= AppConstants.shortSwipeDragMin {
                                 tapper.impactOccurred()
                             }
-                        }
-                        else {
+                        } else {
                             leftSwipeSymbol = longLeftSymbolName
                             dragBackground = longLeftColor
                             if prevDragPosition <= AppConstants.longSwipeDragMin {

@@ -125,8 +125,7 @@ struct LargePost: View {
                 .onTapGesture {
                     showNsfwFilterToggle.toggle()
                 }
-            }
-            else if postView.post.nsfw && shouldBlurNsfw {
+            } else if postView.post.nsfw && shouldBlurNsfw {
                 // stacks are here to align image to top left of ZStack
                 // TODO: less janky way to do this?
                 HStack {

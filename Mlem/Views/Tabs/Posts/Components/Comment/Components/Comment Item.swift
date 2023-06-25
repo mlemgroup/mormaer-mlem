@@ -197,13 +197,11 @@ struct CommentItem: View {
                 Text("Comment was deleted")
                     .italic()
                     .foregroundColor(.secondary)
-            }
-            else if hierarchicalComment.commentView.comment.removed {
+            } else if hierarchicalComment.commentView.comment.removed {
                 Text("Comment was removed")
                     .italic()
                     .foregroundColor(.secondary)
-            }
-            else if !isCollapsed {
+            } else if !isCollapsed {
                 MarkdownView(text: hierarchicalComment.commentView.comment.content)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }

@@ -30,8 +30,7 @@ enum Field: Hashable {
     case twoFactorField
 }
 
-struct AddSavedInstanceView: View
-{
+struct AddSavedInstanceView: View {
     @EnvironmentObject var communityTracker: SavedAccountTracker
     @EnvironmentObject var appState: AppState
 
@@ -52,21 +51,14 @@ struct AddSavedInstanceView: View
 
     @State private var errorAlert: ErrorAlert?
     @FocusState private var focusedField: Field?
-    
-    var body: some View
-    {
-        VStack(alignment: .leading, spacing: 0)
-        {
-            if isShowingEndpointDiscoverySpinner
-            {
-                if !errorOccuredWhileConnectingToEndpoint
-                {
-                    if !hasSuccessfulyConnectedToEndpoint
-                    {
-                        VStack(alignment: .center)
-                        {
-                            HStack(alignment: .center, spacing: 10)
-                            {
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if isShowingEndpointDiscoverySpinner {
+                if !errorOccuredWhileConnectingToEndpoint {
+                    if !hasSuccessfulyConnectedToEndpoint {
+                        VStack(alignment: .center) {
+                            HStack(alignment: .center, spacing: 10) {
                                 ProgressView()
                                 Text("Connecting to \(instanceLink)")
                             }
@@ -74,13 +66,9 @@ struct AddSavedInstanceView: View
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color(uiColor: .secondarySystemBackground))
-                    }
-                    else
-                    {
-                        VStack(alignment: .center)
-                        {
-                            HStack(alignment: .center, spacing: 10)
-                            {
+                    } else {
+                        VStack(alignment: .center) {
+                            HStack(alignment: .center, spacing: 10) {
                                 Image(systemName: "checkmark.shield.fill")
                                 Text("Logged in to \(instanceLink) as \(usernameOrEmail)")
                             }
@@ -90,13 +78,9 @@ struct AddSavedInstanceView: View
                         .background(.cyan)
                         .foregroundColor(.black)
                     }
-                }
-                else
-                {
-                    VStack(alignment: .center)
-                    {
-                        HStack(alignment: .center, spacing: 10)
-                        {
+                } else {
+                    VStack(alignment: .center) {
+                        HStack(alignment: .center, spacing: 10) {
                             Image(systemName: "xmark.circle.fill")
                             Text(errorText)
                         }
@@ -107,26 +91,21 @@ struct AddSavedInstanceView: View
                     .foregroundColor(.black)
                 }
             }
-            
-            Form
-            {
-                Section("Homepage")
-                {
+
+            Form {
+                Section("Homepage") {
                     TextField("Homepage:", text: $instanceLink, prompt: Text("lemmy.ml"))
                         .autocorrectionDisabled()
                         .focused($focusedField, equals: .homepageField)
                         .keyboardType(.URL)
                         .textInputAutocapitalization(.never)
-                        .onAppear
-                    {
+                        .onAppear {
                         focusedField = .homepageField
                     }
                 }
-                
-                Section("Credentials")
-                {
-                    HStack
-                    {
+
+                Section("Credentials") {
+                    HStack {
                         Text("Username")
                         Spacer()
                         TextField("Username", text: $usernameOrEmail, prompt: Text("Salmoon"))
@@ -134,9 +113,8 @@ struct AddSavedInstanceView: View
                             .keyboardType(.default)
                             .textInputAutocapitalization(.never)
                     }
-                    
-                    HStack
-                    {
+
+                    HStack {
                         Text("Password")
                         Spacer()
                         SecureField("Password", text: $password, prompt: Text("VeryStrongPassword"))
@@ -144,16 +122,14 @@ struct AddSavedInstanceView: View
                     }
 
                     if isShowingTwoFactorText {
-                        HStack
-                        {
+                        HStack {
                             Text("2FA Token")
                             Spacer()
                             SecureField("TwoFactorToken", text: $twoFactorToken, prompt: Text("000000"))
                                 .focused($focusedField, equals: .twoFactorField)
                                 .submitLabel(.go)
                                 .keyboardType(.asciiCapableNumberPad)
-                                .onAppear
-                            {
+                                .onAppear {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                                     focusedField = .twoFactorField
                                 }
@@ -161,11 +137,9 @@ struct AddSavedInstanceView: View
                         }
                     }
                 }
-                
-                Button
-                {
-                    Task
-                    {
+
+                Button {
+                    Task {
                         await tryToAddAccount()
                     }
                 } label: {

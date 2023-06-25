@@ -7,13 +7,11 @@
 
 import SwiftUI
 
-internal enum PossibleStyling
-{
+internal enum PossibleStyling {
     case bold, italics
 }
 
-struct ExpandedPost: View
-{
+struct ExpandedPost: View {
     // appstorage
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
@@ -49,20 +47,17 @@ struct ExpandedPost: View
 
     @State var isDragging: Bool = false
 
-    var body: some View
-    {
+    var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 postView
 
                 if commentTracker.isLoading {
                     commentsLoadingView
-                }
-                else {
+                } else {
                     if commentTracker.comments.count == 0 {
                         noCommentsView
-                    }
-                    else {
+                    } else {
                         commentsView
                     }
                 }
@@ -71,13 +66,10 @@ struct ExpandedPost: View
         .scrollDisabled(isDragging)
         .environmentObject(commentReplyTracker)
         .navigationBarTitle(post.community.name, displayMode: .inline)
-        .safeAreaInset(edge: .bottom)
-        {
-            VStack
-            {
+        .safeAreaInset(edge: .bottom) {
+            VStack {
                 if let commentToReplyTo = commentReplyTracker.commentToReplyTo {
-                    HStack(alignment: .top)
-                    {
+                    HStack(alignment: .top) {
                         VStack(alignment: .leading, spacing: 5) {
                             HStack(alignment: .center, spacing: 2) {
                                 Text("Replying to ")
@@ -97,33 +89,24 @@ struct ExpandedPost: View
                     Divider()
                 }
 
-                HStack(alignment: .center, spacing: 10)
-                {
+                HStack(alignment: .center, spacing: 10) {
                     TextField("Reply to post", text: $textFieldContents, prompt: Text("Commenting as \(account.username):"), axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                         .focused($isReplyFieldFocused)
 
-                    if !textFieldContents.isEmpty
-                    {
-                        if !isPostingComment
-                        {
-                            Button
-                            {
-                                if commentReplyTracker.commentToReplyTo == nil
-                                {
-                                    Task(priority: .userInitiated)
-                                    {
+                    if !textFieldContents.isEmpty {
+                        if !isPostingComment {
+                            Button {
+                                if commentReplyTracker.commentToReplyTo == nil {
+                                    Task(priority: .userInitiated) {
                                         isPostingComment = true
 
                                         print("Will post comment")
-
-                                        defer
-                                        {
+                                        defer {
                                             isPostingComment = false
                                         }
 
-                                        do
-                                        {
+                                        do {
                                             try await postComment(
                                                 to: post,
                                                 commentContents: textFieldContents,
@@ -134,10 +117,7 @@ struct ExpandedPost: View
 
                                             isReplyFieldFocused = false
                                             textFieldContents = ""
-                                        }
-                                        catch let commentPostingError
-                                        {
-
+                                        } catch let commentPostingError {
                                             appState.alertTitle = "Couldn't post comment"
                                             appState.alertMessage = "An error occured when posting the comment.\nTry again later, or restart Mlem."
                                             appState.isShowingAlert.toggle()
@@ -145,21 +125,17 @@ struct ExpandedPost: View
                                             print("Failed while posting error: \(commentPostingError)")
                                         }
                                     }
-                                }
-                                else
-                                {
+                                } else {
                                     Task(priority: .userInitiated) {
                                         isPostingComment = true
 
                                         print("Will post reply")
 
-                                        defer
-                                        {
+                                        defer {
                                             isPostingComment = false
                                         }
 
-                                        do
-                                        {
+                                        do {
                                             try await postComment(
                                                 to: commentReplyTracker.commentToReplyTo!,
                                                 post: post,
@@ -172,9 +148,7 @@ struct ExpandedPost: View
                                             commentReplyTracker.commentToReplyTo = nil
                                             isReplyFieldFocused = false
                                             textFieldContents = ""
-                                        }
-                                        catch let replyPostingError
-                                        {
+                                        } catch let replyPostingError {
                                             print("Failed while posting response: \(replyPostingError)")
                                         }
                                     }
@@ -183,9 +157,7 @@ struct ExpandedPost: View
                             } label: {
                                 Image(systemName: "paperplane")
                             }
-                        }
-                        else
-                        {
+                        } else {
                             ProgressView()
                         }
                     }
@@ -197,8 +169,7 @@ struct ExpandedPost: View
             .background(.regularMaterial)
             .animation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4), value: textFieldContents)
             .onChange(of: commentReplyTracker.commentToReplyTo) { newValue in
-                if newValue != nil
-                {
+                if newValue != nil {
                     isReplyFieldFocused.toggle()
                 }
             }
@@ -269,8 +240,7 @@ struct ExpandedPost: View
             .task(priority: .userInitiated) {
                 if post.counts.comments != 0 {
                     await loadComments()
-                }
-                else {
+                } else {
                     commentTracker.isLoading = false
                 }
             }
@@ -324,11 +294,9 @@ struct ExpandedPost: View
         }
     }
 
-    private func sortComments(_ comments: [HierarchicalComment], by sort: CommentSortType) -> [HierarchicalComment]
-    {
+    private func sortComments(_ comments: [HierarchicalComment], by sort: CommentSortType) -> [HierarchicalComment] {
         let sortedComments: [HierarchicalComment]
-        switch sort
-        {
+        switch sort {
         case .new:
             sortedComments = comments.sorted(by: { $0.commentView.comment.published > $1.commentView.comment.published })
         case .old:

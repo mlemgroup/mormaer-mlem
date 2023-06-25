@@ -28,8 +28,7 @@ struct CommunitySearchField: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            HStack
-            {
+            HStack {
                 TextField("Community…", text: $searchText)
                     .focused($isSearchFieldFocused)
                     .frame(width: 100)
@@ -68,8 +67,7 @@ struct CommunitySearchField: View {
                             }
                         }
                     }
-                    .onAppear
-                {
+                    .onAppear {
                     isSearchFieldFocused.toggle()
                 }
             }

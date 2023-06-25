@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-struct ContentView: View
-{
-    
+struct ContentView: View {
+
     @EnvironmentObject var appState: AppState
 
     @State private var errorAlert: ErrorAlert?
@@ -17,18 +16,14 @@ struct ContentView: View
     
     @AppStorage("showUsernameInNavigationBar") var showUsernameInNavigationBar: Bool = true
     
-    var body: some View
-    {
-        TabView(selection: $tabSelection)
-        {
+    var body: some View {
+        TabView(selection: $tabSelection) {
             AccountsPage()
-                .tabItem
-                {
+                .tabItem {
                     Label("Feeds", systemImage: "text.bubble")
                 }.tag(1)
             
-            if let currentActiveAccount = appState.currentActiveAccount
-            {
+            if let currentActiveAccount = appState.currentActiveAccount {
                 VStack {
                     Spacer()
                     Text("Messages is not yet implemented.  Coming soon!")
@@ -54,13 +49,11 @@ struct ContentView: View
             }
 
             SettingsView()
-                .tabItem
-                {
+                .tabItem {
                     Label("Settings", systemImage: "gear")
                 }.tag(4)
         }
-        .onAppear
-        {
+        .onAppear {
             AppConstants.keychain["test"] = "I-am-a-saved-thing"
         }
         .alert(using: $errorAlert) { content in

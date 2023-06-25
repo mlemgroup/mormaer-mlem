@@ -18,11 +18,9 @@ struct FiltersSettingsView: View {
     @State private var isShowingFilterDeletionConfirmation: Bool = false
 
     var body: some View {
-        List
-        {
+        List {
             Section {
-                ForEach(filtersTracker.filteredKeywords, id: \.self)
-                { filteredKeyword in
+                ForEach(filtersTracker.filteredKeywords, id: \.self) { filteredKeyword in
                     Text(filteredKeyword)
                 }
                 .onDelete(perform: deleteKeyword)
@@ -46,8 +44,7 @@ struct FiltersSettingsView: View {
                 Text("Posts containing these keywords in their title will not be shown")
             }
 
-            Section
-            {
+            Section {
                 Button {
                     showShareSheet(URLtoShare: AppConstants.filteredKeywordsFilePath)
                 } label: {
@@ -61,15 +58,13 @@ struct FiltersSettingsView: View {
                     Label("Import filters", systemImage: "square.and.arrow.down")
                 }
                 .fileImporter(isPresented: $isShowingKeywordImporter, allowedContentTypes: [.json]) { result in
-                    do
-                    {
+                    do {
                         let urlOfImportedFile: URL = try result.get()
 
                         urlOfImportedFile.startAccessingSecurityScopedResource()
 
                         print("URL of imported file: \(urlOfImportedFile)")
-                        do
-                        {
+                        do {
                             let decodedKeywords: [String] = try decodeFromFile(fromURL: urlOfImportedFile, whatToDecode: .filteredKeywords) as! [String]
 
                             urlOfImportedFile.stopAccessingSecurityScopedResource()
@@ -79,9 +74,7 @@ struct FiltersSettingsView: View {
                             withAnimation {
                                 filtersTracker.filteredKeywords = decodedKeywords
                             }
-                        }
-                        catch let decodingError
-                        {
+                        } catch let decodingError {
                             urlOfImportedFile.stopAccessingSecurityScopedResource()
 
                             appState.alertTitle = "Couldn't decode blocklist"
@@ -91,10 +84,8 @@ struct FiltersSettingsView: View {
                             print("Failed while decoding blocklist: \(decodingError)")
                         }
 
-                    }
-                    catch let blocklistImportingError
-                    {
-                        
+                    } catch let blocklistImportingError {
+
                         appState.alertTitle = "Couldn't find blocklist"
                         appState.alertMessage = "If you are trying to read it from iCloud, make sure your internet is working.\nOtherwise, try moving the blocklist file to another location."
                         appState.isShowingAlert.toggle()
@@ -104,9 +95,8 @@ struct FiltersSettingsView: View {
                 }
 
             }
-            
-            Section
-            {
+
+            Section {
                 Button(role: .destructive) {
                     isShowingFilterDeletionConfirmation = true
                 } label: {
@@ -140,28 +130,22 @@ struct FiltersSettingsView: View {
         }
         .navigationTitle("Filters")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar
-        {
+        .toolbar {
             ToolbarItem(placement: .automatic) {
                 EditButton()
                     .disabled(filtersTracker.filteredKeywords.isEmpty && filtersTracker.filteredUsers.isEmpty)
             }
         }
     }
-    
-    func addKeyword(_ newKeyword: String)
-    {
-        if !newKeyword.isEmpty
-        {
-            if filtersTracker.filteredKeywords.contains(newKeyword)
-            { /// If the word is already in there, just move it to the top
+
+    func addKeyword(_ newKeyword: String) {
+        if !newKeyword.isEmpty {
+            if filtersTracker.filteredKeywords.contains(newKeyword) { /// If the word is already in there, just move it to the top
                 let indexOfPreviousOccurence: Int = filtersTracker.filteredKeywords.firstIndex(where: { $0 == newKeyword })!
                 withAnimation {
                     filtersTracker.filteredKeywords.move(from: indexOfPreviousOccurence, to: 0)
                 }
-            }
-            else
-            {
+            } else {
                 withAnimation {
                     filtersTracker.filteredKeywords.prepend(newKeyword)
                 }
@@ -170,8 +154,7 @@ struct FiltersSettingsView: View {
             newFilteredKeyword = ""
         }
     }
-    func deleteKeyword(at offsets: IndexSet)
-    {
+    func deleteKeyword(at offsets: IndexSet) {
         filtersTracker.filteredKeywords.remove(atOffsets: offsets)
     }
 }

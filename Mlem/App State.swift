@@ -9,9 +9,8 @@ import Foundation
 import SwiftUI
 import AlertToast
 
-class AppState: ObservableObject
-{
-    
+class AppState: ObservableObject {
+
     @Published var currentActiveInstance: String = ""
     @Published var currentActiveAccount: SavedAccount?
 

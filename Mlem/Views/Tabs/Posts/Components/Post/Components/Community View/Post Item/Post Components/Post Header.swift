@@ -80,16 +80,14 @@ struct PostHeader: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: communityIconSize, height: communityIconSize)
-                    }
-                    else {
+                    } else {
                         Image("Default Community")
                             .resizable()
                             .scaledToFit()
                             .frame(width: defaultCommunityIconSize, height: defaultCommunityIconSize)
                     }
                 }
-            }
-            else {
+            } else {
                 Image("Default Community")
                     .resizable()
                     .scaledToFit()

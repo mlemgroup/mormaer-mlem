@@ -15,8 +15,7 @@ struct CommunitySection: Identifiable {
     let accessibilityLabel: String
 }
 
-struct CommunityListView: View
-{
+struct CommunityListView: View {
     let account: SavedAccount
     @EnvironmentObject var favoritedCommunitiesTracker: FavoriteCommunitiesTracker
 
@@ -37,9 +36,8 @@ struct CommunityListView: View
             self.hasTestCommunities = true
         }
     }
-    
-    var body: some View
-    {
+
+    var body: some View {
         VStack {
             ScrollViewReader { scrollProxy in
                 HStack {
@@ -90,7 +88,7 @@ struct CommunityListView: View
                 
                 CommunitySection(viewId: "favorites", sidebarEntry: FavoritesSidebarEntry(account: account, favoritesTracker: favoritedCommunitiesTracker, sidebarLabel: nil, sidebarIcon: "star.fill"), inlineHeaderLabel: "Favorites", accessibilityLabel: "Favorited Communities")
             ] +
-            CommunityListView.alphabet.map{
+            CommunityListView.alphabet.map {
                 // This looks sinister but I didn't know how to string replace in a non-string based regex
                 CommunitySection(viewId: $0, sidebarEntry: RegexCommunityNameSidebarEntry(communityNameRegex: (try? Regex("^[\($0.uppercased())\($0.lowercased())]"))!,
                                                                                           sidebarLabel: $0,
@@ -160,8 +158,7 @@ struct CommunityListView: View
         if isSubscribed {
             subscribedCommunities.append(community)
             subscribedCommunities = subscribedCommunities.sorted(by: { $0.name < $1.name })
-        }
-        else {
+        } else {
             if let index = subscribedCommunities.firstIndex(where: { $0 == community }) {
                 subscribedCommunities.remove(at: index)
             }
@@ -198,12 +195,10 @@ struct SectionIndexTitles: View {
                     if communitySection.sidebarEntry.sidebarIcon != nil {
                         SectionIndexImage(image: communitySection.sidebarEntry.sidebarIcon!)
                             .padding(.trailing)
-                    }
-                    else if communitySection.sidebarEntry.sidebarLabel != nil {
+                    } else if communitySection.sidebarEntry.sidebarLabel != nil {
                         SectionIndexText(label: communitySection.sidebarEntry.sidebarLabel!)
                             .padding(.trailing)
-                    }
-                    else {
+                    } else {
                         EmptyView()
                     }
                 }

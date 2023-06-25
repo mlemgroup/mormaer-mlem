@@ -66,8 +66,7 @@ struct CommunitySidebarView: View {
                     .description {
                     MarkdownView(text: description).padding()
                 }
-            }
-            else if selectionSection == 1 {
+            } else if selectionSection == 1 {
                 VStack {
                     Divider()
                     ForEach(communityDetails.moderators) { moderatorView in

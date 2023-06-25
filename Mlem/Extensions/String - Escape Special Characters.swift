@@ -7,10 +7,8 @@
 
 import Foundation
 
-extension String
-{
-    func withEscapedCharacters() -> String
-    {
+extension String {
+    func withEscapedCharacters() -> String {
         let jsonRepresentation: Data = try! JSONEncoder().encode(self)
 
         return String(data: jsonRepresentation, encoding: .utf8)!

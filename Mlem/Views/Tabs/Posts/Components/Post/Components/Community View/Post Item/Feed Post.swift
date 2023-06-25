@@ -16,8 +16,7 @@ import SwiftUI
 /**
  Displays a single post in the feed
  */
-struct FeedPost: View
-{
+struct FeedPost: View {
     // MARK: Environment
     @AppStorage("shouldShowUserAvatars") var shouldShowUserAvatars: Bool = true
     @AppStorage("shouldShowCommunityIcons") var shouldShowCommunityIcons: Bool = true

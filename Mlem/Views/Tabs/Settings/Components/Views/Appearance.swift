@@ -39,8 +39,7 @@ struct AppearanceSettingsView: View {
     @AppStorage("voteComplexStyle") var voteComplexStyle: VoteComplexStyle = .standard
 
     var body: some View {
-        List
-        {
+        List {
             Section("Theme") {
                 SelectableSettingsItem(
                     settingIconSystemName: "paintbrush",
@@ -49,8 +48,7 @@ struct AppearanceSettingsView: View {
                     options: UIUserInterfaceStyle.allCases
                 )
             }
-            Section("Website Previews")
-            {
+            Section("Website Previews") {
                 WebsiteIconComplex(post:
                                     APIPost(
                                         id: 0,
@@ -92,12 +90,9 @@ struct AppearanceSettingsView: View {
                     isTicked: $shouldShowWebsiteFaviconAtAll
                 )
                 .onChange(of: shouldShowWebsiteFaviconAtAll) { newValue in
-                    if shouldShowWebsiteFaviconAtAll == false
-                    {
+                    if shouldShowWebsiteFaviconAtAll == false {
                         shouldShowWebsiteFavicons = false
-                    }
-                    else
-                    {
+                    } else {
                         shouldShowWebsiteFavicons = true
                     }
                 }
@@ -108,8 +103,7 @@ struct AppearanceSettingsView: View {
                     isTicked: $shouldShowWebsiteHost
                 )
             }
-            Section("Posts")
-            {
+            Section("Posts") {
                 SwitchableSettingsItem(
                     settingPictureSystemName: "wifi.circle.fill",
                     settingPictureColor: .pink,
@@ -141,9 +135,8 @@ struct AppearanceSettingsView: View {
                              settingName: "Show user server instance",
                              isTicked: $shouldShowUserServerInComment)
             }
-            
-            Section("Communities")
-            {
+
+            Section("Communities") {
                 SwitchableSettingsItem(
                     settingPictureSystemName: "person.2.circle.fill",
                     settingPictureColor: .pink,
@@ -158,9 +151,8 @@ struct AppearanceSettingsView: View {
                     isTicked: $shouldShowCommunityHeaders
                 )
             }
-            
-            Section("Users")
-            {
+
+            Section("Users") {
                 SwitchableSettingsItem(
                     settingPictureSystemName: "person.circle.fill",
                     settingPictureColor: .pink,

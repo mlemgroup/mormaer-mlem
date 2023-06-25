@@ -9,8 +9,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
-extension Color
-{
+extension Color {
     // This is here to give me dynamic light/dark system colors for view backgrounds
     // Maybe add more colors down the line if needed?
     static let systemBackground = Color(UIColor.systemBackground)
@@ -23,10 +22,8 @@ extension Color
     static let saveColor = Color.green
 }
 
-public extension Color
-{
-    static func random(randomOpacity: Bool = false) -> Color
-    {
+public extension Color {
+    static func random(randomOpacity: Bool = false) -> Color {
         Color(
             red: .random(in: 0 ... 1),
             green: .random(in: 0 ... 1),

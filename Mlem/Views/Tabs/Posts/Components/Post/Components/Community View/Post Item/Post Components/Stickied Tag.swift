@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct StickiedTag: View
-{
+struct StickiedTag: View {
     let compact: Bool
 
     var body: some View {

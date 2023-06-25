@@ -8,8 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct User: Codable, Identifiable, Hashable
-{
+struct User: Codable, Identifiable, Hashable {
     let id: Int
 
     let name: String
@@ -36,8 +35,7 @@ struct User: Codable, Identifiable, Hashable
     var details: UserDetails? = nil
 }
 
-struct UserDetails: Codable, Hashable
-{
+struct UserDetails: Codable, Hashable {
     let commentScore: Int
     let postScore: Int
 

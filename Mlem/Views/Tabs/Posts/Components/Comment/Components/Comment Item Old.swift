@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct CommentItemOld: View
-{
+struct CommentItemOld: View {
     // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
@@ -54,42 +53,31 @@ struct CommentItemOld: View
 //        // TODO: when the posts overhaul merge is in this should use the same value
 //        return vote == .downvote ? .red : .accentColor
 //    }
-    
-    var body: some View
-    {
-        VStack(alignment: .leading, spacing: 10)
-        {
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
             VStack(spacing: 10) {
-                if hierarchicalComment.commentView.comment.deleted
-                {
+                if hierarchicalComment.commentView.comment.deleted {
                     Text("Comment was deleted")
                         .italic()
                         .foregroundColor(.secondary)
-                }
-                else
-                {
-                    if hierarchicalComment.commentView.comment.removed
-                    {
+                } else {
+                    if hierarchicalComment.commentView.comment.removed {
                         Text("Comment was removed")
                             .italic()
                             .foregroundColor(.secondary)
-                    }
-                    else
-                    {
-                        if !isCollapsed
-                        {
+                    } else {
+                        if !isCollapsed {
                             MarkdownView(text: hierarchicalComment.commentView.comment.content)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .transition(.move(edge: .top).combined(with: .opacity))
                         }
                     }
                 }
-                
-                HStack(spacing: 12)
-                {
+
+                HStack(spacing: 12) {
 #warning("TODO: Add post rating")
-                    HStack
-                    {
+                    HStack {
                         HStack(alignment: .center, spacing: 2) {
                             Image(systemName: "arrow.up")
 
@@ -129,9 +117,8 @@ struct CommentItemOld: View
                             UIAccessibility.post(notification: .announcement, argument: "Unknown Action")
                         }
                     }
-                    
-                    HStack(spacing: 4)
-                    {
+
+                    HStack(spacing: 4) {
                         Button(action: {
                             print("Would reply to comment ID \(hierarchicalComment.id)")
 
@@ -152,8 +139,7 @@ struct CommentItemOld: View
                     let relativeTime = getTimeIntervalFromNow(date: hierarchicalComment.commentView.comment.published)
                     let creator = hierarchicalComment.commentView.creator.displayName ?? ""
                     let commentorLabel = "Last updated \(relativeTime) ago by \(creator)"
-                    HStack
-                    {
+                    HStack {
 #warning("TODO: Make the text selection work")
                         /*
                          Menu {
@@ -177,10 +163,8 @@ struct CommentItemOld: View
                 }
                 .disabled(isCollapsed)
                 .onTapGesture {
-                    if isCollapsed
-                    {
-                        withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
-                        {
+                    if isCollapsed {
+                        withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
                             isCollapsed.toggle()
                         }
                     }
@@ -202,13 +186,10 @@ struct CommentItemOld: View
 //                              longRightColor: .accentColor)
 
             Divider()
-            
-            if !isCollapsed
-            {
-                VStack(alignment: .leading, spacing: 10)
-                {
-                    ForEach(hierarchicalComment.children)
-                    { comment in
+
+            if !isCollapsed {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(hierarchicalComment.children) { _ in
                         Text("hi")
                         // CommentItem(account: account, hierarchicalComment: comment)
                     }
@@ -219,10 +200,8 @@ struct CommentItemOld: View
         }
         .clipped()
         .contentShape(Rectangle())
-        .onTapGesture
-        {
-            withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4))
-            {
+        .onTapGesture {
+            withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 0.4)) {
                 isCollapsed.toggle()
             }
         }

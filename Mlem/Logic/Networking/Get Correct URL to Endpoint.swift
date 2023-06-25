@@ -30,7 +30,7 @@ func getCorrectURLtoEndpoint(baseInstanceAddress: String) async throws -> URL {
         URL(string: "https://\(baseInstanceAddress)/api/v2/user"),
         URL(string: "https://\(baseInstanceAddress)/api/v1/user")
     ]
-        .compactMap{ $0 }
+        .compactMap { $0 }
 #endif
 
     for address in possibleInstanceAddresses {

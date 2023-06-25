@@ -9,8 +9,7 @@ import Foundation
 import KeychainAccess
 import UIKit
 
-struct AppConstants
-{
+struct AppConstants {
     static let cacheSize = 500_000_000 // 500MiB in bytes
     static let urlCache: URLCache = URLCache(memoryCapacity: cacheSize, diskCapacity: cacheSize)
     static let webSocketSession: URLSession = URLSession(configuration: .default)

@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct FavoriteCommunity: Identifiable, Codable, Equatable
-{
+struct FavoriteCommunity: Identifiable, Codable, Equatable {
     var id: UUID = UUID()
 
     let forAccountID: Int

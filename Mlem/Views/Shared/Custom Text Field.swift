@@ -7,14 +7,12 @@
 
 import SwiftUI
 
-struct CustomTextField: UIViewRepresentable
-{
-    
+struct CustomTextField: UIViewRepresentable {
+
     @State var placeholder: String
     @Binding var text: String
-    
-    func makeUIView(context: Context) -> UITextField
-    {
+
+    func makeUIView(context: Context) -> UITextField {
         let textField: UITextField = UITextField()
         textField.placeholder = placeholder
         textField.borderStyle = .roundedRect
@@ -27,18 +25,16 @@ struct CustomTextField: UIViewRepresentable
 
         return textField
     }
-    
-    func updateUIView(_ uiView: UITextField, context: Context)
-    {
+
+    func updateUIView(_ uiView: UITextField, context: Context) {
         uiView.text = text
     }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(text: $text)
     }
-    
-    class Coordinator: NSObject, UITextFieldDelegate
-    {
+
+    class Coordinator: NSObject, UITextFieldDelegate {
         @Binding var text: String
 
         init(text: Binding<String>) {

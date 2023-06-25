@@ -52,16 +52,13 @@ struct CommuntiyFeedRowView: View {
             .accessibilityAddTraits(.isLink)
             
             Spacer()
-            
             Button("Favorite Community", action: {
                 // Nice little haptics
                 let generator = UINotificationFeedbackGenerator()
                 generator.notificationOccurred(.success)
-                
                 if isFavorited() {
                     unfavoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
-                }
-                else {
+                } else {
                     favoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
                 }
             }).buttonStyle(FavoriteStarButtonStyle(isFavorited: isFavorited()))
@@ -72,8 +69,7 @@ struct CommuntiyFeedRowView: View {
                         await subscribe(communityId: community.id, shouldSubscribe: false)
                     }
                 }.tint(.red) // Destructive role seems to remove from list so just make it red
-            }
-            else {
+            } else {
                 Button("Subscribe") {
                     Task(priority: .userInitiated) {
                         await subscribe(communityId: community.id, shouldSubscribe: true)
