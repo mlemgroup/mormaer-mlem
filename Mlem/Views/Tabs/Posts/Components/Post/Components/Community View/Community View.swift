@@ -185,7 +185,7 @@ struct CommunityView: View {
                     }
                 }
             }
-            .onChange(of: feedType, perform: { newValue in
+            .onChange(of: feedType, perform: { _ in
                 Task(priority: .userInitiated) {
                     postTracker.reset()
                     await loadFeed()

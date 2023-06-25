@@ -89,7 +89,7 @@ struct AppearanceSettingsView: View {
                     settingName: "Show website icons",
                     isTicked: $shouldShowWebsiteFaviconAtAll
                 )
-                .onChange(of: shouldShowWebsiteFaviconAtAll) { newValue in
+                .onChange(of: shouldShowWebsiteFaviconAtAll) { _ in
                     if shouldShowWebsiteFaviconAtAll == false {
                         shouldShowWebsiteFavicons = false
                     } else {
