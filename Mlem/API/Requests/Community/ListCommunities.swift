@@ -19,7 +19,7 @@ struct ListCommunitiesRequest: APIGetRequest {
     init(
         account: SavedAccount,
 
-        sort: SortingOptions?,
+        sort: PostSortType?,
         page: Int?,
         limit: Int?,
 
@@ -40,7 +40,7 @@ struct ListCommunitiesRequest: APIGetRequest {
     init(
         instanceURL: URL,
 
-        sort: SortingOptions?,
+        sort: PostSortType?,
         page: Int?,
         limit: Int?,
 
