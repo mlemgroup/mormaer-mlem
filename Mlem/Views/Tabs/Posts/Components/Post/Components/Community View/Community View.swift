@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// swiftlint:disable type_body_length
 struct CommunityView: View {
     @AppStorage("shouldShowCommunityHeaders") var shouldShowCommunityHeaders: Bool = false
     @AppStorage("shouldShowCompactPosts") var shouldShowCompactPosts: Bool = false
@@ -118,7 +119,16 @@ struct CommunityView: View {
                                                     }
 
                                                     do {
-                                                        try await postPost(to: community!, postTitle: newPostTitle, postBody: newPostBody, postURL: newPostURL, postIsNSFW: newPostIsNSFW, postTracker: postTracker, account: account, appState: appState)
+                                                        try await postPost(
+                                                            to: community!,
+                                                            postTitle: newPostTitle,
+                                                            postBody: newPostBody,
+                                                            postURL: newPostURL,
+                                                            postIsNSFW: newPostIsNSFW,
+                                                            postTracker: postTracker,
+                                                            account: account,
+                                                            appState: appState
+                                                        )
                                                     } catch let postPostingError {
                                                         print("Failed while posting post: \(postPostingError)")
                                                     }
@@ -322,11 +332,19 @@ struct CommunityView: View {
                     Button {
                         isSearchFieldFocused = false
 
-                        withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 0.5)) {
+                        withAnimation(
+                            .interactiveSpring(
+                                response: 0.5,
+                                dampingFraction: 1,
+                                blendDuration: 0.5
+                            )
+                        ) {
                             isShowingCommunitySearch.toggle()
                         }
 
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { /// Clear the search text and results one second after it disappears so it doesn't just disappear in the middle of the animation
+                        // clear the search text and results one second after it disappears
+                        // so it doesn't just disappear in the middle of the animation
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             searchText = ""
                             communitySearchResultsTracker.foundCommunities = .init()
                         }
@@ -478,9 +496,12 @@ struct CommunityView: View {
         } catch {
             // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
             // for now we will fail silently if the user has posts to view while we investigate further
-            assertionFailure("Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat")
+            assertionFailure(
+                "Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat"
+            )
             // errorAlert = .unexpected
         }
 
     }
 }
+// swiftlint:enable type_body_length

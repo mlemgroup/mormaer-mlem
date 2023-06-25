@@ -121,7 +121,14 @@ struct UserProfileLinkPreview: PreviewProvider {
     }
 
     static func generatePreviewUser(name: String, displayName: String, userType: PreviewUserType) -> APIPerson {
-        APIPerson(
+        let actorId: URL
+        if userType == .dev {
+            actorId = URL(string: "http://\(UserProfileLabel.developerNames[0])")!
+        } else {
+            actorId = URL(string: "google.com")!
+        }
+        
+        return APIPerson(
             id: name.hashValue,
             name: name,
             displayName: displayName,
@@ -129,7 +136,7 @@ struct UserProfileLinkPreview: PreviewProvider {
             banned: false,
             published: Date.now.advanced(by: -120000),
             updated: nil,
-            actorId: userType == .dev ? URL(string: "https://\(UserProfileLabel.developerNames[0])")! : URL(string: "https://vlemmy.net/c/\(name)")!,
+            actorId: actorId,
             bio: nil,
             local: false,
             banner: nil,
@@ -144,20 +151,96 @@ struct UserProfileLinkPreview: PreviewProvider {
     }
 
     static func generatePreviewComment(creator: APIPerson, isMod: Bool) -> APIComment {
-        return APIComment(id: 0, creatorId: creator.id, postId: 0, content: "", removed: false, deleted: false, published: Date.now, updated: nil, apId: "foo.bar", local: false, path: "foo", distinguished: isMod, languageId: 0)
+        APIComment(
+            id: 0,
+            creatorId: creator.id,
+            postId: 0,
+            content: "",
+            removed: false,
+            deleted: false,
+            published: Date.now,
+            updated: nil,
+            apId: "foo.bar",
+            local: false,
+            path: "foo",
+            distinguished: isMod,
+            languageId: 0
+        )
     }
 
     static func generateFakeCommunity(id: Int, namePrefix: String) -> APICommunity {
-        return APICommunity(id: id, name: "\(namePrefix) Fake Community \(id)", title: "\(namePrefix) Fake Community \(id) Title", description: "This is a fake community (#\(id))", published: Date.now, updated: nil, removed: false, deleted: false, nsfw: false, actorId: URL(string: "https://lemmy.google.com/c/\(id)")!, local: false, icon: nil, banner: nil, hidden: false, postingRestrictedToMods: false, instanceId: 0)
+        APICommunity(
+            id: id,
+            name: "\(namePrefix) Fake Community \(id)",
+            title: "\(namePrefix) Fake Community \(id) Title",
+            description: "This is a fake community (#\(id))",
+            published: Date.now,
+            updated: nil,
+            removed: false,
+            deleted: false,
+            nsfw: false,
+            actorId: URL(string: "https://lemmy.google.com/c/\(id)")!,
+            local: false,
+            icon: nil,
+            banner: nil,
+            hidden: false,
+            postingRestrictedToMods: false,
+            instanceId: 0
+        )
     }
 
     static func generatePreviewPost(creator: APIPerson) -> APIPostView {
         let community = generateFakeCommunity(id: 123, namePrefix: "Test")
-        let post = APIPost(id: 123, name: "Test Post Title", url: nil, body: "This is a test post body", creatorId: creator.id, communityId: 123, deleted: false, embedDescription: "Embeedded Description", embedTitle: "Embedded Title", embedVideoUrl: nil, featuredCommunity: false, featuredLocal: false, languageId: 0, apId: "my.app.id", local: false, locked: false, nsfw: false, published: Date.now, removed: false, thumbnailUrl: nil, updated: nil)
+        let post = APIPost(
+            id: 123,
+            name: "Test Post Title",
+            url: nil,
+            body: "This is a test post body",
+            creatorId: creator.id,
+            communityId: 123,
+            deleted: false,
+            embedDescription: "Embeedded Description",
+            embedTitle: "Embedded Title",
+            embedVideoUrl: nil,
+            featuredCommunity: false,
+            featuredLocal: false,
+            languageId: 0,
+            apId: "my.app.id",
+            local: false,
+            locked: false,
+            nsfw: false,
+            published: Date.now,
+            removed: false,
+            thumbnailUrl: nil,
+            updated: nil
+        )
 
-        let postVotes = APIPostAggregates(id: 123, postId: post.id, comments: 0, score: 10, upvotes: 15, downvotes: 5, published: Date.now, newestCommentTime: Date.now, newestCommentTimeNecro: Date.now, featuredCommunity: false, featuredLocal: false)
+        let postVotes = APIPostAggregates(
+            id: 123,
+            postId: post.id,
+            comments: 0,
+            score: 10,
+            upvotes: 15,
+            downvotes: 5,
+            published: Date.now,
+            newestCommentTime: Date.now,
+            newestCommentTimeNecro: Date.now,
+            featuredCommunity: false,
+            featuredLocal: false
+        )
 
-        return APIPostView(post: post, creator: creator, community: community, creatorBannedFromCommunity: false, counts: postVotes, subscribed: .notSubscribed, saved: false, read: false, creatorBlocked: false, unreadComments: 0)
+        return APIPostView(
+            post: post,
+            creator: creator,
+            community: community,
+            creatorBannedFromCommunity: false,
+            counts: postVotes,
+            subscribed: .notSubscribed,
+            saved: false,
+            read: false,
+            creatorBlocked: false,
+            unreadComments: 0
+        )
     }
 
     static func generateUserProfileLink(
@@ -191,8 +274,7 @@ struct UserProfileLinkPreview: PreviewProvider {
     static var previews: some View {
         VStack {
             Spacer()
-            ForEach(PreviewUserType.allCases, id: \.rawValue) {
-                userType in
+            ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
                 generateUserProfileLink(name: "\(userType)User", userType: userType, showCommunity: false)
             }
             Spacer()

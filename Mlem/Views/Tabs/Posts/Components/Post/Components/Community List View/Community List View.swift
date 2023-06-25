@@ -56,7 +56,12 @@ struct CommunityListView: View {
                             }.id(communitySection.viewId)) {
                                 ForEach(calculateCommunityListSections(for: communitySection)
                                 ) { listedCommunity in
-                                    CommuntiyFeedRowView(account: account, community: listedCommunity, subscribed: subscribedCommunities.contains(listedCommunity), communitySubscriptionChanged: self.hydrateCommunityData)
+                                    CommuntiyFeedRowView(
+                                        account: account,
+                                        community: listedCommunity,
+                                        subscribed: subscribedCommunities.contains(listedCommunity),
+                                        communitySubscriptionChanged: self.hydrateCommunityData
+                                    )
                                 }
                             }
                         }
@@ -84,9 +89,27 @@ struct CommunityListView: View {
             // Set up sections after we body is called
             // so we can use the favorite tracker environment
             communitySections = [
-                CommunitySection(viewId: "top", sidebarEntry: EmptySidebarEntry(sidebarLabel: nil, sidebarIcon: "line.3.horizontal"), inlineHeaderLabel: nil, accessibilityLabel: "Top of communities"),
+                CommunitySection(
+                    viewId: "top",
+                    sidebarEntry: EmptySidebarEntry(
+                        sidebarLabel: nil,
+                        sidebarIcon: "line.3.horizontal"
+                    ),
+                    inlineHeaderLabel: nil,
+                    accessibilityLabel: "Top of communities"
+                ),
                 
-                CommunitySection(viewId: "favorites", sidebarEntry: FavoritesSidebarEntry(account: account, favoritesTracker: favoritedCommunitiesTracker, sidebarLabel: nil, sidebarIcon: "star.fill"), inlineHeaderLabel: "Favorites", accessibilityLabel: "Favorited Communities")
+                CommunitySection(
+                    viewId: "favorites",
+                    sidebarEntry: FavoritesSidebarEntry(
+                        account: account,
+                        favoritesTracker: favoritedCommunitiesTracker,
+                        sidebarLabel: nil,
+                        sidebarIcon: "star.fill"
+                    ),
+                    inlineHeaderLabel: "Favorites",
+                    accessibilityLabel: "Favorited Communities"
+                )
             ] +
             CommunityListView.alphabet.map {
                 // This looks sinister but I didn't know how to string replace in a non-string based regex
@@ -278,7 +301,24 @@ Array(33...95).map({
 })
 
 func generateFakeCommunity(id: Int, namePrefix: String) -> APICommunity {
-    return APICommunity(id: id, name: "\(namePrefix) Fake Community \(id)", title: "\(namePrefix) Fake Community \(id) Title", description: "This is a fake community (#\(id))", published: Date.now, updated: nil, removed: false, deleted: false, nsfw: false, actorId: URL(string: "https://lemmy.google.com/c/\(id)")!, local: false, icon: nil, banner: nil, hidden: false, postingRestrictedToMods: false, instanceId: 0)
+    APICommunity(
+        id: id,
+        name: "\(namePrefix) Fake Community \(id)",
+        title: "\(namePrefix) Fake Community \(id) Title",
+        description: "This is a fake community (#\(id))",
+        published: Date.now,
+        updated: nil,
+        removed: false,
+        deleted: false,
+        nsfw: false,
+        actorId: URL(string: "https://lemmy.google.com/c/\(id)")!,
+        local: false,
+        icon: nil,
+        banner: nil,
+        hidden: false,
+        postingRestrictedToMods: false,
+        instanceId: 0
+    )
 }
 
 func generateFakeFavoritedCommunity(id: Int, namePrefix: String) -> FavoriteCommunity {

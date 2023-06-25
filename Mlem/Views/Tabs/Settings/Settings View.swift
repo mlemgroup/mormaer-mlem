@@ -14,14 +14,20 @@ struct SettingsView: View {
         Contributor(
             name: "Seb Jachec",
             avatarLink: URL(string: "https://avatars.githubusercontent.com/u/379991?v=4")!,
-            reasonForAcknowledgement: "Implemented many critical features, namely comment rendering, among others.\nIs always great help with any Swift and programming questions, and I would never have come this far without his help",
+            reasonForAcknowledgement: """
+                                      Implemented many critical features, namely comment rendering, among others. \
+                                      Is always great help with any Swift and programming questions, and I would never \
+                                      have come this far without his help
+                                      """,
             websiteLink: URL(string: "https://github.com/sebj")!
         )
     ]
     @State private var contributors: [Contributor] = [
         Contributor(
             name: "Stuart A. Malone",
+            // swiftlint:disable line_length
             avatarLink: URL(string: "https://media.mstdn.social/cache/accounts/avatars/109/299/685/376/110/779/original/9ef1f88eff2118a4.png")!,
+            // swiftlint:enable line_length
             reasonForAcknowledgement: "Came up with a performant and resilient way of getting data from the Lemmy API",
             websiteLink: URL(string: "https://elk.zone/mstdn.social/@samalone@twit.social")!
         )
