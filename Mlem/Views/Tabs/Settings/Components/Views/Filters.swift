@@ -65,7 +65,10 @@ struct FiltersSettingsView: View {
 
                         print("URL of imported file: \(urlOfImportedFile)")
                         do {
-                            let decodedKeywords: [String] = try decodeFromFile(fromURL: urlOfImportedFile, whatToDecode: .filteredKeywords) as! [String]
+                            let decodedKeywords = try decodeFromFile(
+                                fromURL: urlOfImportedFile,
+                                whatToDecode: .filteredKeywords
+                            ) as? [String] ?? []
 
                             urlOfImportedFile.stopAccessingSecurityScopedResource()
 

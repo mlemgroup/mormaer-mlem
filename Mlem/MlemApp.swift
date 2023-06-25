@@ -80,18 +80,29 @@ struct MlemApp: App {
                         print("Saved Accounts file exists, will attempt to load saved accounts")
 
                         do {
-                            let loadedUpAccounts = try decodeFromFile(fromURL: AppConstants.savedAccountsFilePath, whatToDecode: .accounts) as! [SavedAccount]
+                            let loadedUpAccounts = try decodeFromFile(
+                                fromURL: AppConstants.savedAccountsFilePath,
+                                whatToDecode: .accounts
+                            ) as? [SavedAccount] ?? []
 
                             // MARK: - Associate the accounts with their secret credentials
 
                             if !loadedUpAccounts.isEmpty {
-                                var loadedUpAccountTracker: [SavedAccount] = .init()
 
-                                for account in loadedUpAccounts {
-                                    loadedUpAccountTracker.append(SavedAccount(id: account.id, instanceLink: account.instanceLink, accessToken: AppConstants.keychain["\(account.id)_accessToken"]!, username: account.username))
+                                let accounts = loadedUpAccounts.compactMap { account -> SavedAccount? in
+                                    guard let token = AppConstants.keychain["\(account.id)_accessToken"] else {
+                                        return nil
+                                    }
+
+                                    return SavedAccount(
+                                        id: account.id,
+                                        instanceLink: account.instanceLink,
+                                        accessToken: token,
+                                        username: account.username
+                                    )
                                 }
 
-                                accountsTracker.savedAccounts = loadedUpAccountTracker
+                                accountsTracker.savedAccounts = accounts
                             }
                         } catch let savedAccountDecodingError {
                             print("Failed while decoding saved accounts: \(savedAccountDecodingError)")
@@ -109,7 +120,10 @@ struct MlemApp: App {
                     if FileManager.default.fileExists(atPath: AppConstants.filteredKeywordsFilePath.path) {
                         print("Filtered keywords file exists, will attempt to load blocked keywords")
                         do {
-                            filtersTracker.filteredKeywords = try decodeFromFile(fromURL: AppConstants.filteredKeywordsFilePath, whatToDecode: .filteredKeywords) as! [String]
+                            filtersTracker.filteredKeywords = try decodeFromFile(
+                                fromURL: AppConstants.filteredKeywordsFilePath,
+                                whatToDecode: .filteredKeywords
+                            ) as? [String] ?? []
                         } catch let savedKeywordsDecodingError {
                             print("Failed while decoding saved filtered keywords: \(savedKeywordsDecodingError)")
                         }
@@ -126,7 +140,10 @@ struct MlemApp: App {
                     if FileManager.default.fileExists(atPath: AppConstants.favoriteCommunitiesFilePath.path) {
                         print("Favorite communities file exists, will attempt to load favorite communities")
                         do {
-                            favoriteCommunitiesTracker.favoriteCommunities = try decodeFromFile(fromURL: AppConstants.favoriteCommunitiesFilePath, whatToDecode: .favoriteCommunities) as! [FavoriteCommunity]
+                            favoriteCommunitiesTracker.favoriteCommunities = try decodeFromFile(
+                                fromURL: AppConstants.favoriteCommunitiesFilePath,
+                                whatToDecode: .favoriteCommunities
+                            ) as? [FavoriteCommunity] ?? []
                         } catch let favoriteCommunitiesDecodingError {
                             print("Failed while decoding favorite communities: \(favoriteCommunitiesDecodingError)")
                         }

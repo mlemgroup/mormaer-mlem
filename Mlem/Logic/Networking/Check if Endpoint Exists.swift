@@ -15,15 +15,11 @@ func checkIfEndpointExists(at url: URL) async -> Bool {
     do {
         let (_, response) = try await AppConstants.urlSession.data(for: request)
 
-        let httpResponse: HTTPURLResponse = response as! HTTPURLResponse
-
-        print("Response for endpoint \(url) is \(httpResponse.statusCode)")
-
-        if httpResponse.statusCode == 400 {
-            return true
-        } else {
+        guard let httpResponse = response as? HTTPURLResponse else {
             return false
         }
+
+        return httpResponse.statusCode == 400
     } catch {
         return false
     }

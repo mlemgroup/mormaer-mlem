@@ -23,10 +23,30 @@ struct AppConstants {
     static let keychain: Keychain = Keychain(service: "com.davidbures.Mlem-keychain")
 
     // MARK: - Files
-    private static let applicationSupportDirectoryPath: URL = try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-    static let savedAccountsFilePath: URL = applicationSupportDirectoryPath.appendingPathComponent("Saved Accounts", conformingTo: .json)
-    static let filteredKeywordsFilePath: URL = applicationSupportDirectoryPath.appendingPathComponent("Blocked Keywords", conformingTo: .json)
-    static let favoriteCommunitiesFilePath: URL = applicationSupportDirectoryPath.appendingPathComponent("Favorite Communities", conformingTo: .json)
+    private static let applicationSupportDirectoryPath = {
+        guard let path = try? FileManager.default.url(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        ) else {
+            fatalError("unable to access application support path")
+        }
+
+        return path
+    }()
+
+    static let savedAccountsFilePath = { applicationSupportDirectoryPath
+        .appendingPathComponent("Saved Accounts", conformingTo: .json)
+    }()
+
+    static let filteredKeywordsFilePath = { applicationSupportDirectoryPath
+        .appendingPathComponent("Blocked Keywords", conformingTo: .json)
+    }()
+
+    static let favoriteCommunitiesFilePath = { applicationSupportDirectoryPath
+        .appendingPathComponent("Favorite Communities", conformingTo: .json)
+    }()
 
     // MARK: - Haptics
     static let hapticManager: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
