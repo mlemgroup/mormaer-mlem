@@ -10,11 +10,25 @@ import SwiftUI
 struct EllipsisMenu: View {
     let size: CGFloat
     let shareUrl: String
+    let deleteButtonCallback: (() async -> Void)?
     
     var body: some View {
         Menu {
             if let url = URL(string: shareUrl) {
                 Button("Share") { showShareSheet(URLtoShare: url) }
+            }
+            if let deleteCallback = deleteButtonCallback {
+                Button(role: .destructive,
+                action: {
+                    Task {
+                        await deleteCallback()
+                    }
+                }, label: {
+                    HStack {
+                        Image(systemName: "trash.fill")
+                        Text("Delete")
+                    }
+                })
             }
         } label: {
             Image(systemName: "ellipsis")

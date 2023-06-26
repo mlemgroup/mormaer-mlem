@@ -13,7 +13,8 @@ import Foundation
  View grouping post interactions--upvote, downvote, save, reply, plus post info
  */
 struct CommentInteractionBar: View {
-    // @EnvironmentObject var postTracker: PostTracker
+    // environment
+    @EnvironmentObject var commentTracker: CommentTracker
     
     // constants
     let iconToTextSpacing: CGFloat = 2
@@ -33,6 +34,7 @@ struct CommentInteractionBar: View {
     let upvote: () async -> Void
     let downvote: () async -> Void
     let saveComment: () async -> Void
+    let deleteComment: () async -> Void
     
     // computed
     var publishedAgo: String { getTimeIntervalFromNow(date: commentView.post.published )}
@@ -57,7 +59,7 @@ struct CommentInteractionBar: View {
              }
             
             #warning("ERIC TODO: flesh out")
-            EllipsisMenu(size: height, shareUrl: commentView.post.apId)
+            EllipsisMenu(size: height, shareUrl: commentView.post.apId, deleteButtonCallback: self.deleteComment)
             
             Spacer()
         }
