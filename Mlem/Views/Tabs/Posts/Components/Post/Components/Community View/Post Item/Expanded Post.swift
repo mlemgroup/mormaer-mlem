@@ -339,7 +339,13 @@ struct ExpandedPost: View {
     func voteOnPost(inputOp: ScoringOperation) async {
         do {
             let operation = post.myVote == inputOp ? ScoringOperation.resetVote : inputOp
-            self.post = try await ratePost(postId: post.post.id, operation: operation, account: account, postTracker: postTracker, appState: appState)
+            self.post = try await ratePost(
+                postId: post.post.id,
+                operation: operation,
+                account: account,
+                postTracker: postTracker,
+                appState: appState
+            )
         } catch {
             print("failed to vote!")
         }
@@ -348,7 +354,7 @@ struct ExpandedPost: View {
     /**
      Sends a save request for the current post
      */
-    func savePost(_ save: Bool) async throws -> Void {
+    func savePost(_ save: Bool) async throws {
         self.post = try await sendSavePostRequest(account: account, postId: post.post.id, save: save, postTracker: postTracker)
     }
     

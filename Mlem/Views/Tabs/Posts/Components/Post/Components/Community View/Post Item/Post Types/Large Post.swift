@@ -31,7 +31,14 @@ struct LargePost: View {
     let deletePost: () async -> Void
     
     // initializer--used so we can set showNsfwFilterToggle to false when expanded or true when not
-    init(postView: APIPostView, account: SavedAccount, isExpanded: Bool, voteOnPost: @escaping (ScoringOperation) async -> Void, savePost: @escaping (_ save: Bool) async throws -> Void, deletePost: @escaping () async -> Void) {
+    init(
+        postView: APIPostView,
+        account: SavedAccount,
+        isExpanded: Bool,
+        voteOnPost: @escaping (ScoringOperation) async -> Void,
+        savePost: @escaping (_ save: Bool) async throws -> Void,
+        deletePost: @escaping () async -> Void
+    ) {
         self.postView = postView
         self.account = account
         self.isExpanded = isExpanded

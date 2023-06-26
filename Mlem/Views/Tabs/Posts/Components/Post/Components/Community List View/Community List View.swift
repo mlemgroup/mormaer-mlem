@@ -161,19 +161,25 @@ struct CommunityListView: View {
             var refreshedCommunities: [APICommunity] = []
             var communitiesPage = 1
             repeat {
-                let request = ListCommunitiesRequest(account: account, sort: nil, page: communitiesPage, limit: communitiesRequestCount, type: FeedType.subscribed);
+                let request = ListCommunitiesRequest(
+                    account: account,
+                    sort: nil,
+                    page: communitiesPage,
+                    limit: communitiesRequestCount,
+                    type: FeedType.subscribed
+                )
                 
-                let response = try await APIClient().perform(request: request);
+                let response = try await APIClient().perform(request: request)
                 
                 let newSubscribedCommunities = response.communities.map({
-                    return $0.community;
+                    return $0.community
                 }).sorted(by: {
                     $0.name < $1.name
-                });
+                })
                 
                 refreshedCommunities.append(contentsOf: newSubscribedCommunities)
                 
-                communitiesPage = communitiesPage + 1
+                communitiesPage += 1
                 
                 // Go until we get less than the count we ask for
                 moreCommunities = response.communities.count == communitiesRequestCount
