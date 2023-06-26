@@ -9,6 +9,10 @@ import Foundation
 import SwiftUI
 import CachedAsyncImage
 
+enum InboxTab {
+    case all, replies, messages, mentions
+}
+
 class PrivateMessageThread: Identifiable {
     let account: SavedAccount
     let recipient: APIPerson
