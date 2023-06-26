@@ -103,17 +103,17 @@ struct UserView: View {
             .pickerStyle(.segmented)
             .padding(.horizontal)
             
-            if selectionSection == 0 {
+            switch selectionSection {
+            case 0:
                 mixedFeed
-            }
-            else if selectionSection == 1 {
+            case 1:
                 commentsFeed
-            }
-            else if selectionSection == 2 {
+            case 2:
                 postsFeed
-            }
-            else if selectionSection == 3 {
+            case 3:
                 savedFeed
+            default:
+                Text("Coming soon!")
             }
         }
         .environmentObject(privateCommentTracker)
@@ -371,7 +371,7 @@ struct UserView: View {
     private func commentEntry(for comment: HierarchicalComment) -> some View {
         VStack {
             HStack {
-                CommentItem(account: account, hierarchicalComment: comment, depth: 0, showPostContext: true, isDragging: $isDragging)
+                CommentItem(account: account, hierarchicalComment: comment, postContext: nil, depth: 0, showPostContext: true, isDragging: $isDragging)
                     .padding(.vertical)
                 Spacer()
             }

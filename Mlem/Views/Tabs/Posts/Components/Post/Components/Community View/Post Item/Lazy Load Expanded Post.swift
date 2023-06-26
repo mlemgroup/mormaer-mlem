@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+/*
+ A simple wrapper around ExpandedPost which loads the
+ APIPostView on demand for when we don't already have one
+ */
 struct LazyLoadExpandedPost: View
 {
     @State var account: SavedAccount
@@ -22,9 +26,6 @@ struct LazyLoadExpandedPost: View
             else {
                 progressView
             }
-        }
-        .task(priority: .userInitiated) {
-            
         }
     }
     
