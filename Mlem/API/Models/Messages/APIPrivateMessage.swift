@@ -7,6 +7,7 @@
 
 import Foundation
 
+// lemmy_db_schema::source::private_message::PrivateMessage
 struct APIPrivateMessage: Decodable {
     let id: Int
     let content: String

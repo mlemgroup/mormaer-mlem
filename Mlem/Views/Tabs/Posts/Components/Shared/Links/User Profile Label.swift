@@ -92,6 +92,8 @@ struct UserProfileLabel: View {
             }
         }
         if let community = communityContext {
+//            print(community.moderators)
+//            print(user.actorId)
             if community.moderators.contains(where: { $0.moderator == user }) {
                 return UserProfileLabel.flairMod
             }

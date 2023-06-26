@@ -12,6 +12,7 @@ struct LoadingView: View {
         case posts
         case image
         case comments
+        case inbox
     }
 
     let whatIsLoading: PossibleThingsToLoad
@@ -28,6 +29,8 @@ struct LoadingView: View {
                 Text("Loading image")
             case .comments:
                 Text("Loading comments")
+            case .inbox:
+                Text("Loading inbox")
             }
 
             Spacer()

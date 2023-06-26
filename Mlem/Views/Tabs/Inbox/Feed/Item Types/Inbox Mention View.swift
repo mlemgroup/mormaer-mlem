@@ -8,7 +8,44 @@
 import SwiftUI
 
 struct InboxMentionView: View {
+    let account: SavedAccount
+    let mention: APIPersonMentionView
+    
+    let publishedAgo: String
+    
+    init(account: SavedAccount, mention: APIPersonMentionView) {
+        self.account = account
+        self.mention = mention
+        
+        self.publishedAgo = getTimeIntervalFromNow(date: mention.comment.published)
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        // TODO: tapping this should take you to the mention
+        VStack {
+            mentionHeader
+            
+            mentionBody
+        }
+    }
+    
+    @ViewBuilder
+    var mentionHeader: some View {
+        let creatorName: String = mention.creator.displayName ?? mention.creator.name
+        // TODO: replace with comment header after that rework is done
+        HStack() {
+            // UserProfileLink(account: account, user: mention.creator)
+            Text("\(creatorName) mentioned you:")
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+        }
+        .font(.footnote)
+        .foregroundColor(.secondary)
+    }
+    
+    @ViewBuilder
+    var mentionBody: some View {
+        MarkdownView(text: mention.comment.content)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .font(.subheadline)
     }
 }

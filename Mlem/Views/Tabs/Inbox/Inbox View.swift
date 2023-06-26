@@ -102,6 +102,7 @@ struct InboxView: View {
         NavigationView {
             ScrollViewReader { scrollProxy in
                 VStack {
+                    // TODO: enum
                     Picker(selection: $selectionSection, label: Text("Profile Section")) {
                         Text("All").tag(0)
                         Text("Replies").tag(1)
@@ -111,14 +112,27 @@ struct InboxView: View {
                     .pickerStyle(.segmented)
                     .padding(.horizontal)
                     
-                    if selectionSection == 2 {
-                        ForEach(privateMessageThreads) { privatgeMessageThread in
-                            
-                            NavigationLink(destination: PrivateMessageThreadView(privateMessageThread: privatgeMessageThread)) {
-                                Text("PM with \(privatgeMessageThread.recipient.name)")
-                            }
-                        }
+                    switch selectionSection {
+                    case 0:
+                        InboxFeedView(account: account)
+                    case 1:
+                        Text("nope")
+                    case 2:
+                        Text("nope")
+                    case 3:
+                        Text("nope")
+                    default:
+                        Text("screaming")
                     }
+                    
+//                    if selectionSection == 2 {
+//                        ForEach(privateMessageThreads) { privatgeMessageThread in
+//
+//                            NavigationLink(destination: PrivateMessageThreadView(privateMessageThread: privatgeMessageThread)) {
+//                                Text("PM with \(privatgeMessageThread.recipient.name)")
+//                            }
+//                        }
+//                    }
                     
                     Spacer()
                 }
@@ -129,6 +143,8 @@ struct InboxView: View {
             await fetchUserNotifications()
         }
     }
+    
+    
     
     // Note: Does not currently handle refresh, data will be duplicated!
     private func fetchUserNotifications() async {
