@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CommentItem: View {
-    //appstorage
+    // appstorage
     @AppStorage("shouldShowUserServerInComment") var shouldShowUserServerInComment: Bool = false
     
     // MARK: Temporary

@@ -253,7 +253,7 @@ struct UserProfileLinkPreview: PreviewProvider {
         userType: PreviewUserType,
         showCommunity: Bool
     ) -> UserProfileLink {
-        let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType);
+        let previewUser = generatePreviewUser(name: name, displayName: name, userType: userType)
         
         var postContext: APIPostView?
         var commentContext: APIComment?
@@ -283,8 +283,7 @@ struct UserProfileLinkPreview: PreviewProvider {
                 generateUserProfileLink(name: "\(userType)User", userType: userType, showCommunity: false)
             }
             Spacer()
-            ForEach(PreviewUserType.allCases, id: \.rawValue) {
-                userType in
+            ForEach(PreviewUserType.allCases, id: \.rawValue) { userType in
                 generateUserProfileLink(name: "\(userType)User", userType: userType, showCommunity: true)
             }
             Spacer()

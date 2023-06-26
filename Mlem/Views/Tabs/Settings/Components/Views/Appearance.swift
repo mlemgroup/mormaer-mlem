@@ -128,8 +128,7 @@ struct AppearanceSettingsView: View {
                              isTicked: $shouldShowUserServerInPost)
             }
             
-            Section("Comments")
-            {
+            Section("Comments") {
                 SwitchableSettingsItem(settingPictureSystemName: "server.rack",
                              settingPictureColor: .pink,
                              settingName: "Show user server instance",

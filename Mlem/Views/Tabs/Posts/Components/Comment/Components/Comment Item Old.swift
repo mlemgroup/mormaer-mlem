@@ -155,7 +155,11 @@ struct CommentItemOld: View {
                          }
                          */
                         Text(relativeTime)
-                        UserProfileLink(account: account, user: hierarchicalComment.commentView.creator, showServerInstance: shouldShowUserServerInComment)
+                        UserProfileLink(
+                            account: account,
+                            user: hierarchicalComment.commentView.creator,
+                            showServerInstance: shouldShowUserServerInComment
+                        )
                     }
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel(commentorLabel)
