@@ -13,20 +13,22 @@ import SwiftUI
 /// - **userID**: Non-optional ID of the user
 /// - **account**: Authenticated account to make the requests
 struct UserView: View {
+    // appstorage
     @AppStorage("shouldShowUserHeaders") var shouldShowUserHeaders: Bool = true
+    
+    // environment
     @EnvironmentObject var appState: AppState
-    @Environment(\.navigationPath) var navigationPath
-
+    
+    // parameters
     @State var userID: Int
     @State var account: SavedAccount
-    
     @State var userDetails: APIPersonView?
-    
-    @StateObject var privatePostTracker: PostTracker = .init()
-    @StateObject var privateCommentTracker: CommentTracker = .init()
-    @State var privateVommentReplyTracker: CommentReplyTracker = .init()
-    
+
+    // members
     @State private var errorAlert: ErrorAlert?
+    @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
+    @StateObject private var privatePostTracker: PostTracker = .init()
+    @StateObject private var privateCommentTracker: CommentTracker = .init()
     
     @State private var selectionSection = 0
     @State var isDragging: Bool = false
@@ -49,19 +51,10 @@ struct UserView: View {
     }
     
     var body: some View {
-        if navigationPath != nil {
-            contentView
-                .alert(using: $errorAlert) { content in
-                    Alert(title: Text(content.title), message: Text(content.message))
-                }
-        } else {
-            NavigationStack {
-                contentView
-                    .alert(using: $errorAlert) { content in
-                        Alert(title: Text(content.title), message: Text(content.message))
-                    }
+        contentView
+            .alert(using: $errorAlert) { content in
+                Alert(title: Text(content.title), message: Text(content.message))
             }
-        }
     }
     
     @ViewBuilder
@@ -116,9 +109,9 @@ struct UserView: View {
                 Text("Coming soon!")
             }
         }
-        .environmentObject(privateCommentTracker)
+        .environmentObject(privateCommentReplyTracker)
         .environmentObject(privatePostTracker)
-        .environmentObject(privateVommentReplyTracker)
+        .environmentObject(privateCommentTracker)
         .navigationTitle(userDetails.person.displayName ?? userDetails.person.name)
         .navigationBarTitleDisplayMode(.inline)
         .headerProminence(.standard)
@@ -431,7 +424,7 @@ struct UserViewPreview : PreviewProvider {
             postContext = generatePreviewPost(creator: previewUser)
         }
         
-        return UserProfileLink(account: UserViewPreview.previewAccount, user: previewUser)
+        return UserProfileLink(account: UserViewPreview.previewAccount, user: previewUser, showServerInstance: true)
     }
     
     static var previews: some View {

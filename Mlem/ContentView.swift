@@ -42,7 +42,7 @@ struct ContentView: View
                 }.tag(2)
                 
                 NavigationView {
-                    UserView(userID: currentActiveAccount.id, account: currentActiveAccount)  
+                    ProfileView(account: currentActiveAccount)  
                 } .tabItem {
                     if showUsernameInNavigationBar {
                         Label(currentActiveAccount.username, systemImage: "person")

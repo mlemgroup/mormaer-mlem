@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct EmbeddedPost: View {
+    // environmnet
+    @EnvironmentObject var postTracker: PostTracker
+    
     let account: SavedAccount
     let community: APICommunity
     let post: APIPost
@@ -16,13 +19,13 @@ struct EmbeddedPost: View {
     var loadedPostDetails: APIPostView?
     
     var body: some View {
-        NavigationLink(destination: LazyLoadExpandedPost(account: account, post: post)) {
-            PostLink()
+        NavigationLink(value: LazyLoadPostLinkWithContext(post: post, postTracker: postTracker)) {
+            PostLinkButton()
         }
     }
     
     @ViewBuilder
-    private func PostLink() -> some View {
+    private func PostLinkButton() -> some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(post.embedTitle ?? post.name)
                 .frame(maxWidth: .infinity, alignment: .leading)
