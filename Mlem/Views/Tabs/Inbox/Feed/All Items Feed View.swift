@@ -45,6 +45,8 @@ extension InboxView {
         }
     }
     
+    // NOTE: this view is sometimes a little bit tetchy, and will refuse to compile for literally no reason. If that happens, copy it,
+    // delete it, recompile, paste it, and it should work. Go figure.
     @ViewBuilder
     func inboxListView() -> some View {
         ForEach(allItems) { item in
