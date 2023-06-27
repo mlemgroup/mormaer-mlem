@@ -7,10 +7,8 @@
 
 import SwiftUI
 
-struct LoadingView: View
-{
-    enum PossibleThingsToLoad
-    {
+struct LoadingView: View {
+    enum PossibleThingsToLoad {
         case posts, image, comments, inbox, replies, mentions, messages
     }
 

@@ -36,7 +36,7 @@ extension InboxView {
 //            )
         } catch APIClientError.cancelled {
             print("Failed while loading feed (request cancelled)")
-        } catch(let message) {
+        } catch let message {
             print(message)
             // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
             // for now we will fail silently if the user has posts to view while we investigate further
@@ -52,7 +52,7 @@ extension InboxView {
             try await mentionsTracker.loadNextPage(account: account, sort: .new)
             aggregateAllTrackers()
             // TODO: make that call above return the new items and do a nice neat merge sort that doesn't re-sort the whole damn array
-        } catch(let message) {
+        } catch let message {
             print(message)
         }
     }
@@ -61,7 +61,7 @@ extension InboxView {
         do {
             try await messagesTracker.loadNextPage(account: account)
             aggregateAllTrackers()
-        } catch(let message) {
+        } catch let message {
             print(message)
         }
     }
@@ -70,7 +70,7 @@ extension InboxView {
         do {
             try await repliesTracker.loadNextPage(account: account)
             aggregateAllTrackers()
-        } catch(let message) {
+        } catch let message {
             print(message)
         }
     }
