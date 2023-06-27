@@ -21,13 +21,13 @@ func deletePost(
     do {
         let request = DeletePostRequest(
             account: account,
-            postId: postId,
+            postId: 5, //postId,
             deleted: true
         )
         
-        AppConstants.hapticManager.notificationOccurred(.success)
         let response = try await APIClient().perform(request: request)
         postTracker.update(with: response.postView)
+        AppConstants.hapticManager.notificationOccurred(.success)
         return response.postView
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)
@@ -50,6 +50,7 @@ func deleteComment(
         
         let response = try await APIClient().perform(request: request)
         let updatedComment = commentTracker.comments.update(with: response.commentView)
+        AppConstants.hapticManager.notificationOccurred(.success)
         return updatedComment
     } catch {
         AppConstants.hapticManager.notificationOccurred(.error)

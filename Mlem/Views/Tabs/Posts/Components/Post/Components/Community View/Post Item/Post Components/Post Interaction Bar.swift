@@ -74,7 +74,7 @@ struct PostInteractionBar: View {
                 }
             }
             
-            EllipsisMenu(size: height, shareUrl: postView.post.apId, deleteButtonCallback: self.deletePost)
+            EllipsisMenu(size: height, shareUrl: postView.post.apId, deleteButtonCallback: canDeletePost() ? self.deletePost : nil)
             
             Spacer()
             infoBlock
@@ -100,6 +100,18 @@ struct PostInteractionBar: View {
     }
     
     // helper functions
+    
+    func canDeletePost() -> Bool {
+        if postView.creator.id != account.id {
+            return false
+        }
+        
+        if postView.post.deleted {
+            return false
+        }
+        
+        return true
+    }
     
     func upvote() async -> Void {
         // don't do anything if currently awaiting a vote response

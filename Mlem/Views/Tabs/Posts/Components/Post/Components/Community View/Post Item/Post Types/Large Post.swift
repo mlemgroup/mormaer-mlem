@@ -55,6 +55,7 @@ struct LargePost: View {
             Text("\(postView.post.name)\(postView.post.deleted ? " (Deleted)" : "")")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .italic(postView.post.deleted)
             
             // post body
             switch postView.postType {

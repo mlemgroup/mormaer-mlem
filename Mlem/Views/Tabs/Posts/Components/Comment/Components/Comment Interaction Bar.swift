@@ -59,11 +59,23 @@ struct CommentInteractionBar: View {
              }
             
             #warning("ERIC TODO: flesh out")
-            EllipsisMenu(size: height, shareUrl: commentView.post.apId, deleteButtonCallback: self.deleteComment)
+            EllipsisMenu(size: height, shareUrl: commentView.post.apId, deleteButtonCallback: canDeleteComment() ? self.deleteComment : nil)
             
             Spacer()
         }
         .font(.footnote)
+    }
+    
+    func canDeleteComment() -> Bool {
+        if commentView.creator.id != account.id {
+            return false
+        }
+        
+        if commentView.comment.deleted {
+            return false
+        }
+        
+        return true
     }
 }
 
