@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct InboxFeedView: View {
-    @State var account: SavedAccount
-    @StateObject var mentionsTracker: MentionsTracker = .init()
+    var account: SavedAccount
     
-    @State var allPosts: [any InboxItem] = .init()
+    @StateObject var mentionsTracker: MentionsTracker = .init()
+    @StateObject var messagesTracker: MessagesTracker = .init()
+    
+    @State var isLoading: Bool = true
+    @State var allItems: [InboxItem] = .init()
     
     var body: some View {
         ScrollView {
-            if mentionsTracker.mentions.isEmpty {
+            if allItems.isEmpty {
                 noItemsView
             }
             else {
@@ -36,7 +39,7 @@ struct InboxFeedView: View {
     
     @ViewBuilder
     private var noItemsView: some View {
-        if mentionsTracker.isLoading { // TODO: or this with all other things to load
+        if isLoading {
             LoadingView(whatIsLoading: .inbox)
         } else {
             VStack(alignment: .center, spacing: 5) {
@@ -51,22 +54,28 @@ struct InboxFeedView: View {
     }
     
     private var inboxListView: some View {
-        ForEach(allPosts, id: \.id) { item in
-            InboxItemView(inboxItem: item)
+        VStack {
+            ForEach(allItems) { item in
+                VStack {
+                    switch(item.type) {
+                    case .mention(let mention):
+                        InboxMentionView(mention: mention)
+                            .task {
+                                if !mentionsTracker.isLoading && item.id == mentionsTracker.loadMarkId {
+                                    await loadMentions()
+                                }
+                            }
+                    case .message(let message):
+                        InboxMessageView(message: message)
+                            .task {
+                                if !messagesTracker.isLoading && item.id == messagesTracker.loadMarkId {
+                                    await loadMessages()
+                                }
+                            }
+                    }
+                    Divider()
+                }
+            }
         }
-//        ForEach(mentionsTracker.mentions) { item in
-//            InboxMentionView(account: account, mention: item)
-//            .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
-//            .task {
-//                if !mentionsTracker.isLoading {
-//                    if let position = mentionsTracker.mentions.lastIndex(of: item) {
-//                        if  position >= (mentionsTracker.mentions.count - 40) {
-//                            print("time to load some more")
-//                            // await loadFeed()
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 }

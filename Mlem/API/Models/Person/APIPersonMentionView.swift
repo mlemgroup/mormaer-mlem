@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 // lemmy_db_views_actor::structs::PersonMentionView
 struct APIPersonMentionView: Decodable {
@@ -21,26 +22,4 @@ struct APIPersonMentionView: Decodable {
     let saved: Bool
     let creatorBlocked: Bool
     let myVote: ScoringOperation?
-}
-
-extension APIPersonMentionView: Identifiable {
-    var id: Int { personMention.id }
-}
-
-extension APIPersonMentionView: Equatable {
-    static func == (lhs: APIPersonMentionView, rhs: APIPersonMentionView) -> Bool {
-        lhs.personMention == rhs.personMention
-    }
-}
-
-extension APIPersonMentionView: Comparable {
-    static func < (lhs: APIPersonMentionView, rhs: APIPersonMentionView) -> Bool {
-        return lhs.comment.published < rhs.comment.published
-    }
-}
-
-extension APIPersonMentionView: InboxItem {
-    var type: InboxItemType { .mention }
-    var content: String { self.comment.content }
-    var published: Date { self.personMention.published }
 }

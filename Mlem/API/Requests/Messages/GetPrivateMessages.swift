@@ -21,7 +21,7 @@ struct GetPrivateMessagesRequest: APIGetRequest {
         page: Int? = nil,
         limit: Int? = nil,
         unreadOnly: Bool = false
-    ) throws {
+    ) {
         self.instanceURL = account.instanceLink
         self.queryItems = [
             .init(name: "auth", value: account.accessToken),

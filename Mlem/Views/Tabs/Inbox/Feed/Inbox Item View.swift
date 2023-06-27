@@ -8,23 +8,22 @@
 import SwiftUI
 
 struct InboxItemView: View {
-    let inboxItem: any InboxItem
+    let inboxItem: InboxItem
     
     let publishedAgo: String
     
-    init(inboxItem: any InboxItem) {
+    init(inboxItem: InboxItem) {
         self.inboxItem = inboxItem
         
         self.publishedAgo = String(getTimeIntervalFromNow(date: inboxItem.published))
     }
     
     var body: some View {
-        VStack {
-            Text(inboxItem.creator.displayName ?? inboxItem.creator.name)
-            Text(inboxItem.content)
-            Text(inboxItem.community.name)
-            Text(publishedAgo)
-            Divider()
+        switch(inboxItem.type) {
+        case .mention(let inboxMention):
+            InboxMentionView(mention: inboxMention)
+        case .message(let message):
+            InboxMessageView(message: message)
         }
     }
 }

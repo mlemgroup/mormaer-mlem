@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct InboxMentionView: View {
-    let account: SavedAccount
+    // let account: SavedAccount
     let mention: APIPersonMentionView
     
     let publishedAgo: String
     
-    init(account: SavedAccount, mention: APIPersonMentionView) {
-        self.account = account
+    init(mention: APIPersonMentionView) {
+        // self.account = account
         self.mention = mention
         
         self.publishedAgo = getTimeIntervalFromNow(date: mention.comment.published)
@@ -26,6 +26,8 @@ struct InboxMentionView: View {
             mentionHeader
             
             mentionBody
+            
+            Text(publishedAgo)
         }
     }
     

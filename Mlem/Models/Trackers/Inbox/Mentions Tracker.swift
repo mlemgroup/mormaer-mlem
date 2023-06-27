@@ -11,6 +11,7 @@ import Foundation
 class MentionsTracker: ObservableObject {
     @Published private(set) var isLoading: Bool = true
     @Published private(set) var mentions: [APIPersonMentionView] = .init()
+    public var loadMarkId: Int = 0
     
     private var page: Int = 1
     
@@ -22,7 +23,7 @@ class MentionsTracker: ObservableObject {
             account: account,
             sort: sort,
             page: page,
-            limit: page == 1 ? 25 : 50
+            limit: 50
         )
 
         let response = try await APIClient().perform(request: request)
@@ -33,6 +34,7 @@ class MentionsTracker: ObservableObject {
 
         add(response.mentions)
         page += 1
+        loadMarkId = mentions.count >= 40 ? mentions[mentions.count - 40].personMention.id : 0
     }
     
     func add(_ newMentions: [APIPersonMentionView]) {
