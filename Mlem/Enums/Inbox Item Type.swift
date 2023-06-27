@@ -10,5 +10,5 @@ import Foundation
 enum InboxItemType {
     case mention(APIPersonMentionView)
     case message(APIPrivateMessageView)
-    // case reply, mention, message
+    case reply(APICommentReplyView)
 }

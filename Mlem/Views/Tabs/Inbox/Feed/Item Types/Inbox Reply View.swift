@@ -10,8 +10,18 @@ import SwiftUI
 // /user/replies
 
 struct InboxReplyView: View {
+    let reply: APICommentReplyView
+    let publishedAgo: String
+    
+    init(reply: APICommentReplyView) {
+        self.reply = reply
+        self.publishedAgo = String(getTimeIntervalFromNow(date: reply.commentReply.published))
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("\(reply.creator.displayName ?? reply.creator.name) replied to your comment:")
+        Text(reply.comment.content)
+        Text(publishedAgo)
     }
 }
 

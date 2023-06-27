@@ -19,6 +19,18 @@ class MentionsTracker: ObservableObject {
         defer { isLoading = false }
         isLoading = true
 
+        let nextPage = try await loadPage(account: account, sort: sort, page: page)
+        
+        guard !nextPage.isEmpty else {
+            return
+        }
+        add(nextPage)
+        
+        page += 1
+        loadMarkId = mentions.count >= 40 ? mentions[mentions.count - 40].id : 0
+    }
+    
+    func loadPage(account: SavedAccount, sort: SortingOptions?, page: Int) async throws -> [APIPersonMentionView] {
         let request = GetPersonMentionsRequest(
             account: account,
             sort: sort,
@@ -28,17 +40,17 @@ class MentionsTracker: ObservableObject {
 
         let response = try await APIClient().perform(request: request)
 
-        guard !response.mentions.isEmpty else {
-            return
-        }
-
-        add(response.mentions)
-        page += 1
-        loadMarkId = mentions.count >= 40 ? mentions[mentions.count - 40].personMention.id : 0
+        return response.mentions
     }
     
     func add(_ newMentions: [APIPersonMentionView]) {
         // let accepted = newMentions.filter { ids.insert($0.id).inserted }
         mentions.append(contentsOf: newMentions)
+    }
+    
+    func refresh(account: SavedAccount) async throws {
+        let newMentions = try await loadPage(account: account, sort: .new, page: 1)
+        mentions = newMentions
+        page = 1
     }
 }

@@ -1,5 +1,5 @@
 //
-//  Messages Tracker.swift
+//  Replies Tracker.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2023-06-26.
@@ -8,9 +8,9 @@
 import Foundation
 
 @MainActor
-class MessagesTracker: ObservableObject {
+class RepliesTracker: ObservableObject {
     @Published private(set) var isLoading: Bool = true
-    @Published private(set) var messages: [APIPrivateMessageView] = .init()
+    @Published private(set) var replies: [APICommentReplyView] = .init()
     // tracks the id of the 10th-from-last item so we know when to load more
     public var loadMarkId: Int = 0
     
@@ -20,19 +20,19 @@ class MessagesTracker: ObservableObject {
         defer { isLoading = false }
         isLoading = true
 
-        let newMessages = try await loadPage(account: account, page: page)
+        let newReplies = try await loadPage(account: account, page: page)
 
-        guard !newMessages.isEmpty else {
+        guard !newReplies.isEmpty else {
             return
         }
 
-        add(newMessages)
+        add(newReplies)
         page += 1
-        loadMarkId = messages.count >= 40 ? messages[messages.count - 40].id : 0
+        loadMarkId = replies.count >= 40 ? replies[replies.count - 40].id : 0
     }
     
-    func loadPage(account: SavedAccount, page: Int) async throws -> [APIPrivateMessageView] {
-        let request = GetPrivateMessagesRequest(
+    func loadPage(account: SavedAccount, page: Int) async throws -> [APICommentReplyView] {
+        let request = GetRepliesRequest(
             account: account,
             page: page,
             limit: 50
@@ -40,17 +40,17 @@ class MessagesTracker: ObservableObject {
 
         let response = try await APIClient().perform(request: request)
 
-        return response.privateMessages
+        return response.replies
     }
     
-    func add(_ newMessages: [APIPrivateMessageView]) {
+    func add(_ newReplies: [APICommentReplyView]) {
         // let accepted = newMentions.filter { ids.insert($0.id).inserted }
-        messages.append(contentsOf: newMessages)
+        replies.append(contentsOf: newReplies)
     }
     
     func refresh(account: SavedAccount) async throws {
-        let newMessages = try await loadPage(account: account, page: 1)
-        messages = newMessages
+        let newReplies = try await loadPage(account: account, page: 1)
+        replies = newReplies
         page = 1
     }
 }

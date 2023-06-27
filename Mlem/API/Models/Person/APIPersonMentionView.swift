@@ -23,3 +23,7 @@ struct APIPersonMentionView: Decodable {
     let creatorBlocked: Bool
     let myVote: ScoringOperation?
 }
+
+extension APIPersonMentionView: Identifiable {
+    var id: Int { personMention.id }
+}

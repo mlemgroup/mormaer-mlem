@@ -7,11 +7,12 @@
 
 import Foundation
 
-extension InboxFeedView {
+extension InboxView {
     func loadFeed() async {
         do {
-            try await mentionsTracker.loadNextPage(account: account, sort: SortingOptions.new)
-            try await messagesTracker.loadNextPage(account: account)
+            try await mentionsTracker.refresh(account: account)
+            try await messagesTracker.refresh(account: account)
+            try await repliesTracker.refresh(account: account)
             
             aggregateAllTrackers()
         } catch APIClientError.networking {
@@ -45,6 +46,7 @@ extension InboxFeedView {
 
     }
     
+    // TODO: unify these using the Power of Protocols
     func loadMentions() async {
         do {
             try await mentionsTracker.loadNextPage(account: account, sort: SortingOptions.new)
@@ -64,6 +66,15 @@ extension InboxFeedView {
         }
     }
     
+    func loadReplies() async {
+        do {
+            try await repliesTracker.loadNextPage(account: account)
+            aggregateAllTrackers()
+        } catch(let message) {
+            print(message)
+        }
+    }
+    
     func aggregateAllTrackers() {
         let mentions = mentionsTracker.mentions.map { item in
             InboxItem(published: item.personMention.published, id: item.personMention.id, type: .mention(item))
@@ -73,6 +84,10 @@ extension InboxFeedView {
             InboxItem(published: item.privateMessage.published, id: item.id, type: .message(item))
         }
         
-        allItems = (mentions + messages).sorted(by: >)
+        let replies = repliesTracker.replies.map { item in
+            InboxItem(published: item.commentReply.published, id: item.commentReply.id, type: .reply(item))
+        }
+        
+        allItems = (mentions + messages + replies).sorted(by: >)
     }
 }
