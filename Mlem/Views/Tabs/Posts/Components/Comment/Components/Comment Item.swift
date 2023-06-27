@@ -214,7 +214,11 @@ struct CommentItem: View {
 
             // embedded post
             if showPostContext {
-                EmbeddedPost(account: account, community: hierarchicalComment.commentView.community, post: hierarchicalComment.commentView.post)
+                EmbeddedPost(
+                    account: account,
+                    community: hierarchicalComment.commentView.community,
+                    post: hierarchicalComment.commentView.post
+                )
             }
         }
     }

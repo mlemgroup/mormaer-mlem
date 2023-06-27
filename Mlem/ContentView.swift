@@ -41,8 +41,7 @@ struct ContentView: View {
                 } .tabItem {
                     if showUsernameInNavigationBar {
                         Label(currentActiveAccount.username, systemImage: "person")
-                    }
-                    else {
+                    } else {
                         Label("Profile", systemImage: "person")
                     }
                 }.tag(3)

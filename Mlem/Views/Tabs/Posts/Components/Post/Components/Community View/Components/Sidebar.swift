@@ -113,7 +113,7 @@ struct SidebarPreview: PreviewProvider {
         actorId: URL(string: "https://lemmy.foo.com/c/testcommunity")!,
         local: false,
         icon: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
-        banner: URL(string:  "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp") ,
+        banner: URL(string: "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
         hidden: false,
         postingRestrictedToMods: false,
         instanceId: 0
