@@ -8,7 +8,7 @@
 import Foundation
 
 extension InboxView {
-    func loadFeed() async {
+    func refreshFeed() async {
         do {
             try await mentionsTracker.refresh(account: account)
             try await messagesTracker.refresh(account: account)
@@ -46,7 +46,7 @@ extension InboxView {
 
     }
     
-    // TODO: unify these using the Power of Protocols
+    // TODO: unify these
     func loadMentions() async {
         do {
             try await mentionsTracker.loadNextPage(account: account, sort: SortingOptions.new)
@@ -88,6 +88,14 @@ extension InboxView {
             InboxItem(published: item.commentReply.published, id: item.commentReply.id, type: .reply(item))
         }
         
-        allItems = (mentions + messages + replies).sorted(by: >)
+        allItems = merge(a: mentions, b: messages, compare: wasPostedAfter)
+        allItems = merge(a: allItems, b: replies, compare: wasPostedAfter)
+    }
+    
+    /**
+     returns true if lhs was posted after rhs
+     */
+    func wasPostedAfter(lhs: InboxItem, rhs: InboxItem) -> Bool {
+        return lhs.published > rhs.published
     }
 }

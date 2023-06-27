@@ -41,7 +41,7 @@ extension InboxView {
         VStack {
             ForEach(messagesTracker.messages) { message in
                 VStack(spacing: 0) {
-                    InboxMessageView(message: message)
+                    InboxMessageView(account: account, message: message)
                         .task {
                             if !messagesTracker.isLoading && message.id == messagesTracker.loadMarkId {
                                 await loadMessages()

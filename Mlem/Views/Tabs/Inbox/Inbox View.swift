@@ -17,9 +17,8 @@ enum InboxTab {
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 
 // TODO:
-// - efficient aggregation
-// - only refresh active page
 // - make purdy
+// - nav links to post/comment
 
 struct InboxView: View {
     @State var account: SavedAccount
@@ -64,45 +63,14 @@ struct InboxView: View {
             }
             .refreshable {
                 Task(priority: .userInitiated) {
-                    await loadFeed()
+                    await refreshFeed()
                 }
             }
             .navigationTitle("Inbox")
                 .navigationBarTitleDisplayMode(.inline)
                 .listStyle(PlainListStyle())
         }
-    }
-    
-    // Note: Does not currently handle refresh, data will be duplicated!
-//    private func fetchUserNotifications() async {
-//        do {
-//            let request = try GetPrivateMessagesRequest(
-//                account: account,
-//                page: 1,
-//                limit: 50
-//            )
-//
-//            let apiResponse = try await APIClient().perform(request: request)
-//
-//            for message in apiResponse.privateMessages {
-//                // Get the other users ID as that's how we key PM threads
-//                var otherUser = message.creator
-//                if otherUser.id == account.id {
-//                    otherUser = message.recipient
-//                }
-//
-//                if let existingThread = privateMessageThreads.first(where: {$0.recipient == otherUser}) {
-//                    existingThread.addMessage(message)
-//                } else {
-//                    privateMessageThreads.append(PrivateMessageThread(account: account, recipient: otherUser, messages: [message])
-//                    )
-//                }
-//            }
-//        } catch {
-//            print("Fetch user PMs error: \(error)")
-//        }
-//    }
-    
+    }    
 }
 
 

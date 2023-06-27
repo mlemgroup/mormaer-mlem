@@ -11,14 +11,13 @@ import Foundation
 class MentionsTracker: ObservableObject {
     @Published private(set) var isLoading: Bool = true
     @Published private(set) var mentions: [APIPersonMentionView] = .init()
-    public var loadMarkId: Int = 0
     
+    // tracks the id of the 10th-from-last item so we know when to load more
+    public var loadMarkId: Int = 0
+    private var ids: Set<Int> = .init()
     private var page: Int = 1
     
     func loadNextPage(account: SavedAccount, sort: SortingOptions?) async throws {
-        defer { isLoading = false }
-        isLoading = true
-
         let nextPage = try await loadPage(account: account, sort: sort, page: page)
         
         guard !nextPage.isEmpty else {
@@ -31,6 +30,9 @@ class MentionsTracker: ObservableObject {
     }
     
     func loadPage(account: SavedAccount, sort: SortingOptions?, page: Int) async throws -> [APIPersonMentionView] {
+        defer { isLoading = false }
+        isLoading = true
+        
         let request = GetPersonMentionsRequest(
             account: account,
             sort: sort,
@@ -44,13 +46,22 @@ class MentionsTracker: ObservableObject {
     }
     
     func add(_ newMentions: [APIPersonMentionView]) {
-        // let accepted = newMentions.filter { ids.insert($0.id).inserted }
-        mentions.append(contentsOf: newMentions)
+        let accepted = newMentions.filter { ids.insert($0.id).inserted }
+        mentions = merge(a: mentions, b: accepted, compare: wasPostedAfter)
     }
     
     func refresh(account: SavedAccount) async throws {
+        // save to temp variable and then set so that mentions don't vanish while refreshing
         let newMentions = try await loadPage(account: account, sort: .new, page: 1)
-        mentions = newMentions
         page = 1
+        ids = .init()
+        mentions = newMentions
+    }
+    
+    /**
+     Returns true if lhs was posted after rhs
+     */
+    func wasPostedAfter(lhs: APIPersonMentionView, rhs: APIPersonMentionView) -> Bool {
+        return lhs.personMention.published > rhs.personMention.published
     }
 }

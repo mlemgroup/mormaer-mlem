@@ -10,17 +10,19 @@ import SwiftUI
 // /private_message/list
 
 struct InboxMessageView: View {
+    let account: SavedAccount
     let message: APIPrivateMessageView
     let publishedAgo: String
     
-    init(message: APIPrivateMessageView) {
+    init(account: SavedAccount, message: APIPrivateMessageView) {
+        self.account = account
         self.message = message
         
         self.publishedAgo = getTimeIntervalFromNow(date: message.privateMessage.published)
     }
     
     var body: some View {
-        Text("\(message.creator.displayName ?? message.creator.name) messaged you:")
+        UserProfileLink(account: account, user: message.creator)
         Text(message.privateMessage.content)
         Text(publishedAgo)
     }

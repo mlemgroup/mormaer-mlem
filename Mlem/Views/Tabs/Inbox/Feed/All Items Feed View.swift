@@ -25,7 +25,7 @@ extension InboxView {
                 messagesTracker.messages.isEmpty ||
                 repliesTracker.replies.isEmpty {
                 print("Inbox tracker is empty")
-                await loadFeed()
+                await refreshFeed()
             }
             else {
                 print("Inbox tracker is not empty")
@@ -63,7 +63,7 @@ extension InboxView {
                                 }
                             }
                     case .message(let message):
-                        InboxMessageView(message: message)
+                        InboxMessageView(account: account, message: message)
                             .task {
                                 if !messagesTracker.isLoading && item.id == messagesTracker.loadMarkId {
                                     await loadMessages()
