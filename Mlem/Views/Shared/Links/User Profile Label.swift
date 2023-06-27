@@ -38,37 +38,71 @@ struct UserProfileLabel: View {
     var body: some View {
         HStack(alignment: .center, spacing: 5) {
             if shouldShowUserAvatars {
-                if let avatarLink = user.avatar {
-                    AvatarView(avatarLink: avatarLink)
-                }
+                userAvatar
             }
-
-            let flair = calculateLinkFlair()
-            if let flairSystemIcon = flair.systemIcon {
-                Image(systemName: flairSystemIcon).foregroundColor(flair.color)
-            }
-
-            HStack(spacing: 0) {
-                // User display name if one exists
-                Text(user.displayName ?? user.name)
-                    .minimumScaleFactor(0.01)
-                    .lineLimit(1)
-                    .bold()
-                    .foregroundColor(flair.color)
-                
-                if showServerInstance {
-                    if let host = user.actorId.host() {
-                        Text("@\(host)")
-                            .minimumScaleFactor(0.01)
-                            .lineLimit(1)
-                            .foregroundColor(flair.color)
-                            .opacity(0.6)
-                    }
-                }
-            }
+            
+            userName
         }
     }
+    
+    @ViewBuilder
+    private var userAvatar: some View {
+        Group {
+            if let userAvatarLink = user.avatar {
+                CachedAsyncImage(url: userAvatarLink, urlCache: AppConstants.urlCache) { image in
+                    if let avatar = image.image {
+                        avatar
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+                    } else {
+                        Image(systemName: "person.circle")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: AppConstants.largeAvatarSize, height: AppConstants.defaultAvatarSize)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            } else {
+                Image(systemName: "person.circle")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: AppConstants.largeAvatarSize, height: AppConstants.defaultAvatarSize)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .frame(width: AppConstants.largeAvatarSize, height: AppConstants.largeAvatarSize)
+        .clipShape(Circle())
+        .overlay(Circle()
+            .stroke(Color(UIColor.secondarySystemBackground), lineWidth: 1))
+        .accessibilityHidden(true)
+    }
 
+    @ViewBuilder
+    private var userName: some View {
+        let flair = calculateLinkFlair()
+        
+        VStack(alignment: .leading) {
+            HStack(spacing: 4) {
+                if let flairSystemIcon = flair.systemIcon {
+                    Image(systemName: flairSystemIcon).foregroundColor(flair.color)
+                }
+                Text(user.displayName ?? user.name)
+                    .font(.footnote)
+                    .bold()
+            }
+            .foregroundColor(flair.color)
+            if showServerInstance, let host = user.actorId.host() {
+                Text("@\(host)")
+                    .minimumScaleFactor(0.01)
+                    .lineLimit(1)
+                    .opacity(0.6)
+                    .font(.caption)
+            }
+        }
+        .foregroundColor(.secondary)
+    }
+    
     struct UserProfileLinkFlair {
         var color: Color
         var systemIcon: String?

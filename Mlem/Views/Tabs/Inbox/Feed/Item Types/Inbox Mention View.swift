@@ -8,46 +8,54 @@
 import SwiftUI
 
 struct InboxMentionView: View {
-    // let account: SavedAccount
+    let spacing: CGFloat = 10
+    let userAvatarWidth: CGFloat = 30
+    
+    let account: SavedAccount
     let mention: APIPersonMentionView
     
     let publishedAgo: String
     
-    init(mention: APIPersonMentionView) {
-        // self.account = account
+    init(account: SavedAccount, mention: APIPersonMentionView) {
+        self.account = account
         self.mention = mention
         
         self.publishedAgo = getTimeIntervalFromNow(date: mention.comment.published)
     }
     
     var body: some View {
-        // TODO: tapping this should take you to the mention
-        VStack {
-            mentionHeader
+        VStack(alignment: .leading, spacing: spacing) {
+            Text(mention.post.name)
+                .font(.headline)
+                .padding(.bottom, spacing)
             
-            mentionBody
+            UserProfileLink(account: account, user: mention.creator, showServerInstance: true)
+                .font(.subheadline)
             
-            Text(publishedAgo)
+            HStack(alignment: .top, spacing: spacing) {
+                Image(systemName: "quote.bubble.fill")
+                    .foregroundColor(.accentColor)
+                    .frame(width: userAvatarWidth)
+                
+                MarkdownView(text: mention.comment.content)
+                    .font(.subheadline)
+            }
+            
+            CommunityLinkView(community: mention.community)
+            
+            HStack {
+                Image(systemName: "ellipsis")
+                    .frame(width: userAvatarWidth)
+                
+                Spacer()
+                
+                HStack(spacing: 4) {
+                    Image(systemName: "clock")
+                    Text(publishedAgo)
+                }
+                .foregroundColor(.secondary)
+            }
         }
-    }
-    
-    @ViewBuilder
-    var mentionHeader: some View {
-        let creatorName: String = mention.creator.displayName ?? mention.creator.name
-        // TODO: replace with comment header after that rework is done
-        HStack() {
-            // UserProfileLink(account: account, user: mention.creator)
-            Text("\(creatorName) mentioned you:")
-                .frame(maxWidth: .infinity, alignment: .topLeading)
-        }
-        .font(.footnote)
-        .foregroundColor(.secondary)
-    }
-    
-    @ViewBuilder
-    var mentionBody: some View {
-        MarkdownView(text: mention.comment.content)
-            .frame(maxWidth: .infinity, alignment: .topLeading)
-            .font(.subheadline)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

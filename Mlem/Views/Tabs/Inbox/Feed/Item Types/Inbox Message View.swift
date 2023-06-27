@@ -10,6 +10,9 @@ import SwiftUI
 // /private_message/list
 
 struct InboxMessageView: View {
+    let spacing: CGFloat = 10
+    let userAvatarWidth: CGFloat = 30
+    
     let account: SavedAccount
     let message: APIPrivateMessageView
     let publishedAgo: String
@@ -22,9 +25,36 @@ struct InboxMessageView: View {
     }
     
     var body: some View {
-        //UserProfileLink(account: account, user: message.creator)
-        UserProfileLink(account: account, user: message.creator, showServerInstance: true)
-        Text(message.privateMessage.content)
-        Text(publishedAgo)
+        VStack(alignment: .leading, spacing: spacing) {
+            Text("Direct message")
+                .font(.headline.smallCaps())
+                .padding(.bottom, spacing)
+            
+            HStack(alignment: .top, spacing: spacing) {
+                Image(systemName: "envelope.fill")
+                    .foregroundColor(.accentColor)
+                    .frame(width: userAvatarWidth)
+                
+                MarkdownView(text: message.privateMessage.content)
+                    .font(.subheadline)
+            }
+            
+            UserProfileLink(account: account, user: message.creator, showServerInstance: true)
+                .font(.subheadline)
+            
+            HStack {
+                Image(systemName: "ellipsis")
+                    .frame(width: userAvatarWidth)
+                
+                Spacer()
+                
+                HStack(spacing: 4) {
+                    Image(systemName: "clock")
+                    Text(publishedAgo)
+                }
+                .foregroundColor(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

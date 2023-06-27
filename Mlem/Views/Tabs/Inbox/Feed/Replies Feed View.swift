@@ -14,8 +14,7 @@ extension InboxView {
         Group {
             if repliesTracker.replies.isEmpty {
                 noRepliesView()
-            }
-            else {
+            } else {
                 repliesListView()
             }
         }
@@ -38,19 +37,17 @@ extension InboxView {
     
     @ViewBuilder
     func repliesListView() -> some View {
-        VStack {
-            ForEach(repliesTracker.replies) { reply in
-                VStack(spacing: 0) {
-                    InboxReplyView(reply: reply)
-                        .task {
-                            if !repliesTracker.isLoading && reply.commentReply.id == repliesTracker.loadMarkId {
-                                await loadReplies()
-                            }
+        ForEach(repliesTracker.replies) { reply in
+            VStack(spacing: 10) {
+                InboxReplyView(account: account, reply: reply)
+                    .task {
+                        if !repliesTracker.isLoading && reply.commentReply.id == repliesTracker.loadMarkId {
+                            await loadReplies()
                         }
-                    Divider()
-                }
+                    }
+                    .padding(.horizontal)
+                Divider()
             }
         }
     }
 }
-

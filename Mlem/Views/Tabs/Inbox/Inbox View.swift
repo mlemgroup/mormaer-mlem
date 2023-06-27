@@ -28,34 +28,40 @@ struct InboxView: View {
     
     @State private var selectionSection = 0
     
+    @State private var navigationPath = NavigationPath()
+    
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack {
-                    Picker(selection: $selectionSection, label: Text("Profile Section")) {
-                        Text("All").tag(0)
-                        Text("Replies").tag(1)
-                        Text("Mentions").tag(2)
-                        Text("Messages").tag(3)
-                    }
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal)
-                    
-                    switch selectionSection {
-                    case 0:
-                        inboxFeedView()
-                    case 1:
-                        repliesFeedView()
-                    case 2:
-                        mentionsFeedView()
-                    case 3:
-                        messagesFeedView()
-                    default:
-                        Text("screaming")
-                    }
-                    
-                    Spacer()
+        NavigationStack(path: $navigationPath) {
+            
+            VStack {
+                Picker(selection: $selectionSection, label: Text("Profile Section")) {
+                    Text("All").tag(0)
+                    Text("Replies").tag(1)
+                    Text("Mentions").tag(2)
+                    Text("Messages").tag(3)
                 }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                
+                ScrollView {
+                    Group {
+                        switch selectionSection {
+                        case 0:
+                            inboxFeedView()
+                        case 1:
+                            repliesFeedView()
+                        case 2:
+                            mentionsFeedView()
+                        case 3:
+                            messagesFeedView()
+                        default:
+                            Text("screaming")
+                        }
+                    }
+                    .padding(.top, 10)
+                }
+                
+                Spacer()
             }
             .refreshable {
                 Task(priority: .userInitiated) {
@@ -63,19 +69,9 @@ struct InboxView: View {
                 }
             }
             .navigationTitle("Inbox")
-                .navigationBarTitleDisplayMode(.inline)
-                .listStyle(PlainListStyle())
+            .navigationBarTitleDisplayMode(.inline)
+            .listStyle(PlainListStyle())
+            .handleLemmyViews(navigationPath: $navigationPath)
         }
-    }    
-}
-
-
-
-struct InboxViewPreview: PreviewProvider {
-    static private let previewAccount = SavedAccount(id: 0, instanceLink: URL(string: "lemmy.com")!, accessToken: "abcdefg", username: "Test Account")
-    
-    static var previews: some View {
-        InboxView(account: InboxViewPreview.previewAccount)
     }
 }
-    

@@ -14,20 +14,17 @@ extension InboxView {
         Group {
             if allItems.isEmpty {
                 noItemsView()
-            }
-            else {
+            } else {
                 inboxListView()
             }
         }
-        .padding(.horizontal)
         .task(priority: .userInitiated) {
             if mentionsTracker.mentions.isEmpty ||
                 messagesTracker.messages.isEmpty ||
                 repliesTracker.replies.isEmpty {
                 print("Inbox tracker is empty")
                 await refreshFeed()
-            }
-            else {
+            } else {
                 print("Inbox tracker is not empty")
             }
         }
@@ -50,15 +47,14 @@ extension InboxView {
     
     @ViewBuilder
     func inboxListView() -> some View {
-        VStack {
-            ForEach(allItems) { item in
-                VStack {
-                    switch(item.type) {
+        ForEach(allItems) { item in
+            VStack(spacing: 10) {
+                Group {
+                    switch item.type {
                     case .mention(let mention):
-                        InboxMentionView(mention: mention)
+                        InboxMentionView(account: account, mention: mention)
                             .task {
-                                // if !mentionsTracker.isLoading && item.id == mentionsTracker.loadMarkId {
-                                if item.id == mentionsTracker.loadMarkId {
+                                if !mentionsTracker.isLoading && item.id == mentionsTracker.loadMarkId {
                                     await loadMentions()
                                 }
                             }
@@ -70,15 +66,17 @@ extension InboxView {
                                 }
                             }
                     case .reply(let reply):
-                        InboxReplyView(reply: reply)
+                        InboxReplyView(account: account, reply: reply)
                             .task {
                                 if !repliesTracker.isLoading && item.id == repliesTracker.loadMarkId {
                                     await loadReplies()
                                 }
                             }
                     }
-                    Divider()
                 }
+                .padding(.horizontal)
+                
+                Divider()
             }
         }
     }

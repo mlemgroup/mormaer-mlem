@@ -14,8 +14,7 @@ extension InboxView {
         ScrollView {
             if mentionsTracker.mentions.isEmpty {
                 noMentionsView()
-            }
-            else {
+            } else {
                 mentionsListView()
             }
         }
@@ -38,19 +37,17 @@ extension InboxView {
     
     @ViewBuilder
     func mentionsListView() -> some View {
-        VStack {
-            ForEach(mentionsTracker.mentions) { mention in
-                VStack(spacing: 0) {
-                    InboxMentionView(mention: mention)
-                        .task {
-                            if !mentionsTracker.isLoading && mention.personMention.id == mentionsTracker.loadMarkId {
-                                await loadMentions()
-                            }
+        ForEach(mentionsTracker.mentions) { mention in
+            VStack(spacing: 10) {
+                InboxMentionView(account: account, mention: mention)
+                    .task {
+                        if !mentionsTracker.isLoading && mention.personMention.id == mentionsTracker.loadMarkId {
+                            await loadMentions()
                         }
-                    Divider()
-                }
+                    }
+                    .padding(.horizontal)
+                Divider()
             }
         }
     }
 }
-

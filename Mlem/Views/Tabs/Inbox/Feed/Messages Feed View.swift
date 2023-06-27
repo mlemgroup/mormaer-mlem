@@ -38,17 +38,16 @@ extension InboxView {
     
     @ViewBuilder
     func messagesListView() -> some View {
-        VStack {
-            ForEach(messagesTracker.messages) { message in
-                VStack(spacing: 0) {
-                    InboxMessageView(account: account, message: message)
-                        .task {
-                            if !messagesTracker.isLoading && message.id == messagesTracker.loadMarkId {
-                                await loadMessages()
-                            }
+        ForEach(messagesTracker.messages) { message in
+            VStack(spacing: 10) {
+                InboxMessageView(account: account, message: message)
+                    .task {
+                        if !messagesTracker.isLoading && message.id == messagesTracker.loadMarkId {
+                            await loadMessages()
                         }
-                    Divider()
-                }
+                    }
+                    .padding(.horizontal)
+                Divider()
             }
         }
     }
