@@ -14,8 +14,7 @@ extension InboxView {
         Group {
             if messagesTracker.messages.isEmpty {
                 noMessagesView()
-            }
-            else {
+            } else {
                 messagesListView()
             }
         }
@@ -52,4 +51,3 @@ extension InboxView {
         }
     }
 }
-

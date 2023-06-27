@@ -12,10 +12,6 @@ import CachedAsyncImage
 // NOTE:
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 
-// TODO:
-// - make purdy
-// - nav links to post/comment
-
 struct InboxView: View {
     @State var account: SavedAccount
     
@@ -33,7 +29,7 @@ struct InboxView: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             
-            VStack {
+            VStack(spacing: 10) {
                 Picker(selection: $selectionSection, label: Text("Profile Section")) {
                     Text("All").tag(0)
                     Text("Replies").tag(1)
@@ -58,7 +54,6 @@ struct InboxView: View {
                             Text("screaming")
                         }
                     }
-                    .padding(.top, 10)
                 }
                 
                 Spacer()

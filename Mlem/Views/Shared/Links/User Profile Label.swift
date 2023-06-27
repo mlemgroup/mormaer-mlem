@@ -27,12 +27,15 @@ struct UserProfileLabel: View {
         "beehaw.org/u/jojo",
         "sh.itjust.works/u/ericbandrews"
     ]
-
-    static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, systemIcon: "hammer.fill")
-    static let flairMod = UserProfileLinkFlair(color: Color.green, systemIcon: "shield.fill")
-    static let flairBot = UserProfileLinkFlair(color: Color.indigo, systemIcon: "server.rack")
-    static let flairOP = UserProfileLinkFlair(color: Color.orange, systemIcon: "person.fill")
-    static let flairAdmin = UserProfileLinkFlair(color: Color.red, systemIcon: "crown.fill")
+    
+    static let mlemOfficial = "lemmy.ml/u/MlemOfficial"
+    
+    static let flairMlemOfficial = UserProfileLinkFlair(color: Color.blue, image: Image("Mlem Official"))
+    static let flairDeveloper = UserProfileLinkFlair(color: Color.purple, image: Image(systemName: "hammer.fill"))
+    static let flairMod = UserProfileLinkFlair(color: Color.green, image: Image(systemName: "shield.fill"))
+    static let flairBot = UserProfileLinkFlair(color: Color.indigo, image: Image(systemName: "server.rack"))
+    static let flairOP = UserProfileLinkFlair(color: Color.orange, image: Image(systemName: "person.fill"))
+    static let flairAdmin = UserProfileLinkFlair(color: Color.red, image: Image(systemName: "crown.fill"))
     static let flairRegular = UserProfileLinkFlair(color: Color.gray)
 
     var body: some View {
@@ -84,9 +87,14 @@ struct UserProfileLabel: View {
         
         VStack(alignment: .leading) {
             HStack(spacing: 4) {
-                if let flairSystemIcon = flair.systemIcon {
-                    Image(systemName: flairSystemIcon).foregroundColor(flair.color)
+                if let flairImage = flair.image {
+                    flairImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 12, height: 12) // TODO: scale with font
+                        .clipShape(RoundedRectangle(cornerRadius: 2))
                 }
+                
                 Text(user.displayName ?? user.name)
                     .font(.footnote)
                     .bold()
@@ -105,11 +113,15 @@ struct UserProfileLabel: View {
     
     struct UserProfileLinkFlair {
         var color: Color
-        var systemIcon: String?
+        var image: Image?
     }
 
     private func calculateLinkFlair() -> UserProfileLinkFlair {
         if let userServer = user.actorId.host() {
+            if UserProfileLabel.mlemOfficial == "\(userServer)\(user.actorId.path())" {
+                return UserProfileLabel.flairMlemOfficial
+            }
+            
             if UserProfileLabel.developerNames.contains(where: { $0 == "\(userServer)\(user.actorId.path())" }) {
                 return UserProfileLabel.flairDeveloper
             }
@@ -126,8 +138,6 @@ struct UserProfileLabel: View {
             }
         }
         if let community = communityContext {
-//            print(community.moderators)
-//            print(user.actorId)
             if community.moderators.contains(where: { $0.moderator == user }) {
                 return UserProfileLabel.flairMod
             }

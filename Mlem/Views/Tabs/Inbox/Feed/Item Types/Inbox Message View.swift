@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// /private_message/list
-
 struct InboxMessageView: View {
     let spacing: CGFloat = 10
     let userAvatarWidth: CGFloat = 30
