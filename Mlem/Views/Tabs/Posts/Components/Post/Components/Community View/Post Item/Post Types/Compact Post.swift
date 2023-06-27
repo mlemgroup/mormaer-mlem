@@ -73,7 +73,14 @@ struct CompactPost: View {
                 }
 
             }
-            PostInteractionBar(postView: postView, account: account, compact: true, voteOnPost: voteOnPost, updatedSavePost: savePost, deletePost: deletePost)
+            PostInteractionBar(
+                postView: postView,
+                account: account,
+                compact: true,
+                voteOnPost: voteOnPost,
+                updatedSavePost: savePost,
+                deletePost: deletePost
+            )
         }
         .padding(spacing)
     }

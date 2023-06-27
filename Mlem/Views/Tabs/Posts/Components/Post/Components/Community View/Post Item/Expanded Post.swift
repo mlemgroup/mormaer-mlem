@@ -240,8 +240,16 @@ struct ExpandedPost: View {
      */
     private var postView: some View {
         VStack(spacing: 0) {
-            LargePost(postView: post, account: account, isExpanded: true, voteOnPost: voteOnPost, savePost: savePost, deletePost: deletePost)
-            Divider().background(.black)
+            LargePost(
+                postView: post,
+                account: account,
+                isExpanded: true,
+                voteOnPost: voteOnPost,
+                savePost: savePost,
+                deletePost: deletePost
+            )
+            Divider()
+                .background(.black)
         }
     }
 
@@ -360,7 +368,9 @@ struct ExpandedPost: View {
     
     func deletePost() async {
         do {
-            let _ = try await Mlem.deletePost(postId: post.id, account: account, postTracker: postTracker, appState: appState)
+            // TODO: renamed this function and/or move `deleteComment` out of the global scope to avoid
+            // having to refer to our own module
+            _ = try await Mlem.deletePost(postId: post.id, account: account, postTracker: postTracker, appState: appState)
         } catch {
             print("failed to delete post!")
         }

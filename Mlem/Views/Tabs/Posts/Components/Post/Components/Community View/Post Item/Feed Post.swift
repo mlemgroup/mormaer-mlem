@@ -101,10 +101,22 @@ struct FeedPost: View {
     @ViewBuilder
     var postItem: some View {
         if shouldShowCompactPosts {
-            CompactPost(postView: postView, account: account, voteOnPost: voteOnPost, savePost: { _ in await savePost() }, deletePost: deletePost)
-        }
-        else {
-            LargePost(postView: postView, account: account, isExpanded: false, voteOnPost: voteOnPost, savePost: { _ in await savePost() }, deletePost: deletePost)
+            CompactPost(
+                postView: postView,
+                account: account,
+                voteOnPost: voteOnPost,
+                savePost: { _ in await savePost() },
+                deletePost: deletePost
+            )
+        } else {
+            LargePost(
+                postView: postView,
+                account: account,
+                isExpanded: false,
+                voteOnPost: voteOnPost,
+                savePost: { _ in await savePost() },
+                deletePost: deletePost
+            )
         }
     }
 
@@ -120,7 +132,7 @@ struct FeedPost: View {
     
     func deletePost() async {
         do {
-            let _ = try await Mlem.deletePost(postId: postView.post.id, account: account, postTracker: postTracker, appState: appState)
+            _ = try await Mlem.deletePost(postId: postView.post.id, account: account, postTracker: postTracker, appState: appState)
         } catch {
             print("failed to delete post!")
         }

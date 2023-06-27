@@ -25,7 +25,14 @@ extension CommentItem {
     
     func deleteComment() async {
         do {
-            try await _ = Mlem.deleteComment(comment: hierarchicalComment.commentView, account: account, commentTracker: commentTracker, appState: appState)
+            // TODO: rename this function and/or move `deleteComment` out of the global scope
+            // to avoid having to explicitly refer to our own module
+            try await _ = Mlem.deleteComment(
+                comment: hierarchicalComment.commentView,
+                account: account,
+                commentTracker: commentTracker,
+                appState: appState
+            )
         } catch {
             print("failed to delete comment!")
         }
