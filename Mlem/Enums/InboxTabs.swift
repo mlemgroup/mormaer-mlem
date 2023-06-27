@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum inboxTab {
+enum InboxTab {
     case all, replies, messages, mentions
 }

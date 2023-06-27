@@ -49,7 +49,7 @@ extension InboxView {
     // TODO: unify these
     func loadMentions() async {
         do {
-            try await mentionsTracker.loadNextPage(account: account, sort: SortingOptions.new)
+            try await mentionsTracker.loadNextPage(account: account, sort: .new)
             aggregateAllTrackers()
             // TODO: make that call above return the new items and do a nice neat merge sort that doesn't re-sort the whole damn array
         } catch(let message) {
@@ -88,8 +88,8 @@ extension InboxView {
             InboxItem(published: item.commentReply.published, id: item.commentReply.id, type: .reply(item))
         }
         
-        allItems = merge(a: mentions, b: messages, compare: wasPostedAfter)
-        allItems = merge(a: allItems, b: replies, compare: wasPostedAfter)
+        allItems = merge(arr1: mentions, arr2: messages, compare: wasPostedAfter)
+        allItems = merge(arr1: allItems, arr2: replies, compare: wasPostedAfter)
     }
     
     /**

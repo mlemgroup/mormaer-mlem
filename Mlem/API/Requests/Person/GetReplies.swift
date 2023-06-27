@@ -18,7 +18,7 @@ struct GetRepliesRequest: APIGetRequest {
     // lemmy_api_common::person::GetPersonMentions
     init(
         account: SavedAccount,
-        sort: SortingOptions? = nil,
+        sort: PostSortType? = nil,
         page: Int? = nil,
         limit: Int? = nil,
         unreadOnly: Bool = false

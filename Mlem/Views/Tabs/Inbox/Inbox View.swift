@@ -9,10 +9,6 @@ import Foundation
 import SwiftUI
 import CachedAsyncImage
 
-enum InboxTab {
-    case all, replies, messages, mentions
-}
-
 // NOTE:
 // all of the subordinate views are defined as functions in extensions because otherwise the tracker logic gets *ugly*
 

@@ -22,7 +22,8 @@ struct InboxMessageView: View {
     }
     
     var body: some View {
-        UserProfileLink(account: account, user: message.creator)
+        //UserProfileLink(account: account, user: message.creator)
+        UserProfileLink(account: account, user: message.creator, showServerInstance: true)
         Text(message.privateMessage.content)
         Text(publishedAgo)
     }

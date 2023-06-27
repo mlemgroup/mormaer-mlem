@@ -17,7 +17,7 @@ class MentionsTracker: ObservableObject {
     private var ids: Set<Int> = .init()
     private var page: Int = 1
     
-    func loadNextPage(account: SavedAccount, sort: SortingOptions?) async throws {
+    func loadNextPage(account: SavedAccount, sort: PostSortType?) async throws {
         let nextPage = try await loadPage(account: account, sort: sort, page: page)
         
         guard !nextPage.isEmpty else {
@@ -29,7 +29,7 @@ class MentionsTracker: ObservableObject {
         loadMarkId = mentions.count >= 40 ? mentions[mentions.count - 40].id : 0
     }
     
-    func loadPage(account: SavedAccount, sort: SortingOptions?, page: Int) async throws -> [APIPersonMentionView] {
+    func loadPage(account: SavedAccount, sort: PostSortType?, page: Int) async throws -> [APIPersonMentionView] {
         defer { isLoading = false }
         isLoading = true
         
@@ -47,7 +47,7 @@ class MentionsTracker: ObservableObject {
     
     func add(_ newMentions: [APIPersonMentionView]) {
         let accepted = newMentions.filter { ids.insert($0.id).inserted }
-        mentions = merge(a: mentions, b: accepted, compare: wasPostedAfter)
+        mentions = merge(arr1: mentions, arr2: accepted, compare: wasPostedAfter)
     }
     
     func refresh(account: SavedAccount) async throws {

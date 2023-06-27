@@ -46,7 +46,7 @@ class MessagesTracker: ObservableObject {
     
     func add(_ newMessages: [APIPrivateMessageView]) {
         let accepted = newMessages.filter { ids.insert($0.id).inserted }
-        messages = merge(a: messages, b: accepted, compare: wasPostedAfter)
+        messages = merge(arr1: messages, arr2: accepted, compare: wasPostedAfter)
     }
     
     func refresh(account: SavedAccount) async throws {

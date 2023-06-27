@@ -46,7 +46,7 @@ class RepliesTracker: ObservableObject {
     
     func add(_ newReplies: [APICommentReplyView]) {
         let accepted = newReplies.filter { ids.insert($0.id).inserted }
-        replies = merge(a: replies, b: accepted, compare: wasPostedAfter)
+        replies = merge(arr1: replies, arr2: accepted, compare: wasPostedAfter)
     }
     
     func refresh(account: SavedAccount) async throws {
