@@ -194,14 +194,13 @@
 		CD04D5E72A3636FB008EF95B /* Compact Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04D5E62A3636FB008EF95B /* Compact Post.swift */; };
 		CD2E182B2A3B708500224F8A /* Settings Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E182A2A3B708500224F8A /* Settings Options.swift */; };
 		CD3FBCD32A4A4B8B00B2063F /* Messages Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCD22A4A4B8B00B2063F /* Messages Tracker.swift */; };
-		CD3FBCD72A4A617F00B2063F /* Inbox Item Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCD62A4A617F00B2063F /* Inbox Item Tracker.swift */; };
 		CD3FBCD92A4A6BD100B2063F /* Replies Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCD82A4A6BD100B2063F /* Replies Tracker.swift */; };
 		CD3FBCDD2A4A6F0600B2063F /* GetReplies.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */; };
 		CD3FBCE12A4A836000B2063F /* All Items Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE02A4A836000B2063F /* All Items Feed View.swift */; };
 		CD3FBCE32A4A844800B2063F /* Replies Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE22A4A844800B2063F /* Replies Feed View.swift */; };
 		CD3FBCE52A4A89B900B2063F /* Mentions Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE42A4A89B900B2063F /* Mentions Feed View.swift */; };
 		CD3FBCE72A4A8CE300B2063F /* Messages Feed View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE62A4A8CE300B2063F /* Messages Feed View.swift */; };
-		CD3FBCE92A4B482700B2063F /* Generic Merge Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE82A4B482700B2063F /* Generic Merge Sort.swift */; };
+		CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FBCE82A4B482700B2063F /* Generic Merge.swift */; };
 		CD525F652A4B6D8F00BCA794 /* Community Link View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD525F642A4B6D8F00BCA794 /* Community Link View.swift */; };
 		CD64832A2A38C69600EE6CA3 /* Vote Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6483292A38C69600EE6CA3 /* Vote Complex.swift */; };
 		CD64832D2A38CE4E00EE6CA3 /* Vote Complex Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64832C2A38CE4E00EE6CA3 /* Vote Complex Style.swift */; };
@@ -437,14 +436,13 @@
 		CD04D5E62A3636FB008EF95B /* Compact Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Compact Post.swift"; sourceTree = "<group>"; };
 		CD2E182A2A3B708500224F8A /* Settings Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Options.swift"; sourceTree = "<group>"; };
 		CD3FBCD22A4A4B8B00B2063F /* Messages Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Messages Tracker.swift"; sourceTree = "<group>"; };
-		CD3FBCD62A4A617F00B2063F /* Inbox Item Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox Item Tracker.swift"; sourceTree = "<group>"; };
 		CD3FBCD82A4A6BD100B2063F /* Replies Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Replies Tracker.swift"; sourceTree = "<group>"; };
 		CD3FBCDC2A4A6F0600B2063F /* GetReplies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReplies.swift; sourceTree = "<group>"; };
 		CD3FBCE02A4A836000B2063F /* All Items Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "All Items Feed View.swift"; sourceTree = "<group>"; };
 		CD3FBCE22A4A844800B2063F /* Replies Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Replies Feed View.swift"; sourceTree = "<group>"; };
 		CD3FBCE42A4A89B900B2063F /* Mentions Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mentions Feed View.swift"; sourceTree = "<group>"; };
 		CD3FBCE62A4A8CE300B2063F /* Messages Feed View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Messages Feed View.swift"; sourceTree = "<group>"; };
-		CD3FBCE82A4B482700B2063F /* Generic Merge Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Generic Merge Sort.swift"; sourceTree = "<group>"; };
+		CD3FBCE82A4B482700B2063F /* Generic Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Generic Merge.swift"; sourceTree = "<group>"; };
 		CD525F642A4B6D8F00BCA794 /* Community Link View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Community Link View.swift"; sourceTree = "<group>"; };
 		CD6483292A38C69600EE6CA3 /* Vote Complex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vote Complex.swift"; sourceTree = "<group>"; };
 		CD64832C2A38CE4E00EE6CA3 /* Vote Complex Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vote Complex Style.swift"; sourceTree = "<group>"; };
@@ -591,7 +589,7 @@
 				63E5D3952A13DAF200EC1FBD /* Mark Community as Favorite.swift */,
 				63E5D3972A13DCFB00EC1FBD /* Remove Community from Favorites.swift */,
 				50EC39B12A346DDC00E014C2 /* URLHandler.swift */,
-				CD3FBCE82A4B482700B2063F /* Generic Merge Sort.swift */,
+				CD3FBCE82A4B482700B2063F /* Generic Merge.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -774,7 +772,6 @@
 		6363D5C327EE196700E34822 /* Mlem */ = {
 			isa = PBXGroup;
 			children = (
-				CDF842692A4A2AA900723DA0 /* Protocols */,
 				637218002A3A2AAD008C4816 /* API */,
 				63344C5E2A080C5F001BC616 /* Styles */,
 				63F0C7A02A05198600A18C5D /* Enums */,
@@ -1313,14 +1310,6 @@
 			path = Messages;
 			sourceTree = "<group>";
 		};
-		CDF842692A4A2AA900723DA0 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				CD3FBCD62A4A617F00B2063F /* Inbox Item Tracker.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1536,8 +1525,7 @@
 				6318EDC727EE4E1500BFCAE8 /* Post.swift in Sources */,
 				6372186C2A3A2AAD008C4816 /* SaveComment.swift in Sources */,
 				63F0C7AF2A05256C00A18C5D /* Decode Data from File.swift in Sources */,
-				CD3FBCD72A4A617F00B2063F /* Inbox Item Tracker.swift in Sources */,
-				CD3FBCE92A4B482700B2063F /* Generic Merge Sort.swift in Sources */,
+				CD3FBCE92A4B482700B2063F /* Generic Merge.swift in Sources */,
 				630737892A1CD1E900039852 /* String - Escape Special Characters.swift in Sources */,
 				63A01E542A2B980100C84E04 /* Subscribe Button.swift in Sources */,
 				6320BFD12A2F7AF500ECF661 /* Download UIImage from URL.swift in Sources */,

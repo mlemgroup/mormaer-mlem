@@ -8,7 +8,7 @@
 import Foundation
 
 // lemmy_db_views::structs::CommentReplyView
-class APICommentReplyView: Decodable {
+struct APICommentReplyView: Decodable {
     let commentReply: APICommentReply
     let comment: APIComment
     let creator: APIPerson
