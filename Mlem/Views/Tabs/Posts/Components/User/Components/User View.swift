@@ -134,7 +134,7 @@ struct UserView: View {
                 avatarSubtext = "Joined \(dateFormatter.string(from: user.person.published))"
             }
             else {
-                avatarSubtext = "Joined \(user.person.published.getRelativeTime(date: Date.now))";
+                avatarSubtext = "Joined \(user.person.published.getRelativeTime(date: Date.now))"
             }
         }
         else {

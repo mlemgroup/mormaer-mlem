@@ -8,7 +8,7 @@
 import SwiftUI
 import CachedAsyncImage
 
-struct CommunitySidebarHeader : View {
+struct CommunitySidebarHeader: View {
     var title: String
     var subtitle: String
     @Binding var avatarSubtext: String
@@ -40,7 +40,7 @@ struct CommunitySidebarHeader : View {
                     VStack(alignment: .leading) {
                         CommunitySidebarHeaderAvatar(imageUrl: avatarUrl)
                         
-                        Button() {
+                        Button {
                             if let callback = avatarSubtextClicked {
                                 callback()
                             }
@@ -88,11 +88,15 @@ struct SidebarHeaderPreview: PreviewProvider {
             CommunitySidebarHeader(title: "TestCommunityWithLongName", subtitle: "@testcommunity@longnamedomain.website",
                                    avatarSubtext: .constant("Created 3 days ago"),
                                    bannerURL: URL(string:  "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
-                                   avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"), label1: "Label 1", label2: "Label 2")
+                                   avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
+                                   label1: "Label 1",
+                                   label2: "Label 2")
             CommunitySidebarHeader(title: "Test", subtitle: "@test@test.come",
                                    avatarSubtext: .constant("Created 3 days ago"),
                                    bannerURL: URL(string:  "https://vlemmy.net/pictrs/image/719b61b3-8d8e-4aec-9f15-17be4a081f97.jpeg?format=webp"),
-                                   avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"), label1: "Label 1", label2: "Label 2")
+                                   avatarUrl: URL(string: "https://vlemmy.net/pictrs/image/190f2d6a-ac38-448d-ae9b-f6d751eb6e69.png?format=webp"),
+                                   label1: "Label 1",
+                                   label2: "Label 2")
             Spacer()
         }
     }
