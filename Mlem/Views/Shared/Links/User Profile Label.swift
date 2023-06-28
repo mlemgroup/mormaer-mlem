@@ -132,20 +132,14 @@ struct UserProfileLabel: View {
         if user.botAccount {
             return UserProfileLabel.flairBot
         }
-        if let comment = commentContext {
-            if comment.distinguished {
-                return UserProfileLabel.flairMod
-            }
+        if let comment = commentContext, comment.distinguished {
+            return UserProfileLabel.flairMod
         }
-        if let community = communityContext {
-            if community.moderators.contains(where: { $0.moderator == user }) {
-                return UserProfileLabel.flairMod
-            }
+        if let community = communityContext, community.moderators.contains(where: { $0.moderator == user }) {
+            return UserProfileLabel.flairMod
         }
-        if let post = postContext {
-            if user == post.creator {
-                return UserProfileLabel.flairOP
-            }
+        if let post = postContext, post.creator == user {
+            return UserProfileLabel.flairOP
         }
         return UserProfileLabel.flairRegular
     }
