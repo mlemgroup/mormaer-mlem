@@ -32,7 +32,7 @@ struct AlternativeIconCell: View {
                     Image(systemName: "checkmark")
                 }
             }
-        }
+        }.accessibilityElement(children: .combine)
     }
 
     func getImage() -> some View {
