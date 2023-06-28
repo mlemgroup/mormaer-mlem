@@ -64,9 +64,7 @@ struct CommunitySidebarView: View {
                     .communityView
                     .community
                     .description {
-                    MarkdownView(text: description, imageProvider: CachedImageProvider(
-                        isNsfw: false
-                    )).padding()
+                    MarkdownView(text: description, isNsfw: false).padding()
                 }
             } else if selectionSection == 1 {
                 VStack {

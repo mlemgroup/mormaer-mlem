@@ -10,19 +10,6 @@ import SwiftUI
 import MarkdownUI
 import CachedAsyncImage
 
-struct CachedImageProvider: ImageProvider {
-    let isNsfw: Bool
-
-    init(isNsfw: Bool = false) {
-        self.isNsfw = isNsfw
-    }
-
-    @MainActor
-    func makeImage(url: URL?) -> some View {
-        return CachedImageWithNsfwFilter(isNsfw: isNsfw, url: url)
-    }
-}
-
 struct CachedImageWithNsfwFilter: View {
 
     let isNsfw: Bool
@@ -43,7 +30,6 @@ struct CachedImageWithNsfwFilter: View {
             CachedAsyncImage(url: url, urlCache: AppConstants.urlCache) { image in
                 image
                     .resizable()
-//                    .frame(maxWidth: .infinity)
                     .scaledToFill()
                     .blur(radius: showNsfwFilter ? 30 : 0)
                     .clipShape(RoundedRectangle(cornerRadius: 8))

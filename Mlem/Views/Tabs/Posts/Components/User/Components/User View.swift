@@ -80,9 +80,7 @@ struct UserView: View {
                 label2: "\(userDetails.counts.postCount) Posts")
             
             if let bio = userDetails.person.bio {
-                MarkdownView(text: bio, imageProvider: CachedImageProvider(
-                                                                  isNsfw: false
-                                                              )).padding()
+                MarkdownView(text: bio, isNsfw: false).padding()
             }
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
