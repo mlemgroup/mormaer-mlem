@@ -70,7 +70,6 @@ struct SettingsView: View {
                             Text("Appearance")
                         }
                     }
-
                     NavigationLink {
                         FiltersSettingsView()
                     } label: {
@@ -78,6 +77,18 @@ struct SettingsView: View {
                             Image(systemName: "slash.circle.fill")
                                 .foregroundColor(.yellow)
                             Text("Filters")
+                        }
+                    }
+                }
+
+                Section {
+                    NavigationLink {
+                        AlternativeIcons()
+                    } label: {
+                        HStack(alignment: .center) {
+                            AlternativeIcons.getCurrentIcon()
+                                .foregroundColor(.pink)
+                            Text("Alternative Icons")
                         }
                     }
                 }
