@@ -132,12 +132,10 @@ struct UserView: View {
                 dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "ddMMYY", options: 0, locale: Locale.current)
                 
                 avatarSubtext = "Joined \(dateFormatter.string(from: user.person.published))"
-            }
-            else {
+            } else {
                 avatarSubtext = "Joined \(user.person.published.getRelativeTime(date: Date.now))"
             }
-        }
-        else {
+        } else {
             avatarSubtext = ""
         }
     }
