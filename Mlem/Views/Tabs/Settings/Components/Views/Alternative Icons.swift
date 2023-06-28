@@ -43,12 +43,13 @@ struct AlternativeIcons: View {
         let currentIconSelection = UIApplication.shared.alternateIconName
 
         var allIcons = [
-            AlternativeIcon(id: nil, name: "Default", author: "Mlem team", selected: currentIconSelection == nil)
+            AlternativeIcon(id: nil, name: "Mlem", author: "By Clay/s", selected: currentIconSelection == nil)
         ]
         allIcons.append(contentsOf: altIcons.keys.map { key in
             let match = key.firstMatch(of: iconFinder)
             let name = (match?.output.1 != nil) ? String(match!.output.1) : key
-            let author = String(match?.output.2 ?? "")
+            var author = (match?.output.2 != nil) ? "By \(String(match!.output.2))" : ""
+            author = author.replacingOccurrences(of: "Clays", with: "Clay/s")
             return AlternativeIcon(id: key, name: name, author: author, selected: currentIconSelection == key)
         }.sorted(by: { lhs, rhs in
             lhs.name > rhs.name
