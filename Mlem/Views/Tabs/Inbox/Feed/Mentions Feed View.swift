@@ -11,11 +11,13 @@ import SwiftUI
 extension InboxView {
     @ViewBuilder
     func mentionsFeedView() -> some View {
-        ScrollView {
+        Group {
             if mentionsTracker.mentions.isEmpty {
                 noMentionsView()
             } else {
-                mentionsListView()
+                LazyVStack(spacing: spacing) {
+                    mentionsListView()
+                }
             }
         }
     }
@@ -38,7 +40,7 @@ extension InboxView {
     @ViewBuilder
     func mentionsListView() -> some View {
         ForEach(mentionsTracker.mentions) { mention in
-            VStack(spacing: 10) {
+            VStack(spacing: spacing) {
                 InboxMentionView(account: account, mention: mention)
                     .task {
                         if !mentionsTracker.isLoading && mention.personMention.id == mentionsTracker.loadMarkId {

@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum MyError: Error {
+    case runtimeError(String)
+}
+
 extension InboxView {
     func refreshFeed() async {
         do {
@@ -14,34 +18,25 @@ extension InboxView {
             try await messagesTracker.refresh(account: account)
             try await repliesTracker.refresh(account: account)
             
+            errorOccurred = false
+            
             aggregateAllTrackers()
         } catch APIClientError.networking {
-            // TODO: we're seeing a number of SSL related errors on some instances while loading pages from the feed
-            // while we investigate the reasons we will only show this error if the user would otherwise be left with an empty feed
-            guard mentionsTracker.mentions.isEmpty else {
-                print("nothing doing")
-                return
-            }
-            
-//            errorAlert = .init(
-//                title: "Unable to connect to Lemmy",
-//                message: "Please check your internet connection and try again"
-//            )
+            // We're seeing a number of SSL related errors on some instances while loading pages from the feed
+            errorOccurred = true
+            errorMessage = "Network error occurred, please file a bug report including the instance you are using"
         } catch APIClientError.response(let message, _) {
             print(message)
-            print("APIClientError")
-//            errorAlert = .init(
-//                title: "Error",
-//                message: message.error
-//            )
+            errorOccurred = true
+            errorMessage = "API error occurred, try refreshing"
         } catch APIClientError.cancelled {
             print("Failed while loading feed (request cancelled)")
+            errorOccurred = true
+            errorMessage = "Request was cancelled, try refreshing"
         } catch let message {
             print(message)
-            // TODO: we may be receiving decoding errors (or something else) based on reports in the dev chat
-            // for now we will fail silently if the user has posts to view while we investigate further
-            assertionFailure("Unhandled error encountered, if you can reproduce this please raise a ticket/discuss in the dev chat")
-            // errorAlert = .unexpected
+            errorOccurred = true
+            errorMessage = "A decoding error occurred, try refreshing."
         }
 
     }

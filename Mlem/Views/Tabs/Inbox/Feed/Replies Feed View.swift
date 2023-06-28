@@ -15,7 +15,9 @@ extension InboxView {
             if repliesTracker.replies.isEmpty {
                 noRepliesView()
             } else {
-                repliesListView()
+                LazyVStack(spacing: spacing) {
+                    repliesListView()
+                }
             }
         }
     }
@@ -38,7 +40,7 @@ extension InboxView {
     @ViewBuilder
     func repliesListView() -> some View {
         ForEach(repliesTracker.replies) { reply in
-            VStack(spacing: 10) {
+            VStack(spacing: spacing) {
                 InboxReplyView(account: account, reply: reply)
                     .task {
                         if !repliesTracker.isLoading && reply.commentReply.id == repliesTracker.loadMarkId {
