@@ -19,8 +19,7 @@ let iconFinder = Regex {
         ZeroOrMore(.any, .eager) // Icon Maker
     }
 }
-    .ignoresCase()
-
+.ignoresCase()
 
 struct AlternativeIcons: View {
 
@@ -60,7 +59,13 @@ struct AlternativeIcons: View {
     }
 
     static func getCurrentIcon() -> some View {
-        return AlternativeIconCell(icon: AlternativeIcon(id: UIApplication.shared.alternateIconName, name: "", author: "", selected: false)) { _ in }.getImage()
+        let icon = AlternativeIcon(
+            id: UIApplication.shared.alternateIconName,
+            name: "",
+            author: "",
+            selected: false
+        )
+        return AlternativeIconCell(icon: icon) { _ in }.getImage()
     }
 
     @MainActor
