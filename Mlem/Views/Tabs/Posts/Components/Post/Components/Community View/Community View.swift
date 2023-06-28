@@ -59,7 +59,7 @@ struct CommunityView: View {
     var isInSpecificCommunity: Bool { community != nil }
 
     private var filteredPosts: [APIPostView] {
-        postTracker.posts.filter { postView in
+        postTracker.items.filter { postView in
             !postView.post.name.contains(filtersTracker.filteredKeywords)
         }
     }
@@ -69,7 +69,7 @@ struct CommunityView: View {
             searchResultsView
                 .accessibilityHidden(!isShowingCommunitySearch)
             ScrollView {
-                if postTracker.posts.isEmpty {
+                if postTracker.items.isEmpty {
                     noPostsView
                 } else {
                     LazyVStack(spacing: 0) {
@@ -171,7 +171,7 @@ struct CommunityView: View {
                 }
             }
             .task(priority: .userInitiated) {
-                if postTracker.posts.isEmpty {
+                if postTracker.items.isEmpty {
                     print("Post tracker is empty")
                     await loadFeed()
                 } else {
@@ -449,8 +449,8 @@ struct CommunityView: View {
             .buttonStyle(EmptyButtonStyle()) // Make it so that the link doesn't mess with the styling
             .task {
                 if !postTracker.isLoading {
-                    if let position = postTracker.posts.lastIndex(of: post) {
-                        if  position >= (postTracker.posts.count - 40) {
+                    if let position = postTracker.items.lastIndex(of: post) {
+                        if  position >= (postTracker.items.count - 40) {
                             await loadFeed()
                         }
                     }
@@ -486,7 +486,7 @@ struct CommunityView: View {
         } catch APIClientError.networking {
             // TODO: we're seeing a number of SSL related errors on some instances while loading pages from the feed
             // while we investigate the reasons we will only show this error if the user would otherwise be left with an empty feed
-            guard postTracker.posts.isEmpty else {
+            guard postTracker.items.isEmpty else {
                 return
             }
 

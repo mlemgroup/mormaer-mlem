@@ -41,3 +41,7 @@ extension APIPostView: Hashable {
         hasher.combine(self.read)
     }
 }
+
+extension APIPostView: FeedItem {
+    var uniqueIdentifier: some Hashable { id }
+}

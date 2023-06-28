@@ -252,7 +252,7 @@ struct UserView: View {
     }
     
     private func generatePostFeed(savedItems: Bool) -> [FeedItem] {
-        return privatePostTracker.posts
+        return privatePostTracker.items
             // Matched saved state
             .filter({
                 if savedItems {

@@ -44,3 +44,7 @@ struct GetPostsRequest: APIGetRequest {
 struct GetPostsResponse: Decodable {
     let posts: [APIPostView]
 }
+
+extension GetPostsResponse: FeedItemProviding {
+    var items: [APIPostView] { posts }
+}
