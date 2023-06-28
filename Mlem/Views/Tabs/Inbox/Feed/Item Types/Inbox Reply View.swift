@@ -38,7 +38,7 @@ struct InboxReplyView: View {
                     .foregroundColor(.accentColor)
                     .frame(width: userAvatarWidth)
                 
-                MarkdownView(text: reply.comment.content)
+                MarkdownView(text: reply.comment.content, isNsfw: false)
                     .font(.subheadline)
             }
             

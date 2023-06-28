@@ -33,7 +33,7 @@ struct InboxMessageView: View {
                     .foregroundColor(.accentColor)
                     .frame(width: userAvatarWidth)
                 
-                MarkdownView(text: message.privateMessage.content)
+                MarkdownView(text: message.privateMessage.content, isNsfw: false)
                     .font(.subheadline)
             }
             

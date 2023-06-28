@@ -37,7 +37,7 @@ struct InboxMentionView: View {
                     .foregroundColor(.accentColor)
                     .frame(width: userAvatarWidth)
                 
-                MarkdownView(text: mention.comment.content)
+                MarkdownView(text: mention.comment.content, isNsfw: false)
                     .font(.subheadline)
             }
             
