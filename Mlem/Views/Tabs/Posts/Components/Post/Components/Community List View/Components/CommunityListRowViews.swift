@@ -50,19 +50,15 @@ struct CommuntiyFeedRowView: View {
                     .opacity(0)
                     .buttonStyle(.plain)
             )
-            .accessibilityLabel("Community \(community.name)")
-            .accessibilityAddTraits(.isLink)
             
             Spacer()
             Button("Favorite Community", action: {
                 // Nice little haptics
                 let generator = UINotificationFeedbackGenerator()
                 generator.notificationOccurred(.success)
-                if isFavorited() {
-                    unfavoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
-                } else {
-                    favoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
-                }
+                
+                toggleFavorite()
+                
             }).buttonStyle(FavoriteStarButtonStyle(isFavorited: isFavorited()))
         }.swipeActions {
             if subscribed {
@@ -78,6 +74,32 @@ struct CommuntiyFeedRowView: View {
                     }
                 }.tint(.blue)
             }
+        }
+        .accessibilityAction(named: "Toggle favorite") {
+            toggleFavorite()
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(communityLabel)
+    }
+    
+    private var communityLabel: String {
+        var label = community.name
+    
+        if isFavorited() {
+            label += ", favorite"
+        }
+        
+        return label
+    }
+    
+    private func toggleFavorite() {
+        if isFavorited() {
+            unfavoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
+            UIAccessibility.post(notification: .announcement, argument: "Unfavorited \(community.name)")
+        }
+        else {
+            favoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
+            UIAccessibility.post(notification: .announcement, argument: "Favorited \(community.name)")
         }
     }
 
@@ -123,6 +145,8 @@ struct HomepageFeedRowView: View {
             }
         }.background(
             NavigationLink(value: CommunityLinkWithContext(community: nil, feedType: feedType)) {}.opacity(0)
-        ).padding(.bottom, 1)
+        )
+        .padding(.bottom, 1)
+        .accessibilityElement(children: .combine)
     }
 }
