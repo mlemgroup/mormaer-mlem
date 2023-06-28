@@ -84,9 +84,13 @@ struct CommuntiyFeedRowView: View {
     
     private var communityLabel: String {
         var label = community.name
-    
+        
+        if let website = community.actorId.host(percentEncoded: false) {
+            label += "@\(website)"
+        }
+            
         if isFavorited() {
-            label += ", favorite"
+            label += ", is a favorite"
         }
         
         return label
@@ -95,9 +99,8 @@ struct CommuntiyFeedRowView: View {
     private func toggleFavorite() {
         if isFavorited() {
             unfavoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
-            UIAccessibility.post(notification: .announcement, argument: "Unfavorited \(community.name)")
-        }
-        else {
+            UIAccessibility.post(notification: .announcement, argument: "Un-favorited \(community.name)")
+        } else {
             favoriteCommunity(account: account, community: community, favoritedCommunitiesTracker: favoritesTracker)
             UIAccessibility.post(notification: .announcement, argument: "Favorited \(community.name)")
         }
