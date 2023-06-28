@@ -91,7 +91,6 @@ struct LargePost: View {
         }
         .padding(.vertical, spacing)
         .padding(.horizontal, spacing)
-        .accessibilityElement(children: .combine)
     }
 
     // MARK: - Subviews
