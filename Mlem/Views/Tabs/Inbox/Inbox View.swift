@@ -75,9 +75,7 @@ struct InboxView: View {
             }
             // load view if empty or account has changed
             .task(priority: .userInitiated) {
-                // if swapped accounts, show loading
-                print(account.id)
-                print(lastKnownAccountId)
+                // if a tracker is empty or the account has changed, refresh
                 if mentionsTracker.mentions.isEmpty ||
                     messagesTracker.messages.isEmpty ||
                     repliesTracker.replies.isEmpty  ||
