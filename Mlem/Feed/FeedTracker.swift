@@ -72,7 +72,7 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
     /// A method to add new items into the tracker, duplicate items will be rejected
     /// - Parameter newItems: The array of new `Item`'s you wish to add
     func add(_ newItems: [Item]) {
-        let accepted = newItems.filter { ids.insert($0.uniqueIdentifier).inserted }
+        let accepted = dedupedItems(from: newItems)
         if !shouldPerformMergeSorting {
             items.append(contentsOf: accepted)
             return
@@ -102,20 +102,25 @@ class FeedTracker<Item: FeedTrackerItem>: ObservableObject {
         items[index] = updatedItem
     }
     
-    /// A method to reset the tracker to it's initial state
-    private func reset(with newItems: [Item] = .init()) {
-        ids = .init()
-        page = 1
-        items = newItems
-    }
-    
     // MARK: - Private methods
     
-    func retrieveItems<Request: APIRequest>(
+    /// A method to reset the tracker to it's initial state
+    private func reset(with newItems: [Item] = .init()) {
+        page = newItems.isEmpty ? 1 : 2
+        ids = .init()
+        items = dedupedItems(from: newItems)
+    }
+    
+    private func retrieveItems<Request: APIRequest>(
         with request: Request
     ) async throws -> Request.Response where Request.Response: FeedTrackerItemProviding, Request.Response.Item == Item {
         defer { isLoading = false }
         isLoading = true
         return try await APIClient().perform(request: request)
+    }
+    
+    private func dedupedItems(from newItems: [Item]) -> [Item] {
+        let accepted = newItems.filter { ids.insert($0.uniqueIdentifier).inserted }
+        return accepted
     }
 }
