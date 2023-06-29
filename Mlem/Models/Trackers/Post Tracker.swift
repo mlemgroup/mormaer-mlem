@@ -26,7 +26,24 @@ class PostTracker: FeedTracker<APIPostView> {
                 limit: page == 1 ? 25 : 50
             )
         )
-
+        
+        Task(priority: .background) {
+            preloadImages(response.posts)
+        }
+    }
+    
+    func refresh(account: SavedAccount, communityId: Int?, sort: PostSortType?, type: FeedType) async throws {
+        let response = try await refresh(
+            GetPostsRequest(
+                account: account,
+                communityId: communityId,
+                page: 1,
+                sort: sort,
+                type: type,
+                limit: 25
+            )
+        )
+        
         Task(priority: .background) {
             preloadImages(response.posts)
         }

@@ -29,7 +29,7 @@ struct UserView: View {
 
     @State private var errorAlert: ErrorAlert?
     @StateObject private var privateCommentReplyTracker: CommentReplyTracker = .init()
-    @StateObject private var privatePostTracker: PostTracker = .init()
+    @StateObject private var privatePostTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
     @State var showingCakeDay = false
