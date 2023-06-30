@@ -12,7 +12,7 @@ internal enum DecodingError: Error {
 }
 
 internal enum WhatToDecode {
-    case accounts, filteredKeywords, favoriteCommunities
+    case accounts, filteredKeywords, favoriteCommunities, accountPreferences
 }
 
 func decodeFromFile(fromURL: URL, whatToDecode: WhatToDecode) throws -> any Codable {
@@ -27,6 +27,8 @@ func decodeFromFile(fromURL: URL, whatToDecode: WhatToDecode) throws -> any Coda
                 return try JSONDecoder().decode([String].self, from: rawData)
             case .favoriteCommunities:
                 return try JSONDecoder().decode([FavoriteCommunity].self, from: rawData)
+            case .accountPreferences:
+                return try JSONDecoder().decode([Int: AccountPreference].self, from: rawData)
             }
         } catch let decodingError {
             print("Failed to decode loaded data: \(decodingError.localizedDescription)")

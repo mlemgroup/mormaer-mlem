@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import LocalAuthentication
 
 internal enum FavoritesPurgingError {
     case failedToDeleteOldFavoritesFile, failedToCreateNewEmptyFile
@@ -16,10 +17,26 @@ struct GeneralSettingsView: View {
     @AppStorage("defaultCommentSorting") var defaultCommentSorting: CommentSortType = .top
 
     @EnvironmentObject var favoritesTracker: FavoriteCommunitiesTracker
+    @EnvironmentObject var accountsTracker: SavedAccountTracker
     @EnvironmentObject var appState: AppState
 
     @State private var isShowingFavoritesDeletionConfirmation: Bool = false
     @State private var diskUsage: Int64 = 0
+    @State private var context = LAContext()
+    @State private var dirtyEditingUserAccount = false
+
+    var authenticationName: String {
+        switch context.biometryType {
+        case .touchID:
+            "TouchID"
+        case .faceID:
+            "FaceID"
+        default:
+            "Passcode"
+        }
+    }
+
+    @State var accountRequiresLock: Bool = false
 
     var body: some View {
         List {
@@ -31,7 +48,7 @@ struct GeneralSettingsView: View {
                     Spacer()
                     PostSortMenu(selectedSortingOption: $defaultPostSorting, shortLabel: true)
                 }
-                
+
                 HStack {
                     Image(systemName: "text.line.first.and.arrowtriangle.forward")
                         .foregroundColor(.pink)
@@ -109,6 +126,58 @@ struct GeneralSettingsView: View {
                     Text("Would you like to delete all your favorited communities for all accounts?\nYou cannot undo this action.")
                 }
 
+            }
+
+            if let account = appState.currentActiveAccount {
+                Section {
+                    SwitchableSettingsItem(
+                        settingPictureSystemName: "lock",
+                        settingPictureColor: .pink,
+                        settingName: "Require \(authenticationName)",
+                        isTicked: $accountRequiresLock
+                    )
+                    .onChange(of: accountRequiresLock) { newValue in
+                        if dirtyEditingUserAccount { return }
+                        dirtyEditingUserAccount = true
+                        Task(priority: .userInitiated) {
+                            do {
+                                var allowChangeLockState = false
+                                let accountLocked = newValue
+                                if newValue == true {
+                                    var error: NSError?
+                                    allowChangeLockState = context.canEvaluatePolicy(
+                                        .deviceOwnerAuthentication,
+                                        error: &error
+                                    )
+                                } else {
+                                    allowChangeLockState =
+                                        try await context.evaluatePolicy(
+                                            .deviceOwnerAuthentication,
+                                            localizedReason: "Remove the account lock"
+                                        )
+                                }
+                                if allowChangeLockState {
+                                    var oldSettings = accountsTracker.accountPreferences[account.id]
+                                            ?? AccountPreference(requiresSecurity: false)
+                                    oldSettings.requiresSecurity = accountLocked
+                                    accountsTracker.accountPreferences.updateValue(oldSettings, forKey: account.id)
+                                    dirtyEditingUserAccount = false
+                                    return
+                                }
+                            } catch {}
+                            // if all went well we shouldn't get here
+                            //                               await MainActor.run {
+                            accountRequiresLock = !newValue
+                            dirtyEditingUserAccount = false
+                            //                               }
+                        }
+                    }
+                    .onAppear {
+                        accountRequiresLock = accountsTracker.accountPreferences[account.id]?.requiresSecurity ?? false
+                    }
+                } header: {
+                    Label("Account settings", systemImage: "person")
+                }
             }
 
             Section {

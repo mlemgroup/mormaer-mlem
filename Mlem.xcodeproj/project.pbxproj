@@ -176,6 +176,8 @@
 		6D8F08FF2A4029AE003EB4FD /* Community List View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F08FE2A4029AE003EB4FD /* Community List View.swift */; };
 		6D91D4552A415994006B8F9A /* CommunityListSidebarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */; };
 		6D91D4582A4159D8006B8F9A /* CommunityListRowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */; };
+		B131BB9B2A4721D400951C92 /* View - BioLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B131BB9A2A4721D400951C92 /* View - BioLock.swift */; };
+    B131BB9D2A472CA800951C92 /* Account Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B131BB9C2A472CA800951C92 /* Account Preference.swift */; };
 		6DE118392A4A20D600810C7E /* Lazy Load Post Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
 		6DE1183E2A4A4FF500810C7E /* Delete Post or Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183D2A4A4FF500810C7E /* Delete Post or Comment.swift */; };
@@ -425,6 +427,8 @@
 		6D8F08FE2A4029AE003EB4FD /* Community List View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Community List View.swift"; sourceTree = "<group>"; };
 		6D91D4542A415994006B8F9A /* CommunityListSidebarEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListSidebarEntry.swift; sourceTree = "<group>"; };
 		6D91D4572A4159D8006B8F9A /* CommunityListRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRowViews.swift; sourceTree = "<group>"; };
+		B131BB9A2A4721D400951C92 /* View - BioLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View - BioLock.swift"; sourceTree = "<group>"; };
+    B131BB9C2A472CA800951C92 /* Account Preference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account Preference.swift"; sourceTree = "<group>"; };
 		6DE118382A4A20D600810C7E /* Lazy Load Post Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lazy Load Post Link.swift"; sourceTree = "<group>"; };
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
 		6DE1183D2A4A4FF500810C7E /* Delete Post or Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Delete Post or Comment.swift"; sourceTree = "<group>"; };
@@ -593,6 +597,7 @@
 				63F0C7A52A05225100A18C5D /* Saved Account.swift */,
 				63CE4E722A06F5A100405271 /* Access Token.swift */,
 				63E5D3932A13CF3600EC1FBD /* Favorite Community.swift */,
+				B131BB9C2A472CA800951C92 /* Account Preference.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -675,6 +680,7 @@
 				CD69F56E2A41EDF50028D4F7 /* Swipey Actions.swift */,
 				B1A26FE02A44AAB200B91A32 /* Navigation getter.swift */,
 				B1A26FE22A45B11800B91A32 /* View - Handle Lemmy Links.swift */,
+				B131BB9A2A4721D400951C92 /* View - BioLock.swift */,
 				B1CB6E742A4C729D00DA9675 /* Bundle - Current App Icon.swift */,
 			);
 			path = Extensions;
@@ -1601,6 +1607,7 @@
 				63F0C7AD2A05235400A18C5D /* Encode for Saving.swift in Sources */,
 				63344C712A098060001BC616 /* Sidebar.swift in Sources */,
 				63E5D3822A13831800EC1FBD /* Community Search View.swift in Sources */,
+				B131BB9D2A472CA800951C92 /* Account Preference.swift in Sources */,
 				6DE118392A4A20D600810C7E /* Lazy Load Post Link.swift in Sources */,
 				CDF8426B2A4A2AB600723DA0 /* Inbox Item.swift in Sources */,
 				637218572A3A2AAD008C4816 /* APISiteView.swift in Sources */,
@@ -1677,6 +1684,7 @@
 				B1A26FE32A45B11800B91A32 /* View - Handle Lemmy Links.swift in Sources */,
 				CDF842642A49EAFA00723DA0 /* GetPersonMentions.swift in Sources */,
 				6D405B052A43E82300C65F9C /* Sidebar Header.swift in Sources */,
+				B131BB9B2A4721D400951C92 /* View - BioLock.swift in Sources */,
 				63E5D38D2A13BCDE00EC1FBD /* Community Search Result Tracker.swift in Sources */,
 				6372184E2A3A2AAD008C4816 /* APIPersonView.swift in Sources */,
 				6363D5FA27EE1BDA00E34822 /* Settings View.swift in Sources */,
@@ -1892,6 +1900,7 @@
 				INFOPLIST_FILE = Mlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use FaceID to lock your account";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1928,6 +1937,7 @@
 				INFOPLIST_FILE = Mlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mlem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use FaceID to lock your account";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

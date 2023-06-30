@@ -9,4 +9,6 @@ import Foundation
 
 class SavedAccountTracker: ObservableObject {
     @Published var savedAccounts: [SavedAccount] = .init()
+    
+    @Published var accountPreferences: [Int: AccountPreference] = .init()
 }

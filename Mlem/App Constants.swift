@@ -40,6 +40,10 @@ struct AppConstants {
         .appendingPathComponent("Saved Accounts", conformingTo: .json)
     }()
 
+    static let savedAccountsPreferenceFilePath: URL = { applicationSupportDirectoryPath
+        .appendingPathComponent("Saved Account Preference", conformingTo: .json)
+    }()
+
     static let filteredKeywordsFilePath = { applicationSupportDirectoryPath
         .appendingPathComponent("Blocked Keywords", conformingTo: .json)
     }()

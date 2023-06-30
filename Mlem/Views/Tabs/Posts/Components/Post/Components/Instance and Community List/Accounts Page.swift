@@ -54,7 +54,9 @@ struct AccountsPage: View {
 
                 // now we reset the account
                 appState.currentActiveAccount = nil
-                
+
+                appState.locked = true
+
                 if shouldDisplayFirstUser, let firstAccount = accountsTracker.savedAccounts.first {
                     // I know this looks super odd but it give SwiftUI just a bit of time to get ahold of itself
                     Task {
@@ -67,8 +69,13 @@ struct AccountsPage: View {
             .navigationDestination(for: SavedAccount.self) { account in
                 CommunityListView(account: account)
                     .onAppear {
+                        let shouldUnlock = !(accountsTracker.accountPreferences[account.id]?.requiresSecurity ?? false)
+                        if appState.locked && shouldUnlock {
+                            appState.locked = false
+                        }
                         appState.currentActiveAccount = account
                     }
+                    .handleAccountSecurity(account: account)
             }
             .navigationTitle("Accounts")
             .navigationBarTitleDisplayMode(.inline)
@@ -110,6 +117,7 @@ struct AccountsPage: View {
             let savedAccountToRemove: SavedAccount = accountsTracker.savedAccounts[index]
 
             accountsTracker.savedAccounts.remove(at: index)
+            accountsTracker.accountPreferences.removeValue(forKey: savedAccountToRemove.id)
 
             // MARK: - Purge the account information from the Keychain
 

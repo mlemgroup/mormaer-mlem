@@ -232,7 +232,7 @@ struct MarkdownView: View {
                 if blocks.count > index {
                     getMarkdown(text: String(blocks[index]))
                 }
-                
+
                 if images.count > index {
                     CachedImageWithNsfwFilter(isNsfw: isNsfw, url: images[index].1)
                 }

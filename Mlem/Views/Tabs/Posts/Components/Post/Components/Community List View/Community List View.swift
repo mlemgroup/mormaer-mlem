@@ -168,23 +168,23 @@ struct CommunityListView: View {
                     limit: communitiesRequestCount,
                     type: FeedType.subscribed
                 )
-                
+
                 let response = try await APIClient().perform(request: request)
-                
+
                 let newSubscribedCommunities = response.communities.map({
                     return $0.community
                 }).sorted(by: {
                     $0.name < $1.name
                 })
-                
+
                 refreshedCommunities.append(contentsOf: newSubscribedCommunities)
-                
+
                 communitiesPage += 1
-                
+
                 // Go until we get less than the count we ask for
                 moreCommunities = response.communities.count == communitiesRequestCount
             } while (moreCommunities)
-            
+
             subscribedCommunities = refreshedCommunities.sorted(by: { $0.name < $1.name })
         } catch {
             print("Failed to refresh communities: \(error)")
