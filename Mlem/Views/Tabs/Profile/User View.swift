@@ -34,7 +34,6 @@ struct UserView: View {
     @State private var avatarSubtext: String = ""
     @State private var showingCakeDay = false
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
-    @State private var isUserBlocked = false
     
     @State private var selectionSection = 0
     @State var isDragging: Bool = false
@@ -149,26 +148,6 @@ struct UserView: View {
         } else {
             avatarSubtext = ""
         }
-    }
-    
-    // Tries to deduce blocked state from posts
-    // because there is no direct way to see if we are blocking someone
-    private func updatedBlockedState() {
-        var isBlocked = false
-        
-        for post in privatePostTracker.items where post.creatorBlocked {
-            isBlocked = true
-            break
-        }
-        
-        if !isBlocked {
-            for comment in privateCommentTracker.comments where comment.commentView.creatorBlocked {
-                isBlocked = true
-                break
-            }
-        }
-        
-        isUserBlocked = isBlocked
     }
     
     private func toggleCakeDayVisible() {
@@ -358,7 +337,6 @@ struct UserView: View {
             userDetails = authoredContent.personView
             moderatedCommunities = authoredContent.moderates
             updateAvatarSubtext()
-            updatedBlockedState()
         } catch {
             handle(error)
         }
