@@ -32,20 +32,13 @@ struct UserView: View {
     @StateObject private var privatePostTracker: PostTracker = .init(shouldPerformMergeSorting: false)
     @StateObject private var privateCommentTracker: CommentTracker = .init()
     @State private var avatarSubtext: String = ""
-    @State var showingCakeDay = false
+    @State private var showingCakeDay = false
+    @State private var moderatedCommunities: [APICommunityModeratorView] = []
+    @State private var isUserBlocked = false
     
     @State private var selectionSection = 0
     @State var isDragging: Bool = false
     @FocusState var isReplyFieldFocused
-    
-    enum FeedType: String, CaseIterable, Identifiable {
-        case overview = "Overview"
-        case comments = "Comments"
-        case posts = "Posts"
-        case saved = "Saved"
-        
-        var id: String { return self.rawValue }
-    }
     
     struct FeedItem: Identifiable {
         let id = UUID()
@@ -69,34 +62,55 @@ struct UserView: View {
             progressView
         }
     }
+    
+    @ViewBuilder
+    private var moderatorButton: some View {
+        if let user = userDetails {
+            if !moderatedCommunities.isEmpty {
+                NavigationLink(value: UserModeratorLink(user: user, moderatedCommunities: moderatedCommunities)) {
+                    Image(systemName: "shield.fill")
+                        .resizable()
+                        .foregroundColor(.green)
+                        .padding(2)
+                        .background(Image(systemName: "shield")
+                            .resizable()
+                            .foregroundColor(Color(UIColor.label))
+                        )
+                }
+            }
+        }
+    }
 
+    private func header(for userDetails: APIPersonView) -> some View {
+        CommunitySidebarHeader(
+            title: userDetails.person.displayName ?? userDetails.person.name,
+            subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
+            avatarSubtext: $avatarSubtext,
+            avatarSubtextClicked: self.toggleCakeDayVisible,
+            bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
+            avatarUrl: userDetails.person.avatar,
+            label1: "\(userDetails.counts.commentCount) Comments",
+            label2: "\(userDetails.counts.postCount) Posts")
+    }
+    
     private func view(for userDetails: APIPersonView) -> some View {
         ScrollView {
-            CommunitySidebarHeader(
-                title: userDetails.person.displayName ?? userDetails.person.name,
-                subtitle: "@\(userDetails.person.name)@\(userDetails.person.actorId.host()!)",
-                avatarSubtext: $avatarSubtext,
-                avatarSubtextClicked: self.toggleCakeDayVisible,
-                bannerURL: shouldShowUserHeaders ? userDetails.person.banner : nil,
-                avatarUrl: userDetails.person.avatar,
-                label1: "\(userDetails.counts.commentCount) Comments",
-                label2: "\(userDetails.counts.postCount) Posts")
+            header(for: userDetails)
             
             if let bio = userDetails.person.bio {
                 MarkdownView(text: bio, isNsfw: false).padding()
             }
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
-                Text(FeedType.overview.rawValue).tag(0)
-                Text(FeedType.comments.rawValue).tag(1)
-                Text(FeedType.posts.rawValue).tag(2)
+                Text("Overview").tag(0)
+                Text("Comments").tag(1)
+                Text("Posts").tag(2)
                 
                 // Only show saved posts if we are
                 // browsing our own profile
                 if isShowingOwnProfile() {
-                    Text(FeedType.saved.rawValue).tag(3)
+                    Text("Saved").tag(3)
                 }
-                
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
@@ -122,6 +136,10 @@ struct UserView: View {
         .headerProminence(.standard)
         .refreshable {
             await tryLoadUser()
+        }.toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                moderatorButton
+            }
         }
     }
     
@@ -138,6 +156,26 @@ struct UserView: View {
         } else {
             avatarSubtext = ""
         }
+    }
+    
+    // Tries to deduce blocked state from posts
+    // because there is no direct way to see if we are blocking someone
+    private func updatedBlockedState() {
+        var isBlocked = false
+        
+        for post in privatePostTracker.items where post.creatorBlocked {
+            isBlocked = true
+            break
+        }
+        
+        if !isBlocked {
+            for comment in privateCommentTracker.comments where comment.commentView.creatorBlocked {
+                isBlocked = true
+                break
+            }
+        }
+        
+        isUserBlocked = isBlocked
     }
     
     private func toggleCakeDayVisible() {
@@ -325,7 +363,9 @@ struct UserView: View {
             }
             
             userDetails = authoredContent.personView
+            moderatedCommunities = authoredContent.moderates
             updateAvatarSubtext()
+            updatedBlockedState()
         } catch {
             handle(error)
         }
