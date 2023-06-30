@@ -68,14 +68,7 @@ struct UserView: View {
         if let user = userDetails {
             if !moderatedCommunities.isEmpty {
                 NavigationLink(value: UserModeratorLink(user: user, moderatedCommunities: moderatedCommunities)) {
-                    Image(systemName: "shield.fill")
-                        .resizable()
-                        .foregroundColor(.green)
-                        .padding(2)
-                        .background(Image(systemName: "shield")
-                            .resizable()
-                            .foregroundColor(Color(UIColor.label))
-                        )
+                    Image(systemName: "shield")
                 }
             }
         }
