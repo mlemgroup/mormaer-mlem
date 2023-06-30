@@ -8,11 +8,14 @@
 import CachedAsyncImage
 import SwiftUI
 
+/*
+ A view that displays the list of communities a user moderates
+ */
 struct UserModeratorView: View {
     // parameters
     let account: SavedAccount
-    @State var userDetails: APIPersonView
-    @State var moderatedCommunities: [APICommunityModeratorView]
+    var userDetails: APIPersonView
+    var moderatedCommunities: [APICommunityModeratorView]
     
     var body: some View {
         List {
