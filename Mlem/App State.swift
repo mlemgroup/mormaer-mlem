@@ -11,8 +11,7 @@ import AlertToast
 
 class AppState: ObservableObject {
 
-    @Published var currentActiveInstance: String = ""
-    @Published var currentActiveAccount: SavedAccount?
+    @Published private(set) var currentActiveAccount: SavedAccount?
 
     @Published var isShowingCommunitySearch: Bool = false
 
@@ -27,4 +26,8 @@ class AppState: ObservableObject {
     @Published var toast: AlertToast?
 
     @Published var criticalErrorType: CriticalError = .shittyInternet
+    
+    func setActiveAccount(_ account: SavedAccount?) {
+        currentActiveAccount = account
+    }
 }

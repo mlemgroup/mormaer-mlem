@@ -53,7 +53,7 @@ struct AccountsPage: View {
                 let shouldDisplayFirstUser = appState.currentActiveAccount == nil
 
                 // now we reset the account
-                appState.currentActiveAccount = nil
+                appState.setActiveAccount(nil)
                 
                 if shouldDisplayFirstUser, let firstAccount = accountsTracker.savedAccounts.first {
                     // I know this looks super odd but it give SwiftUI just a bit of time to get ahold of itself
@@ -67,7 +67,7 @@ struct AccountsPage: View {
             .navigationDestination(for: SavedAccount.self) { account in
                 CommunityListView(account: account)
                     .onAppear {
-                        appState.currentActiveAccount = account
+                        appState.setActiveAccount(account) 
                     }
             }
             .navigationTitle("Accounts")
