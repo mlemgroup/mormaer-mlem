@@ -63,34 +63,39 @@ struct PostComposerView: View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 15) {
+                    
+                    // Community Row
+                    HStack {
+                        CommunityLinkView(shouldShowCommunityIcons: true,
+                                          community: community)
+                        .disabled(true)
+                        Spacer()
+                        // NSFW Toggle
+                        NSFWToggle(compact: false, isEnabled: isNSFW)
+                    }
+                    
                     // Title Row
                     HStack {
-                        Image(systemName: "megaphone.fill")
-                            .font(.title3)
-                            .dynamicTypeSize(.medium)
-                            .frame(width: iconWidth)
+                        Text("Title")
+                            .foregroundColor(.secondary)
                             .accessibilityHidden(true)
-                        Text("Title").font(.title3)
-                        TextField("Post Title",
-                                  text: $postTitle)
+                        TextField("", text: $postTitle)
+                        .accessibilityLabel("Title")
                     }
                     
                     // URL Row
-                    HStack(spacing: 10) {
-                        Image(systemName: "globe")
-                            .font(.title3)
-                            .dynamicTypeSize(.medium)
-                            .frame(width: iconWidth)
-                            .accessibilityHidden(true)
+                    HStack {
                         Text("URL")
-                            .font(.title3)
-                        TextField("Post URL",
-                                  text: $postURL)
+                            .foregroundColor(.secondary)
+                            .accessibilityHidden(true)
+                        TextField("", text: $postURL)
                         .autocorrectionDisabled()
+                        .accessibilityLabel("URL")
+
                         
                         // Upload button, temporarily hidden
 //                        Button(action: uploadImage) {
-//                            Image(systemName: "photo")
+//                            Image(systemName: "paperclip")
 //                                .font(.title3)
 //                                .dynamicTypeSize(.medium)
 //                        }
@@ -100,32 +105,9 @@ struct PostComposerView: View {
                     // Post Text
                     TextField("What do you want to say?",
                               text: $postBody,
-                              axis: .vertical).lineLimit(5...10)
+                              axis: .vertical)
+                    .accessibilityLabel("Post Body")
                     Spacer()
-                    
-                    // NSFW Toggle
-                    HStack(spacing: 10) {
-                        Image(systemName: "eye.fill")
-                            .font(.title3)
-                            .dynamicTypeSize(.medium)
-                            .frame(width: iconWidth)
-                            .accessibilityHidden(true)
-                        Toggle("NSFW", isOn: $isNSFW)
-                            .font(.title3)
-                    }
-                    
-                    VStack {
-                        Text("Posting in \(community.name)").font(.subheadline)
-                    }
-                    
-                    // Submit Button
-                    Button {
-                        Task(priority: .userInitiated) {
-                            await submitPost()
-                        }
-                    } label: {
-                        Text("Submit").font(.title2).padding()
-                    }.disabled(isSubmitting)
                 }
                 .padding()
                 
@@ -149,6 +131,17 @@ struct PostComposerView: View {
                         dismiss()
                     }
                     .tint(.red)
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    // Submit Button
+                    Button {
+                        Task(priority: .userInitiated) {
+                            await submitPost()
+                        }
+                    } label: {
+                        Image(systemName: "paperplane")
+                    }.disabled(isSubmitting)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
