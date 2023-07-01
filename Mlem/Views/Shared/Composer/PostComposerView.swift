@@ -66,9 +66,8 @@ struct PostComposerView: View {
                     
                     // Community Row
                     HStack {
-                        CommunityLinkView(shouldShowCommunityIcons: true,
-                                          community: community)
-                        .disabled(true)
+                        CommunityLabel(shouldShowCommunityIcons: true,
+                                       community: community)
                         Spacer()
                         // NSFW Toggle
                         NSFWToggle(compact: false, isEnabled: isNSFW)
@@ -91,7 +90,6 @@ struct PostComposerView: View {
                         TextField("", text: $postURL)
                         .autocorrectionDisabled()
                         .accessibilityLabel("URL")
-
                         
                         // Upload button, temporarily hidden
 //                        Button(action: uploadImage) {
