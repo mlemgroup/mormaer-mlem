@@ -202,20 +202,17 @@ struct CommunityView: View {
                             } label: {
                                 Label("New Post", systemImage: "paperplane.fill")
                             }
+                            
+                            Button {
+                                print("Will toggle sidebar")
+                                isSidebarShown.toggle()
+                                print("Sidebar value: \(isSidebarShown)")
+                            } label: {
+                                Label("Sidebar", systemImage: "sidebar.right")
+                            }
                         }
 
                         if let communityDetails {
-                            SubscribeButton(
-                                communityDetails: Binding(
-                                    get: {
-                                        communityDetails.communityView
-                                    },
-                                    set: { newValue in
-                                        guard let newValue else { return }
-                                        self.communityDetails?.communityView = newValue
-                                    }),
-                                account: account
-                            )
 
                             if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) {
                                 // This is when a community is already favorited
@@ -240,6 +237,18 @@ struct CommunityView: View {
                                 }
                                 .tint(.yellow)
                             }
+                            
+                            SubscribeButton(
+                                communityDetails: Binding(
+                                    get: {
+                                        communityDetails.communityView
+                                    },
+                                    set: { newValue in
+                                        guard let newValue else { return }
+                                        self.communityDetails?.communityView = newValue
+                                    }),
+                                account: account
+                            )
                             
                             BlockCommunityButton(account: account, communityDetails: Binding(
                                 get: {
