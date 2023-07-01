@@ -28,6 +28,12 @@ struct PostComposerView: View {
     
     @State var isSubmitting: Bool = false
     
+    private var isReadyToPost: Bool {
+        // We need postTitle to be not empty
+        // and at least an attached postBody or postURL.
+        return postTitle.isNotEmpty && (postBody.isNotEmpty || postURL.isNotEmpty)
+    }
+    
     func submitPost() async {
         do {
             guard let account = appState.currentActiveAccount else {
@@ -78,7 +84,7 @@ struct PostComposerView: View {
                         Text("Title")
                             .foregroundColor(.secondary)
                             .accessibilityHidden(true)
-                        TextField("", text: $postTitle)
+                        TextField("Your post title", text: $postTitle)
                         .accessibilityLabel("Title")
                     }
                     
@@ -87,7 +93,7 @@ struct PostComposerView: View {
                         Text("URL")
                             .foregroundColor(.secondary)
                             .accessibilityHidden(true)
-                        TextField("", text: $postURL)
+                        TextField("your post link", text: $postURL)
                         .autocorrectionDisabled()
                         .accessibilityLabel("URL")
                         
@@ -139,7 +145,7 @@ struct PostComposerView: View {
                         }
                     } label: {
                         Image(systemName: "paperplane")
-                    }.disabled(isSubmitting)
+                    }.disabled(isSubmitting || !isReadyToPost)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
