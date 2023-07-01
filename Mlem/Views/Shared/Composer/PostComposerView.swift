@@ -51,8 +51,8 @@ struct PostComposerView: View {
             
         } catch {
             print("Something went wrong)")
+            isSubmitting = false
         }
-        print("Submitting")
     }
     
     func uploadImage() {
