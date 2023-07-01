@@ -14,10 +14,7 @@ struct PostComposerView: View {
     }
     
     var community: APICommunity
-    
-    let iconWidth: CGFloat = 24
-    let errorHeight: CGFloat = 30
-    
+        
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var postTracker: PostTracker
     @EnvironmentObject var appState: AppState
