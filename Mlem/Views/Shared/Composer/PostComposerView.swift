@@ -31,7 +31,8 @@ struct PostComposerView: View {
     private var isReadyToPost: Bool {
         // We need postTitle to be not empty
         // and at least an attached postBody or postURL.
-        return postTitle.isNotEmpty && (postBody.isNotEmpty || postURL.isNotEmpty)
+        return postTitle.trimmed.isNotEmpty
+        && (postBody.trimmed.isNotEmpty || postURL.trimmed.isNotEmpty)
     }
     
     func submitPost() async {
@@ -44,9 +45,9 @@ struct PostComposerView: View {
             isSubmitting = true
             
             try await postPost(to: community,
-                               postTitle: postTitle,
-                               postBody: postBody,
-                               postURL: postURL,
+                               postTitle: postTitle.trimmed,
+                               postBody: postBody.trimmed,
+                               postURL: postURL.trimmed,
                                postIsNSFW: isNSFW,
                                postTracker: postTracker,
                                account: account)
