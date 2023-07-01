@@ -123,6 +123,8 @@ struct CommunitySidebarView: View {
         }
         .multilineTextAlignment(.center)
         .foregroundColor(.secondary)
+        .accessibilityElement(children: .combine)
+        .padding()
     }
 }
 
