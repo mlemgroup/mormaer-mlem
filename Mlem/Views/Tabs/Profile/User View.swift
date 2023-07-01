@@ -35,7 +35,7 @@ struct UserView: View {
     @State private var showingCakeDay = false
     @State private var moderatedCommunities: [APICommunityModeratorView] = []
     
-    @State private var selectionSection = 0
+    @State private var selectionSection = UserViewTab.overview
     @State var isDragging: Bool = false
     @FocusState var isReplyFieldFocused
     
@@ -64,11 +64,9 @@ struct UserView: View {
     
     @ViewBuilder
     private var moderatorButton: some View {
-        if let user = userDetails {
-            if !moderatedCommunities.isEmpty {
-                NavigationLink(value: UserModeratorLink(user: user, moderatedCommunities: moderatedCommunities)) {
-                    Image(systemName: "shield")
-                }
+        if let user = userDetails, !moderatedCommunities.isEmpty {
+            NavigationLink(value: UserModeratorLink(user: user, moderatedCommunities: moderatedCommunities)) {
+                Image(systemName: "shield")
             }
         }
     }
@@ -94,30 +92,29 @@ struct UserView: View {
             }
             
             Picker(selection: $selectionSection, label: Text("Profile Section")) {
-                Text("Overview").tag(0)
-                Text("Comments").tag(1)
-                Text("Posts").tag(2)
-                
-                // Only show saved posts if we are
-                // browsing our own profile
-                if isShowingOwnProfile() {
-                    Text("Saved").tag(3)
+                ForEach(UserViewTab.allCases, id: \.id) { tab in
+                    // Skip tabs that are meant for only our profile
+                    if tab.onlyShowInOwnProfile {
+                        if isShowingOwnProfile() {
+                            Text(tab.label).tag(tab.rawValue)
+                        }
+                    } else {
+                        Text(tab.label).tag(tab.rawValue)
+                    }
                 }
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
             
             switch selectionSection {
-            case 0:
+            case UserViewTab.overview:
                 mixedFeed
-            case 1:
+            case UserViewTab.comments:
                 commentsFeed
-            case 2:
+            case UserViewTab.posts:
                 postsFeed
-            case 3:
+            case UserViewTab.saved:
                 savedFeed
-            default:
-                Text("Coming soon!")
             }
         }
         .environmentObject(privateCommentReplyTracker)

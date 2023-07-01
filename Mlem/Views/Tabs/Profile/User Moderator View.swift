@@ -20,10 +20,8 @@ struct UserModeratorView: View {
     var body: some View {
         List {
             ForEach(moderatedCommunities) { community in
-                HStack {
-                    CommunityLinkView(community: community.community)
-                    Spacer()
-                }
+                CommunityLinkView(community: community.community)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .navigationTitle("Moderator Details")
