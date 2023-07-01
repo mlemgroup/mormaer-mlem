@@ -70,23 +70,6 @@ struct CommunityView: View {
                     }
                 }
             }
-            .safeAreaInset(edge: .bottom) {
-                if isInSpecificCommunity {
-                    ZStack(alignment: .bottom) {
-                        NavigationLink(
-                            destination: CommunitySidebarView(
-                                account: account,
-                                communityDetails: $communityDetails,
-                                isActive: $isSidebarShown
-                            ),
-                            isActive: $isSidebarShown
-                        ) { /// This is here to show the sidebar when needed
-                            Text("")
-                        }
-                        .hidden()
-                    }
-                }
-            }
             .background(Color.secondarySystemBackground)
             .offset(y: isShowingCommunitySearch ? 300 : 0)
             .refreshable {
@@ -196,22 +179,12 @@ struct CommunityView: View {
                             }
                             
                             Button {
-                                print("Will toggle new post")
                                 isComposingPost.toggle()
-                                print("composeing value: \(isComposingPost)")
                             } label: {
                                 Label("New Post", systemImage: "paperplane.fill")
                             }
-                            
-                            Button {
-                                print("Will toggle sidebar")
-                                isSidebarShown.toggle()
-                                print("Sidebar value: \(isSidebarShown)")
-                            } label: {
-                                Label("Sidebar", systemImage: "sidebar.right")
-                            }
                         }
-
+                        Divider()
                         if let communityDetails {
 
                             if favoriteCommunitiesTracker.favoriteCommunities.contains(where: { $0.community.id == community!.id }) {
