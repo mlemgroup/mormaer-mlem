@@ -43,7 +43,7 @@ struct CommunitySidebarHeaderAvatar: View {
         }
         .frame(width: 120, height: 120)
         .shadow(radius: 10)
-        .background(Circle()
-        .foregroundColor(.systemBackground))
+        .background(shouldClipAvatar ? Circle()
+            .foregroundColor(.systemBackground) : nil)
     }
 }
