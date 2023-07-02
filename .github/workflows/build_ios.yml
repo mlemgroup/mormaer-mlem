@@ -1,0 +1,20 @@
+name: SwiftLint
+
+on:
+    # Run in master as CI
+    push:
+        branches:
+        - master
+    pull_request:
+        branches:
+        - master
+
+jobs:
+  SwiftLint:
+    runs-on: macos-latest
+    steps:
+    - name: Xcodebuild Action
+      uses: sersoft-gmbh/xcodebuild-action@v2.0.1
+      with:
+        project: "Mlem.xcodeproj"
+      
