@@ -11,18 +11,26 @@ import SwiftUI
 import CachedAsyncImage
 
 struct CommunitySidebarHeaderAvatar: View {
+    @State var shouldClipAvatar: Bool = false
     @State var imageUrl: URL?
 
     var body: some View {
         ZStack {
             if let avatarURL = imageUrl {
                 CachedAsyncImage(url: avatarURL) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .clipShape(Circle())
-                        .overlay(Circle()
-                        .stroke(.secondary, lineWidth: 2))
+                    if shouldClipAvatar {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .clipShape(Circle())
+                            .overlay(Circle()
+                            .stroke(.secondary, lineWidth: 2))
+                    } else {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    }
+
                 } placeholder: {
                     ProgressView()
                 }
