@@ -20,5 +20,5 @@ jobs:
         xcodebuild -showsdks
     - name: Xcodebuild Action
       run: |
-        xcodebuild -project ./Mlem.xcodeproj -scheme "Mlem" -sdk "iphonesimulator16.2"
+        xcodebuild -project ./Mlem.xcodeproj -scheme "Mlem" -sdk "iphonesimulator16.2" -quiet
       
