@@ -41,7 +41,7 @@ struct CommentItem: View {
     // MARK: Constants
 
     let threadingColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple]
-    let indent: CGFloat = 10
+    let indent: CGFlot = 10
 
     // MARK: Parameters
 
