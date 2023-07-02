@@ -19,9 +19,6 @@ jobs:
       run: |
         xcodebuild -showsdks
     - name: Xcodebuild Action
-      uses: sersoft-gmbh/xcodebuild-action@v2.0.1
-      with:
-        project: "Mlem.xcodeproj"
-        scheme: "Mlem"
-        sdk: "iphonesimulator16.2"
+      run: |
+        xcodebuild -project ./Mlem.xcodeproj -scheme "Mlem" -sdk "iphonesimulator16.2"
       
