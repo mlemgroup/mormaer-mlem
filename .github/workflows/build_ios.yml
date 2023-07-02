@@ -1,4 +1,4 @@
-name: SwiftLint
+name: Xcode Build
 
 on:
     # Run in master as CI
@@ -17,4 +17,5 @@ jobs:
       uses: sersoft-gmbh/xcodebuild-action@v2.0.1
       with:
         project: "Mlem.xcodeproj"
+        scheme: ios
       
