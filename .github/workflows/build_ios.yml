@@ -22,6 +22,6 @@ jobs:
       uses: sersoft-gmbh/xcodebuild-action@v2.0.1
       with:
         project: "Mlem.xcodeproj"
-        target: "Mlem"
+        scheme: "Mlem"
         sdk: "iphonesimulator16.2"
       
