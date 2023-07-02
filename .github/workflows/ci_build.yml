@@ -11,6 +11,7 @@ on:
 
 jobs:
   xcode-build:
+    permissions: write-all
     runs-on: macos-latest
     steps:
     - name: Checkout
