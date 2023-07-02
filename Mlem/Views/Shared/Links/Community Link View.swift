@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 import CachedAsyncImage
 
-func shouldClipAvatar(community: APICommunity) -> Bool {
-    let clipOptOut = ["beehaw.org"]
+private let clipOptOut = ["beehaw.org"]
 
+func shouldClipAvatar(community: APICommunity) -> Bool {
     guard let hostString = community.actorId.host else {
         return true
     }
@@ -20,8 +20,6 @@ func shouldClipAvatar(community: APICommunity) -> Bool {
 }
 
 func shouldClipAvatar(url: URL?) -> Bool {
-    let clipOptOut = ["beehaw.org"]
-
     guard let hostString = url?.host else {
         return true
     }
