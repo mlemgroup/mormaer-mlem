@@ -19,6 +19,7 @@ jobs:
       run: |
         xcodebuild -showsdks
     - name: Xcodebuild Action
-      run: |
-        xcodebuild -project ./Mlem.xcodeproj -scheme "Mlem" -sdk "iphonesimulator16.2" -quiet
-      
+      uses: mxcl/xcodebuild@v1
+      with:
+        workspace: "Mlem.xcodeproj/project.xcworkspace"
+        scheme: "Mlem"
