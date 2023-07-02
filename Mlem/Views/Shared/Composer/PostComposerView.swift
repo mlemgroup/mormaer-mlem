@@ -107,26 +107,24 @@ struct PostComposerView: View {
                     }
                     
                     // URL Row
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Text("URL")
-                                .foregroundColor(.secondary)
-                                .accessibilityHidden(true)
-                            
-                            TextField("Your post link", text: $postURL)
-                                .keyboardType(.URL)
-                                .autocorrectionDisabled()
-                                .autocapitalization(.none)
-                                .accessibilityLabel("URL")
-                            
-                            // Upload button, temporarily hidden
-    //                        Button(action: uploadImage) {
-    //                            Image(systemName: "paperclip")
-    //                                .font(.title3)
-    //                                .dynamicTypeSize(.medium)
-    //                        }
-    //                        .accessibilityLabel("Upload Image")
-                        }
+                    HStack {
+                        Text("URL")
+                            .foregroundColor(.secondary)
+                            .accessibilityHidden(true)
+                        
+                        TextField("Your post link", text: $postURL)
+                            .keyboardType(.URL)
+                            .autocorrectionDisabled()
+                            .autocapitalization(.none)
+                            .accessibilityLabel("URL")
+                        
+                        // Upload button, temporarily hidden
+                        //                        Button(action: uploadImage) {
+                        //                            Image(systemName: "paperclip")
+                        //                                .font(.title3)
+                        //                                .dynamicTypeSize(.medium)
+                        //                        }
+                        //                        .accessibilityLabel("Upload Image")
                     }
                     
                     // Post Text
