@@ -9,7 +9,7 @@ on:
         branches:
         - master
 
-permissions: read-all|write-all
+permissions: write-all
 
 jobs:
   xcode-build:
