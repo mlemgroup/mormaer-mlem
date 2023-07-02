@@ -23,5 +23,5 @@ jobs:
       with:
         project: "Mlem.xcodeproj"
         target: "Mlem"
-        sdk: "iphonesimulator16.4"
+        sdk: "iphonesimulator16.2"
       
