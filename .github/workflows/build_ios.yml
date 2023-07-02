@@ -13,6 +13,8 @@ jobs:
   xcode-build:
     runs-on: macos-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: Xcodebuild Action
       uses: sersoft-gmbh/xcodebuild-action@v2.0.1
       with:
