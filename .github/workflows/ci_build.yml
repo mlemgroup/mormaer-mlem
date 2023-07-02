@@ -9,8 +9,6 @@ on:
         branches:
         - master
 
-permissions: write-all
-
 jobs:
   xcode-build:
     runs-on: macos-latest
